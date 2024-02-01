@@ -1,0 +1,2640 @@
+{
+    "app": {
+        "backend": {
+            "src": "C://Repositorios Git//Simionato//controle de ativo//backend",
+            "database": {
+                "type": "POSGRESQL",
+                "name": "db_ajustes",
+                "conexao": {
+                    "user": "postgres",
+                    "password": "123456",
+                    "host": "localhost",
+                    "port": 5432
+                },
+                "script_src": "C://Repositorios Git//Simionato//controle de ativo/backend//script"
+            },
+            "tables": [{
+                    "name": "parametros",
+                    "fields": [{
+                            "name": "id_empresa",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "modulo",
+                            "type": "char",
+                            "length": 20,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "assinatura",
+                            "type": "char",
+                            "length": 20,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id_usuario",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "parametro",
+                            "type": "text",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_insert",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_update",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }
+                    ],
+                    "inner_join": [],
+                    "left_join": [],
+                    "primaryKey": [{
+                            "key": "id_empresa"
+                        },
+                        {
+                            "key": "modulo"
+                        },
+                        {
+                            "key": "assinatura"
+                        },
+                        {
+                            "key": "id_usuario"
+                        }
+                    ],
+                    "variables": {
+                        "getone": "parametro",
+                        "getall": "parametros",
+                        "alias": "param"
+                    },
+                    "where": {
+                        "parametro_01": [
+                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "modulo", "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
+                            { "name": "assinatura", "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
+                            { "name": "id_usuario", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
+                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
+                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
+                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
+                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        ]
+                    },
+                    "orderby": [
+                        { "label": "", "comparativo": " != '' ", "key": "param.id_empresa" },
+                        { "label": "Módulo", "comparativo": " != '' ", "key": "param.id_empresa,param.modulo" },
+                        { "label": "Usuário", "comparativo": " != 0 ", "key": "param.id_empresa,param.id_usuario" }
+                    ],
+                    "tablespace": "Producao"
+                },
+                {
+                    "name": "empresas",
+                    "fields": [{
+                            "name": "id",
+                            "type": "serial",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "cnpj_cpf",
+                            "type": "varchar",
+                            "length": 14,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "razao",
+                            "type": "varchar",
+                            "length": 40,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": [
+                                { "key": "check", "value": "true" },
+                                { "key": "require", "value": "true" },
+                                { "key": "maxLength", "value": 40 }
+                            ]
+                        },
+                        {
+                            "name": "fantasi",
+                            "type": "varchar",
+                            "length": 40,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": [
+                                { "key": "check", "value": "true" },
+                                { "key": "require", "value": "false" },
+                                { "key": "maxLength", "value": 40 }
+                            ]
+                        },
+                        {
+                            "name": "inscri",
+                            "type": "varchar",
+                            "length": 14,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": [
+                                { "key": "check", "value": "true" },
+                                { "key": "require", "value": "false" },
+                                { "key": "maxLength", "value": 14 }
+                            ]
+                        }, {
+                            "name": "cadastr",
+                            "type": "Date",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "ruaf",
+                            "type": "varchar",
+                            "length": 80,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "nrof",
+                            "type": "varchar",
+                            "length": 10,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "complementof",
+                            "type": "varchar",
+                            "length": 30,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "bairrof",
+                            "type": "varchar",
+                            "length": 40,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "cidadef",
+                            "type": "varchar",
+                            "length": 40,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "uff",
+                            "type": "varchar",
+                            "length": 2,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+
+                        {
+                            "name": "cepf",
+                            "type": "char",
+                            "length": 8,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "tel1",
+                            "type": "varchar",
+                            "length": 23,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "tel2",
+                            "type": "varchar",
+                            "length": 23,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "email",
+                            "type": "varchar",
+                            "length": 100,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "obs",
+                            "type": "varchar",
+                            "length": 200,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_insert",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_update",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }
+                    ],
+                    "inner_join": [],
+                    "left_join": [],
+                    "primaryKey": [{
+                        "key": "id"
+                    }],
+                    "variables": {
+                        "getone": "empresa",
+                        "getall": "empresas",
+                        "alias": "emp"
+                    },
+                    "where": {
+                        "parametro_01": [
+                            { "name": "id", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "razao", "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
+                            { "name": "cnpj_cpf", "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
+                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
+                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
+                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
+                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
+                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        ]
+                    },
+                    "orderby": [
+                        { "label": "", "comparativo": " != '' ", "key": "emp.id" },
+                        { "label": "Código", "comparativo": " != 0 ", "key": "emp.id" },
+                        { "label": "Razão", "comparativo": " != '' ", "key": "emp.razao" },
+                        { "label": "CNPJ/CPF", "comparativo": " != '' ", "key": "emp.id,emp.cnpj_cpf" }
+                    ],
+                    "tablespace": "Producao"
+                },
+                {
+                    "name": "locais",
+                    "fields": [{
+                            "name": "id_empresa",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id",
+                            "type": "serial",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "cnpj_cpf",
+                            "type": "varchar",
+                            "length": 14,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "inscri",
+                            "type": "varchar",
+                            "length": 14,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "razao",
+                            "type": "varchar",
+                            "length": 65,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "fantasi",
+                            "type": "varchar",
+                            "length": 65,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "cadastr",
+                            "type": "Date",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "ruaf",
+                            "type": "varchar",
+                            "length": 80,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "nrof",
+                            "type": "varchar",
+                            "length": 10,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "complementof",
+                            "type": "varchar",
+                            "length": 30,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "bairrof",
+                            "type": "varchar",
+                            "length": 40,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "cidadef",
+                            "type": "varchar",
+                            "length": 40,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "uff",
+                            "type": "varchar",
+                            "length": 2,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+
+                        {
+                            "name": "cepf",
+                            "type": "char",
+                            "length": 8,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "tel1",
+                            "type": "varchar",
+                            "length": 23,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "tel2",
+                            "type": "varchar",
+                            "length": 23,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "email",
+                            "type": "varchar",
+                            "length": 100,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "obs",
+                            "type": "varchar",
+                            "length": 200,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_insert",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_update",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }
+                    ],
+                    "inner_join": [],
+                    "left_join": [],
+                    "primaryKey": [{
+                            "key": "id_empresa"
+                        },
+                        {
+                            "key": "id"
+                        }
+                    ],
+                    "variables": {
+                        "getone": "local",
+                        "getall": "locais",
+                        "alias": "local"
+                    },
+                    "where": {
+                        "parametro_01": [
+                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "razao", "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
+                            { "name": "cnpj_cpf", "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
+                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
+                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
+                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
+                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
+                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        ]
+                    },
+                    "orderby": [
+                        { "label": "", "comparativo": " != '' ", "key": "local.id_empresa,local.id" },
+                        { "label": "Código", "comparativo": " != 0 ", "key": "local.id_empresa,local.id" },
+                        { "label": "Razão", "comparativo": " != '' ", "key": "local.id_empresa,local.razao" },
+                        { "label": "CNPJ/CPF", "comparativo": " != '' ", "key": "local.id_empresa,local.id,local.cnpj_cpf" }
+                    ],
+                    "tablespace": "Producao"
+                },
+                {
+                    "name": "usuarios",
+                    "fields": [{
+                            "name": "id_empresa",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id",
+                            "type": "serial",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "cnpj_cpf",
+                            "type": "varchar",
+                            "length": 14,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "razao",
+                            "type": "varchar",
+                            "length": 40,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "cadastr",
+                            "type": "Date",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "rua",
+                            "type": "varchar",
+                            "length": 80,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "nro",
+                            "type": "varchar",
+                            "length": 10,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "complemento",
+                            "type": "varchar",
+                            "length": 30,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "bairro",
+                            "type": "varchar",
+                            "length": 40,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "cidade",
+                            "type": "varchar",
+                            "length": 40,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "uf",
+                            "type": "varchar",
+                            "length": 2,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "cep",
+                            "type": "char",
+                            "length": 8,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "tel1",
+                            "type": "varchar",
+                            "length": 23,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "tel2",
+                            "type": "varchar",
+                            "length": 23,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "email",
+                            "type": "varchar",
+                            "length": 100,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "obs",
+                            "type": "varchar",
+                            "length": 200,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "senha",
+                            "type": "varchar",
+                            "length": 255,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "grupo",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "ativo",
+                            "type": "char",
+                            "length": 1,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_insert",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_update",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }
+                    ],
+                    "inner_join": [{
+                        "name": "gruposusuarios",
+                        "inner_alias": "gru",
+                        "inner_on": "gru.id_empresa = usu.id_empresa and gru.codigo = usu.grupo",
+                        "inner_fields": [{
+                            "name": "descricao",
+                            "as_col": "grupo_descricao",
+                            "tipo": "char"
+                        }]
+                    }],
+                    "left_join": [],
+                    "primaryKey": [{
+                            "key": "id_empresa"
+                        },
+                        {
+                            "key": "id"
+                        }
+                    ],
+                    "variables": {
+                        "getone": "usuario",
+                        "getall": "usuarios",
+                        "alias": "usu"
+                    },
+                    "where": {
+                        "parametro_01": [
+                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "razao", "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
+                            { "name": "cnpj_cpf", "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
+                            { "name": "grupo", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
+                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
+                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
+                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
+                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        ]
+                    },
+                    "orderby": [
+                        { "label": "", "comparativo": " != '' ", "key": "usu.id_empresa,usu.id" },
+                        { "label": "Código", "comparativo": " != 0 ", "key": "usu.id_empresa,usu.id" },
+                        { "label": "Razão", "comparativo": " != '' ", "key": "usu.id_empresa,usu.razao" },
+                        { "label": "Grupo", "comparativo": " != 0 ", "key": "usu.id_empresa,usu.grupo,usu.razao" },
+                        { "label": "CNPJ/CPF", "comparativo": " != '' ", "key": "usu.id_empresa,usu.id,usu.cnpj_cpf" }
+                    ],
+                    "tablespace": "Producao"
+                },
+                {
+                    "name": "gruposusuarios",
+                    "fields": [{
+                            "name": "id_empresa",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "codigo",
+                            "type": "serial",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "descricao",
+                            "type": "varchar",
+                            "length": 40,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_insert",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_update",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }
+                    ],
+                    "inner_join": [],
+                    "left_join": [],
+                    "primaryKey": [{
+                            "key": "id_empresa"
+                        },
+                        {
+                            "key": "codigo"
+                        }
+                    ],
+                    "variables": {
+                        "getone": "grupousuario",
+                        "getall": "gruposusuarios",
+                        "alias": "grupo"
+                    },
+                    "where": {
+                        "parametro_01": [
+                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "codigo", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "descricao", "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
+                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
+                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
+                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
+                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
+                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        ]
+                    },
+                    "orderby": [
+                        { "label": "", "comparativo": " != '' ", "key": "grupo.id_empresa,grupo.id_filial,grupo.codigo" },
+                        { "label": "Filial", "comparativo": " != 0 ", "key": "grupo.id_empresa,grupo.id_filial" },
+                        { "label": "Codigo", "comparativo": " != 0 ", "key": "grupo.id_empresa,grupo.id_filial,grupo.codigo" },
+                        { "label": "Descrição", "comparativo": " != '' ", "key": "grupo.id_empresa,grupo.id_filial,grupo.descricao" }
+                    ],
+                    "tablespace": "Producao"
+                },
+                {
+                    "name": "fornecedores",
+                    "fields": [{
+                            "name": "id_empresa",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "id_filial",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id",
+                            "type": "serial",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "cnpj_cpf",
+                            "type": "varchar",
+                            "length": 14,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "inscri",
+                            "type": "varchar",
+                            "length": 14,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "razao",
+                            "type": "varchar",
+                            "length": 65,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "fantasi",
+                            "type": "varchar",
+                            "length": 65,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "cadastr",
+                            "type": "Date",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "rua",
+                            "type": "varchar",
+                            "length": 80,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "nro",
+                            "type": "varchar",
+                            "length": 10,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "complemento",
+                            "type": "varchar",
+                            "length": 30,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "bairro",
+                            "type": "varchar",
+                            "length": 40,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "cidade",
+                            "type": "varchar",
+                            "length": 40,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "uf",
+                            "type": "varchar",
+                            "length": 2,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+
+                        {
+                            "name": "cep",
+                            "type": "char",
+                            "length": 8,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "tel1",
+                            "type": "varchar",
+                            "length": 23,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "tel2",
+                            "type": "varchar",
+                            "length": 23,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "email",
+                            "type": "varchar",
+                            "length": 100,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "obs",
+                            "type": "varchar",
+                            "length": 200,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_insert",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_update",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }
+                    ],
+                    "inner_join": [],
+                    "left_join": [],
+                    "primaryKey": [{
+                            "key": "id_empresa"
+                        },
+                        {
+                            "key": "id_filial"
+                        },
+
+                        {
+                            "key": "id"
+                        }
+                    ],
+                    "variables": {
+                        "getone": "fornecedor",
+                        "getall": "fornecedores",
+                        "alias": "forne"
+                    },
+                    "where": {
+                        "parametro_01": [
+                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "razao", "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
+                            { "name": "cnpj_cpf", "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
+                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
+                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
+                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
+                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
+                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        ]
+                    },
+                    "orderby": [
+                        { "label": "", "comparativo": " != '' ", "key": "forne.id_empresa,forne.id" },
+                        { "label": "Código", "comparativo": " != 0 ", "key": "forne.id_empresa,forne.id" },
+                        { "label": "Razão", "comparativo": " != '' ", "key": "forne.id_empresa,forne.razao" },
+                        { "label": "CNPJ/CPF", "comparativo": " != '' ", "key": "forne.id_empresa,forne.id,forne.cnpj_cpf" }
+                    ],
+                    "tablespace": "Producao"
+                },
+                {
+                    "name": "principais",
+                    "fields": [{
+                            "name": "id_empresa",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id_filial",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "codigo",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "descricao",
+                            "type": "varchar",
+                            "length": 80,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_insert",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_update",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }
+                    ],
+                    "inner_join": [],
+                    "left_join": [],
+                    "primaryKey": [{
+                            "key": "id_empresa"
+                        },
+                        {
+                            "key": "id_filial"
+                        },
+                        {
+                            "key": "codigo"
+                        }
+                    ],
+                    "variables": {
+                        "getone": "principal",
+                        "getall": "principais",
+                        "alias": "princ"
+                    },
+                    "where": {
+                        "parametro_01": [
+                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id_filial", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "codigo", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "descricao", "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
+                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
+                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
+                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
+                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
+                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        ]
+                    },
+                    "orderby": [
+                        { "label": "", "comparativo": " != '' ", "key": "princ.id_empresa,princ.id_filial,princ.codigo" },
+                        { "label": "Filial", "comparativo": " != 0 ", "key": "princ.id_empresa,princ.id_filial" },
+                        { "label": "Codigo", "comparativo": " != 0 ", "key": "princ.id_empresa,princ.id_filial,princ.codigo" },
+                        { "label": "Descrição", "comparativo": " != '' ", "key": "princ.id_empresa,princ.id_filial,princ.descricao" }
+                    ],
+                    "tablespace": "Producao"
+                },
+                {
+                    "name": "produtos",
+                    "fields": [{
+                            "name": "id_empresa",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id_filial",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "codigo",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "estado",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "0",
+                            "validacao": []
+                        },
+                        {
+                            "name": "descricao",
+                            "type": "varchar",
+                            "length": 80,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "ncm",
+                            "type": "varchar",
+                            "length": 15,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id_principal",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_insert",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_update",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }
+                    ],
+                    "inner_join": [],
+                    "left_join": [{
+                        "name": "principais",
+                        "left_alias": "princ",
+                        "left_on": "princ.id_empresa = prod.id_empresa and princ.id_filial = prod.id_filial and princ.codigo = prod.id_principal",
+                        "left_fields": [{
+                            "name": "descricao",
+                            "as_col": "princ_descricao",
+                            "tipo": "char"
+                        }]
+                    }],
+                    "primaryKey": [{
+                            "key": "id_empresa"
+                        },
+                        {
+                            "key": "id_filial"
+                        },
+                        {
+                            "key": "codigo"
+                        }
+                    ],
+                    "variables": {
+                        "getone": "produto",
+                        "getall": "produtos",
+                        "alias": "prod"
+                    },
+                    "where": {
+                        "parametro_01": [
+                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id_filial", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "codigo", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "descricao", "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
+                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
+                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
+                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
+                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
+                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        ]
+                    },
+                    "orderby": [
+                        { "label": "", "comparativo": " != '' ", "key": "princ.id_empresa,princ.id_filial,princ.codigo" },
+                        { "label": "Filial", "comparativo": " != 0 ", "key": "princ.id_empresa,princ.id_filial" },
+                        { "label": "Codigo", "comparativo": " != 0 ", "key": "princ.id_empresa,princ.id_filial,princ.codigo" },
+                        { "label": "Descrição", "comparativo": " != '' ", "key": "princ.id_empresa,princ.id_filial,princ.descricao" }
+                    ],
+                    "tablespace": "Producao"
+                },
+                {
+                    "name": "grupos",
+                    "fields": [{
+                            "name": "id_empresa",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id_filial",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "codigo",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "descricao",
+                            "type": "varchar",
+                            "length": 80,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_insert",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_update",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }
+                    ],
+                    "inner_join": [],
+                    "left_join": [],
+                    "primaryKey": [{
+                            "key": "id_empresa"
+                        },
+                        {
+                            "key": "id_filial"
+                        },
+                        {
+                            "key": "codigo"
+                        }
+                    ],
+                    "variables": {
+                        "getone": "grupo",
+                        "getall": "grupos",
+                        "alias": "grupo"
+                    },
+                    "where": {
+                        "parametro_01": [
+                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id_filial", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "codigo", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "descricao", "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
+                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
+                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
+                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
+                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
+                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        ]
+                    },
+                    "orderby": [
+                        { "label": "", "comparativo": " != '' ", "key": "grupo.id_empresa,grupo.id_filial,grupo.codigo" },
+                        { "label": "Filial", "comparativo": " != 0 ", "key": "grupo.id_empresa,grupo.id_filial" },
+                        { "label": "Codigo", "comparativo": " != 0 ", "key": "grupo.id_empresa,grupo.id_filial,grupo.codigo" },
+                        { "label": "Descrição", "comparativo": " != '' ", "key": "grupo.id_empresa,grupo.id_filial,grupo.descricao" }
+                    ],
+                    "tablespace": "Producao"
+                },
+                {
+                    "name": "centroscustos",
+                    "fields": [{
+                            "name": "id_empresa",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id_filial",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "codigo",
+                            "type": "varchar",
+                            "length": 10,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "descricao",
+                            "type": "varchar",
+                            "length": 80,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_insert",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_update",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }
+                    ],
+                    "inner_join": [],
+                    "left_join": [],
+                    "primaryKey": [{
+                            "key": "id_empresa"
+                        },
+                        {
+                            "key": "id_filial"
+                        },
+                        {
+                            "key": "codigo"
+                        }
+                    ],
+                    "variables": {
+                        "getone": "centrocusto",
+                        "getall": "centroscustos",
+                        "alias": "cc"
+                    },
+                    "where": {
+                        "parametro_01": [
+                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id_filial", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "codigo", "filtro": "S", "atividador": " !== '' ", "tipo": "string", "padrao": "" },
+                            { "name": "descricao", "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
+                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
+                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
+                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
+                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
+                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        ]
+                    },
+                    "orderby": [
+                        { "label": "", "comparativo": " != '' ", "key": "cc.id_empresa,cc.id_filial,cc.codigo" },
+                        { "label": "Filial", "comparativo": " != 0 ", "key": "cc.id_empresa,cc.id_filial" },
+                        { "label": "Codigo", "comparativo": " != '' ", "key": "cc.id_empresa,cc.id_filial,cc.codigo" },
+                        { "label": "Descrição", "comparativo": " != '' ", "key": "cc.id_empresa,cc.id_filial,cc.descricao" }
+                    ],
+                    "tablespace": "Producao"
+                },
+                {
+                    "name": "imobilizados",
+                    "fields": [{
+                            "name": "id_empresa",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id_filial",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "codigo",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "descricao",
+                            "type": "varchar",
+                            "length": 100,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "cod_grupo",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "cod_cc",
+                            "type": "varchar",
+                            "length": 10,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id_fornecedor",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "0",
+                            "validacao": []
+                        }, {
+                            "name": "nfe",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "serie",
+                            "type": "varchar",
+                            "length": 3,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "item",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_insert",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_update",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }
+                    ],
+                    "inner_join": [{
+                            "name": "grupos",
+                            "inner_alias": "gru",
+                            "inner_on": "gru.id_empresa = imo.id_empresa and gru.id_filial = imo.id_filial and gru.codigo = imo.cod_grupo",
+                            "inner_fields": [{
+                                "name": "descricao",
+                                "as_col": "grupo_descricao",
+                                "tipo": "char"
+                            }]
+                        },
+                        {
+                            "name": "centroscustos",
+                            "inner_alias": "cc",
+                            "inner_on": "cc.id_empresa = imo.id_empresa and cc.id_filial = imo.id_filial and cc.codigo = imo.cod_cc",
+                            "inner_fields": [{
+                                "name": "descricao",
+                                "as_col": "cc_descricao",
+                                "tipo": "char"
+                            }]
+                        }
+                    ],
+                    "left_join": [{
+                        "name": "fornecedores",
+                        "left_alias": "forne",
+                        "left_on": "forne.id_empresa = imo.id_empresa and forne.id_filial = imo.id_filial and forne.id = imo.id_fornecedor",
+                        "left_fields": [{
+                            "name": "razao",
+                            "as_col": "forne_razao",
+                            "tipo": "char"
+                        }]
+                    }],
+                    "primaryKey": [{
+                            "key": "id_empresa"
+                        },
+                        {
+                            "key": "id_filial"
+                        },
+                        {
+                            "key": "codigo"
+                        }
+                    ],
+                    "variables": {
+                        "getone": "imobilizado",
+                        "getall": "imobilizados",
+                        "alias": "imo"
+                    },
+                    "where": {
+                        "parametro_01": [
+                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id_filial", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "codigo", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "descricao", "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
+                            { "name": "grupo_cod", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "cc_cod", "filtro": "S", "atividador": " !== '' ", "tipo": "string", "padrao": "" },
+                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
+                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
+                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
+                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
+                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        ]
+                    },
+                    "orderby": [
+                        { "label": "", "comparativo": " != '' ", "key": "imo.id_empresa,imo.id_filial" },
+                        { "label": "Filial", "comparativo": " != 0 ", "key": "imo.id_empresa,imo.id_filial" },
+                        { "label": "Código", "comparativo": " != 0 ", "key": "imo.id_empresa,imo.id_filial,imo.codigo" },
+                        { "label": "Descricao", "comparativo": " != '' ", "key": "imo.id_empresa,imo.id_filial,imo.descricao" }
+                    ],
+                    "tablespace": "Producao"
+                },
+                {
+                    "name": "nfes",
+                    "fields": [{
+                            "name": "id_empresa",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id_filial",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id_fornecedor",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id_imobilizado",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "nfe",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "serie",
+                            "type": "varchar",
+                            "length": 3,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "item",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "chavee",
+                            "type": "varchar",
+                            "length": 44,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "qtd",
+                            "type": "numeric",
+                            "length": 12,
+                            "precision": 4,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "punit",
+                            "type": "numeric",
+                            "length": 15,
+                            "precision": 4,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "totalitem",
+                            "type": "numeric",
+                            "length": 15,
+                            "precision": 2,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+
+                        {
+                            "name": "vlrcontabil",
+                            "type": "numeric",
+                            "length": 15,
+                            "precision": 2,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+
+                        {
+                            "name": "baseicms",
+                            "type": "numeric",
+                            "length": 15,
+                            "precision": 4,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "percicms",
+                            "type": "numeric",
+                            "length": 7,
+                            "precision": 2,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "vlrcicms",
+                            "type": "numeric",
+                            "length": 15,
+                            "precision": 4,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "dtemissao",
+                            "type": "date",
+                            "length": 0,
+                            "precision": 9,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "dtvencto",
+                            "type": "date",
+                            "length": 0,
+                            "precision": 9,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_insert",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_update",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }
+                    ],
+                    "inner_join": [{
+                        "name": "imobilizados",
+                        "inner_alias": "imo",
+                        "inner_on": "imo.id_empresa = nf.id_empresa and imo.id_filial = nf.id_filial and imo.codigo = nf.id_imobilizado",
+                        "inner_fields": [{
+                            "name": "descricao",
+                            "as_col": "imo_descricao",
+                            "tipo": "char"
+                        }]
+                    }],
+                    "left_join": [{
+                        "name": "fornecedores",
+                        "left_alias": "forne",
+                        "left_on": "forne.id_empresa = nf.id_empresa and forne.id_filial = nf.id_filial and forne.id = nf.id_fornecedor",
+                        "left_fields": [{
+                            "name": "razao",
+                            "as_col": "for_razao",
+                            "tipo": "char"
+                        }]
+                    }],
+                    "primaryKey": [{
+                            "key": "id_empresa"
+                        },
+                        {
+                            "key": "id_filial"
+                        },
+                        {
+                            "key": "id_fornecedor"
+                        },
+                        {
+                            "key": "id_imobilizado"
+                        },
+                        {
+                            "key": "nfe"
+                        },
+                        {
+                            "key": "serie"
+                        },
+                        {
+                            "key": "item"
+                        }
+                    ],
+                    "variables": {
+                        "getone": "nfe",
+                        "getall": "nfes",
+                        "alias": "nf"
+                    },
+                    "where": {
+                        "parametro_01": [
+                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id_filial", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id_fornecedor", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id_imobilizado", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "nfe", "filtro": "S", "atividador": " !== '' ", "tipo": "string", "padrao": "" },
+                            { "name": "serie", "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
+                            { "name": "chavee", "filtro": "S", "atividador": " !== '' ", "tipo": "string", "padrao": "" },
+                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
+                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
+                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
+                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
+                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        ]
+                    },
+                    "orderby": [
+                        { "label": "", "comparativo": " != '' ", "key": "nfe.id_empresa,nfe.id_filial" },
+                        { "label": "Filial", "comparativo": " != 0 ", "key": "nfe.id_empresa,nfe.id_filial" },
+                        { "label": "Nfe", "comparativo": " != 0 ", "key": "nfe.id_empresa,nfe.id_filial,nfe.nfe" },
+                        { "label": "Fornecedor", "comparativo": " != '' ", "key": "nfe.id_empresa,nfe.id_filial,nfe.id_fornecedor" }
+                    ],
+                    "tablespace": "Producao"
+                },
+                {
+                    "name": "valores",
+                    "fields": [{
+                            "name": "id_empresa",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id_filial",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id_imobilizado",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "dtaquisicao",
+                            "type": "date",
+                            "length": 0,
+                            "precision": 9,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "vlraquisicao",
+                            "type": "numeric",
+                            "length": 15,
+                            "precision": 4,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "totaldepreciado",
+                            "type": "numeric",
+                            "length": 15,
+                            "precision": 4,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+
+                        {
+                            "name": "vlrresidual",
+                            "type": "numeric",
+                            "length": 15,
+                            "precision": 4,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+
+                        {
+                            "name": "reavalicao",
+                            "type": "numeric",
+                            "length": 15,
+                            "precision": 4,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "deemed",
+                            "type": "numeric",
+                            "length": 15,
+                            "precision": 4,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "vlrconsolidado",
+                            "type": "numeric",
+                            "length": 15,
+                            "precision": 4,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "user_insert",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_update",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }
+                    ],
+                    "inner_join": [{
+                        "name": "imobilizados",
+                        "inner_alias": "imo",
+                        "inner_on": "imo.id_empresa = val.id_empresa and imo.id_filial = val.id_filial and imo.codigo = val.id_imobilizado",
+                        "inner_fields": [{
+                            "name": "descricao",
+                            "as_col": "imo_descricao",
+                            "tipo": "char"
+                        }]
+                    }],
+                    "left_join": [],
+                    "primaryKey": [{
+                            "key": "id_empresa"
+                        },
+                        {
+                            "key": "id_filial"
+                        },
+                        {
+                            "key": "id_imobilizado"
+                        }
+                    ],
+                    "variables": {
+                        "getone": "valor",
+                        "getall": "valores",
+                        "alias": "val"
+                    },
+                    "where": {
+                        "parametro_01": [
+                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id_filial", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id_imobilizado", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
+                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
+                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
+                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
+                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        ]
+                    },
+                    "orderby": [
+                        { "label": "", "comparativo": " != '' ", "key": "val.id_empresa,val.id_filial" },
+                        { "label": "Filial", "comparativo": " != 0 ", "key": "val.id_empresa,val.id_filial" },
+                        { "label": "Imobilizado", "comparativo": " != 0 ", "key": "val.id_empresa,val.id_filial,val.id_imobilizado" }
+                    ],
+                    "tablespace": "Producao"
+                },
+                {
+                    "name": "inventarios",
+                    "fields": [{
+                            "name": "id_empresa",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id_filial",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "codigo",
+                            "type": "serial",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "descricao",
+                            "type": "varchar",
+                            "length": 100,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "id_responsavel",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "data_inicial",
+                            "type": "date",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "data_final",
+                            "type": "date",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "data_encerra",
+                            "type": "date",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "laudo",
+                            "type": "text",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_insert",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_update",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }
+                    ],
+                    "inner_join": [{
+                            "name": "locais",
+                            "inner_alias": "local",
+                            "inner_on": "local.id_empresa = inv.id_empresa and local.id = inv.id_filial",
+                            "inner_fields": [{
+                                "name": "razao",
+                                "as_col": "local_razao",
+                                "tipo": "char"
+                            }]
+                        },
+                        {
+                            "name": "usuarios",
+                            "inner_alias": "resp",
+                            "inner_on": "resp.id_empresa = inv.id_empresa and resp.id = inv.id_responsavel",
+                            "inner_fields": [{
+                                "name": "razao",
+                                "as_col": "resp_razao",
+                                "tipo": "char"
+                            }]
+                        }
+                    ],
+                    "left_join": [],
+                    "primaryKey": [{
+                            "key": "id_empresa"
+                        },
+                        {
+                            "key": "id_filial"
+                        },
+                        {
+                            "key": "codigo"
+                        }
+                    ],
+                    "variables": {
+                        "getone": "inventario",
+                        "getall": "inventarios",
+                        "alias": "inv"
+                    },
+                    "where": {
+                        "parametro_01": [
+                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id_filial", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "codigo", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "descricao", "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
+                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
+                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
+                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
+                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
+                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        ]
+                    },
+                    "orderby": [
+                        { "label": "", "comparativo": " != '' ", "key": "inv.id_empresa,inv.id_filial" },
+                        { "label": "Filial", "comparativo": " != 0 ", "key": "inv.id_empresa,inv.id_filial" },
+                        { "label": "Código", "comparativo": " != 0 ", "key": "inv.id_empresa,inv.id_filial,inv.codigo" },
+                        { "label": "Descricao", "comparativo": " != '' ", "key": "inv.id_empresa,inv.id_filial,inv.descricao" }
+                    ],
+                    "tablespace": "Producao"
+                },
+                {
+                    "name": "usuariosinventarios",
+                    "fields": [{
+                            "name": "id_empresa",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id_filial",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id_inventario",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id_usuario",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_insert",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_update",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }
+                    ],
+                    "inner_join": [{
+                            "name": "usuarios",
+                            "inner_alias": "usu",
+                            "inner_on": "usu.id_empresa = usu_inv.id_empresa and usu.id_filial = usu_inv.id_filial and usu.codigo = usu_inv.id_imobilizado",
+                            "inner_fields": [{
+                                "name": "razao",
+                                "as_col": "ususario_razao",
+                                "tipo": "char"
+                            }]
+                        },
+                        {
+                            "name": "imobilizados",
+                            "inner_alias": "imo",
+                            "inner_on": "imo.id_empresa = usu_inv.id_empresa and imo.id_filial = usu_inv.id_filial and imo.codigo = usu_inv.id_imobilizado",
+                            "inner_fields": [{
+                                "name": "descricao",
+                                "as_col": "imo_descricao",
+                                "tipo": "char"
+                            }]
+                        }
+                    ],
+                    "left_join": [],
+                    "primaryKey": [{
+                            "key": "id_empresa"
+                        },
+                        {
+                            "key": "id_filial"
+                        },
+                        {
+                            "key": "id_inventario"
+                        },
+
+                        {
+                            "key": "id_usuario"
+                        }
+                    ],
+                    "variables": {
+                        "getone": "usuarioinventario",
+                        "getall": "usuariosinventarios",
+                        "alias": "usu_inv"
+                    },
+                    "where": {
+                        "parametro_01": [
+                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id_inventario", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id_usuario", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
+                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
+                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
+                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
+                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        ]
+                    },
+                    "orderby": [
+                        { "label": "", "comparativo": " != '' ", "key": "usu_inv.id_empresa,usu_inv.id_filial" },
+                        { "label": "Filial", "comparativo": " != 0 ", "key": "usu_inv.id_empresa,usu_inv.id_filial" },
+                        { "label": "Inventario", "comparativo": " != 0 ", "key": "usu_inv.id_empresa,usu_inv.id_filial,usu_inv.id_inventario" },
+                        { "label": "Usuário", "comparativo": " != '' ", "key": "usu_inv.id_empresa,usu_inv.id_filial,usu_inv.id_usuario" }
+                    ],
+                    "tablespace": "Producao"
+                },
+                {
+                    "name": "imobilizadosinventarios",
+                    "fields": [{
+                            "name": "id_empresa",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id_filial",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id_inventario",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id_imobilizado",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id_lanca",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "status",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "0",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_insert",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_update",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }
+                    ],
+                    "inner_join": [],
+                    "left_join": [],
+                    "primaryKey": [{
+                            "key": "id_empresa"
+                        },
+                        {
+                            "key": "id_filial"
+                        },
+                        {
+                            "key": "id_inventario"
+                        },
+
+                        {
+                            "key": "id_imobilizado"
+                        }
+                    ],
+                    "variables": {
+                        "getone": "imobilizadoinventario",
+                        "getall": "imobilizadosinventarios",
+                        "alias": "imo_inv"
+                    },
+                    "where": {
+                        "parametro_01": [
+                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id_inventario", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id_imobilizado", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
+                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
+                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
+                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
+                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        ]
+                    },
+                    "orderby": [
+                        { "label": "", "comparativo": " != '' ", "key": "imo_inv.id_empresa,imo_inv.id_filial" },
+                        { "label": "Filial", "comparativo": " != 0 ", "key": "imo_inv.id_empresa,imo_inv.id_filial" },
+                        { "label": "Inventario", "comparativo": " != 0 ", "key": "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario" },
+                        { "label": "Imobilizado", "comparativo": " != '' ", "key": "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_imobilizado" }
+                    ],
+                    "tablespace": "Producao"
+                },
+                {
+                    "name": "lancamentos",
+                    "fields": [{
+                            "name": "id_empresa",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id_filial",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id_inventario",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id_imobilizado",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id_usuario",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id_lanca",
+                            "type": "serial",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "obs",
+                            "type": "varchar",
+                            "length": 255,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "dtlanca",
+                            "type": "date",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "estado",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "0",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_insert",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_update",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }
+                    ],
+                    "inner_join": [],
+                    "left_join": [],
+                    "primaryKey": [{
+                            "key": "id_empresa"
+                        },
+                        {
+                            "key": "id_filial"
+                        },
+                        {
+                            "key": "id_inventario"
+                        },
+
+                        {
+                            "key": "id_imobilizado"
+                        }
+                    ],
+                    "variables": {
+                        "getone": "lancamento",
+                        "getall": "lancamentos",
+                        "alias": "lanca"
+                    },
+                    "where": {
+                        "parametro_01": [
+                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id_inventario", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id_imobilizado", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
+                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
+                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
+                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
+                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        ]
+                    },
+                    "orderby": [
+                        { "label": "", "comparativo": " != '' ", "key": "imo_inv.id_empresa,imo_inv.id_filial" },
+                        { "label": "Filial", "comparativo": " != 0 ", "key": "imo_inv.id_empresa,imo_inv.id_filial" },
+                        { "label": "Nro", "comparativo": " != 0 ", "key": "imo_inv.id_empresa,imo_inv.id_filial" },
+                        { "label": "Inventario", "comparativo": " != 0 ", "key": "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario" },
+                        { "label": "Imobilizado", "comparativo": " != '' ", "key": "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_imobilizado" }
+                    ],
+                    "tablespace": "Producao"
+                }
+            ],
+            "parametros": []
+        },
+        "frontend": {
+            "src": "C://Repositorios Git//Simionato//controle de ativo//frontend//src//app",
+            "server": {
+                "includes": [{
+                        "variable": "express",
+                        "from": "express"
+                    },
+                    {
+                        "variable": "cors",
+                        "from": "cors"
+                    }
+                ],
+                "app": "app",
+                "porta": 3000,
+                "rotas": [{ "path": "/", "require": ".//route//tarefaRoute.js" }]
+            }
+        }
+    }
+}
