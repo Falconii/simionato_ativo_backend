@@ -147,40 +147,43 @@ router.post("/api/imobilizadoinventariofoto", uploadFotos.single("file"), async 
 
     console.log('id_empresa', id_empresa, 'id_local', id_local, 'id_inventario', id_inventario, 'id_usuario', id_usuario, 'file_name', file_name);
 
+
     try {
 
+        /*
+                const auth = new google.auth.GoogleAuth({
+                    keyFile: './keys/googlekey.json',
+                    scopes: ['https://www.googleapis.com/auth/drive']
+                })
 
-        const auth = new google.auth.GoogleAuth({
-            keyFile: './keys/googlekey.json',
-            scopes: ['https://www.googleapis.com/auth/drive']
-        })
+                const driveService = google.drive({
+                    version: 'v3',
+                    auth,
+                })
 
-        const driveService = google.drive({
-            version: 'v3',
-            auth,
-        })
+                const fileMetaData = {
+                    name: file_name,
+                    parents: [GOOGLE_API_FOLDER_ID]
+                }
 
-        const fileMetaData = {
-            name: file_name,
-            parents: [GOOGLE_API_FOLDER_ID]
-        }
+                const media = {
+                    mimeType: 'image/jpg',
+                    body: fs.createReadStream(`./fotos/${file_name}`)
+                }
 
-        const media = {
-            mimeType: 'image/jpg',
-            body: fs.createReadStream(`./fotos/${file_name}`)
-        }
+                if (!existe) {
+                    // Gravando
+                    const response = await driveService.files.create({
+                        resource: fileMetaData,
+                        media: media,
+                    })
 
-        if (!existe) {
-            // Gravando
-            const response = await driveService.files.create({
-                resource: fileMetaData,
-                media: media,
-            })
+                    console.log("Gravei Arquivo", response.data);
+                }
 
-            console.log("Gravei Arquivo", response.data);
-        }
+                */
 
-        res.status(200).json({ "message": 'Processamento Executado!!' });
+        res.status(200).json({ code: "200", message: 'Processamento Executado!!', fileName: file_name });
 
     } catch (err) {
         if (err.name == 'MyExceptionDB') {
