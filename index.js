@@ -18,6 +18,7 @@ const allowCors = (req, res, next) => {
 
 app.use(allowCors);
 
+
 app.use('/', require('./route/helloRoute.js'));
 app.use('/', require('./route/empresaRoute.js'));
 app.use('/', require('./route/localRoute.js'));

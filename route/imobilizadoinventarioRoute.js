@@ -1,10 +1,10 @@
 /* ROUTE imobilizadosinventarios */
 const db = require('../infra/database');
+const fs = require('fs');
 const express = require('express');
 const router = express.Router();
 const imobilizadoinventarioSrv = require('../service/imobilizadoinventarioService');
-
-const fs = require('fs')
+const parametroSrv = require('../service/parametroService');
 const { google } = require('googleapis');
 const uploadFotos = require('../config/uploadFotos');
 const GOOGLE_API_FOLDER_ID = '1tpa2S6kqIvETTbkoyzQ2bhW6bvpKvktK'
@@ -132,7 +132,6 @@ router.post("/api/imobilizadosinventarios", async function(req, res) {
     }
 })
 
-
 /* ROTA UPLOADFOTOS imobilizadoinventario */
 router.post("/api/imobilizadoinventariofoto", uploadFotos.single("file"), async function(req, res) {
 
@@ -147,41 +146,36 @@ router.post("/api/imobilizadoinventariofoto", uploadFotos.single("file"), async 
 
     console.log('id_empresa', id_empresa, 'id_local', id_local, 'id_inventario', id_inventario, 'id_usuario', id_usuario, 'file_name', file_name);
 
-
     try {
+        const auth = new google.auth.GoogleAuth({
+            keyFile: './keys/googlekey.json',
+            scopes: ['https://www.googleapis.com/auth/drive']
+        })
 
-        /*
-                const auth = new google.auth.GoogleAuth({
-                    keyFile: './keys/googlekey.json',
-                    scopes: ['https://www.googleapis.com/auth/drive']
-                })
+        const driveService = google.drive({
+            version: 'v3',
+            auth,
+        })
 
-                const driveService = google.drive({
-                    version: 'v3',
-                    auth,
-                })
+        const fileMetaData = {
+            name: file_name,
+            parents: [GOOGLE_API_FOLDER_ID]
+        }
 
-                const fileMetaData = {
-                    name: file_name,
-                    parents: [GOOGLE_API_FOLDER_ID]
-                }
+        const media = {
+            mimeType: 'image/jpg',
+            body: fs.createReadStream(`./fotos/${file_name}`)
+        }
 
-                const media = {
-                    mimeType: 'image/jpg',
-                    body: fs.createReadStream(`./fotos/${file_name}`)
-                }
+        if (!existe) {
+            // Gravando
+            const response = await driveService.files.create({
+                resource: fileMetaData,
+                media: media,
+            })
 
-                if (!existe) {
-                    // Gravando
-                    const response = await driveService.files.create({
-                        resource: fileMetaData,
-                        media: media,
-                    })
-
-                    console.log("Gravei Arquivo", response.data);
-                }
-
-                */
+            console.log("Gravei Arquivo", response.data);
+        }
 
         res.status(200).json({ code: "200", message: 'Processamento Executado!!', fileName: file_name });
 
@@ -256,5 +250,25 @@ router.post("/api/imobilizadoinventariofoto", uploadFotos.single("file"), async 
        */
 })
 
+
+router.post("/api/fotokey", async function(req, res) {
+
+    console.log("Entrei Na Rota fotokey!");
+
+    //Buscando key google
+    const param = await parametroSrv.getParametro(1, "key", "googledrive", 999);
+    if (param == null) {
+        res.status(409).json({ message: 'Não Foi Encontrada Chave GOOGLE DRIVE' });
+    }
+
+    try {
+        var writeStream = fs.createWriteStream("./keys/googlekey.json");
+        writeStream.write(param.parametro)
+        writeStream.end();
+        res.status(200).json({ message: 'Chave Atualizada Com Sucesso!' });
+    } catch (error) {
+        res.status(409).json({ message: 'Erro Na Gravação googlekey, No Servidor' });
+    }
+})
 
 module.exports = router;
