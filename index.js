@@ -1,4 +1,7 @@
 const express = require('express');
+
+const fs = require('fs');
+const parametroSrv = require('./service/parametroService');
 var os = require('os');
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -46,3 +49,32 @@ app.use('/', require('./route/padraoRoute.js'));
 app.use('/', require('./route/LoadFileRouter.js'));
 
 app.listen(PORT, () => { console.log(`Servidor No Ar. Porta ${PORT}`); });
+
+//atualizando a key
+
+refresh();
+
+async function refresh() {
+
+    let arquivo = "";
+
+    //Buscando key google
+    const param = await parametroSrv.getParametro(1, "key", "googledrive", 999);
+    if (param == null) {
+        console.log('Não Foi Encontrada Chave GOOGLE DRIVE');
+    }
+    if (PORT == 3000) {
+        arquivo = "C:/Repositorios Git/Simionato/controle de ativo/keys/googlekey.json"
+    } else {
+        arquivo = "keys/googlekey.json"
+    }
+
+    try {
+        var writeStream = fs.createWriteStream(arquivo);
+        writeStream.write(param.parametro)
+        writeStream.end();
+        console.log("Chave Atualizada Com Sucesso!");
+    } catch (error) {
+        console.log(`Erro Na Gravação googlekey, No Servidor ${error}`);
+    }
+}

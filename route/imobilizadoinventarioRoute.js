@@ -8,6 +8,7 @@ const parametroSrv = require('../service/parametroService');
 const { google } = require('googleapis');
 const uploadFotos = require('../config/uploadFotos');
 const GOOGLE_API_FOLDER_ID = '1tpa2S6kqIvETTbkoyzQ2bhW6bvpKvktK'
+const PORT = process.env.PORT || 3000;
 
 
 
@@ -143,12 +144,19 @@ router.post("/api/imobilizadoinventariofoto", uploadFotos.single("file"), async 
     const id_usuario = req.body.id_usuario;
     const file_name = `${req.body.id_empresa.padStart(2,'0')}_${req.body.id_local.padStart(6,'0')}_${req.body.id_inventario.padStart(6,'0')}_${req.file.originalname}`
     let existe = false;
+    let arquivo = "";
+
+    if (PORT == 3000) {
+        arquivo = "C:/Repositorios Git/Simionato/controle de ativo/keys/googlekey.json"
+    } else {
+        arquivo = "./keys/googlekey.json"
+    }
 
     console.log('id_empresa', id_empresa, 'id_local', id_local, 'id_inventario', id_inventario, 'id_usuario', id_usuario, 'file_name', file_name);
 
     try {
         const auth = new google.auth.GoogleAuth({
-            keyFile: './keys/googlekey.json',
+            keyFile: arquivo,
             scopes: ['https://www.googleapis.com/auth/drive']
         })
 
@@ -255,14 +263,21 @@ router.post("/api/fotokey", async function(req, res) {
 
     console.log("Entrei Na Rota fotokey!");
 
+    let arquivo = "";
+
     //Buscando key google
     const param = await parametroSrv.getParametro(1, "key", "googledrive", 999);
     if (param == null) {
         res.status(409).json({ message: 'Não Foi Encontrada Chave GOOGLE DRIVE' });
     }
+    if (PORT == 3000) {
+        arquivo = "C:/Repositorios Git/Simionato/controle de ativo/keys/googlekey.json"
+    } else {
+        arquivo = "./keys/googlekey.json"
+    }
 
     try {
-        var writeStream = fs.createWriteStream("./keys/googlekey.json");
+        var writeStream = fs.createWriteStream(arquivo);
         writeStream.write(param.parametro)
         writeStream.end();
         res.status(200).json({ message: 'Chave Atualizada Com Sucesso!' });
