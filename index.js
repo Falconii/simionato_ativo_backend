@@ -62,6 +62,7 @@ async function refresh() {
     const param = await parametroSrv.getParametro(1, "key", "googledrive", 999);
     if (param == null) {
         console.log('Não Foi Encontrada Chave GOOGLE DRIVE');
+        return;
     }
     if (PORT == 3000) {
         arquivo = "C:/Repositorios Git/Simionato/controle de ativo/keys/googlekey.json"
