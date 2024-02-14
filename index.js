@@ -47,6 +47,7 @@ app.use('/', require('./route/parametroRoute.js'));
 app.use('/', require('./route/custom/parametroRoute.js'));
 app.use('/', require('./route/padraoRoute.js'));
 app.use('/', require('./route/LoadFileRouter.js'));
+app.use('/', require('./route/fotoRoute.js'));
 
 app.listen(PORT, () => { console.log(`Servidor No Ar. Porta ${PORT}`); });
 
