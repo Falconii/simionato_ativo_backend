@@ -49,6 +49,8 @@ exports.getFotos = function(params) {
             orderby = "";
             paginacao = "";
 
+            console.log("params", params)
+
             if (params.orderby == '') orderby = 'param.id_empresa,param.id_empresa,param.id_local,param.id_inventario,param.id_imobilizado,param.id_pasta,,param.id_file,param.file_name';
             if (params.orderby == 'Imobilizado') orderby = 'param.id_empresa,param.id_empresa,param.id_local,param.id_inventario,param.id_imobilizado,param.id_pasta,param.id_file,param.file_name';
 
@@ -125,6 +127,7 @@ exports.getFotos = function(params) {
 			,  foto.user_update as  user_update     
 			FROM fotos foto      
 			${where} 			${ orderby} ${ paginacao} `;
+                console.log("strSql", strSql)
                 return db.manyOrNone(strSql);
             }
         } else {
