@@ -51,8 +51,8 @@ exports.getFotos = function(params) {
 
             console.log("params", params)
 
-            if (params.orderby == '') orderby = 'param.id_empresa,param.id_empresa,param.id_local,param.id_inventario,param.id_imobilizado,param.id_pasta,param.id_file,param.file_name';
-            if (params.orderby == 'Imobilizado') orderby = 'param.id_empresa,param.id_empresa,param.id_local,param.id_inventario,param.id_imobilizado,param.id_pasta,param.id_file,param.file_name';
+            if (params.orderby == '') orderby = 'id_empresa,id_empresa,id_local,id_inventario,id_imobilizado,id_pasta,id_file,file_name';
+            if (params.orderby == 'Imobilizado') orderby = 'id_empresa,id_empresa,id_local,id_inventario,id_imobilizado,id_pasta,id_file,file_name';
 
             if (orderby != "") orderby = " order by " + orderby;
             if (params.id_empresa !== 0) {
