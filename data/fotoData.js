@@ -51,7 +51,7 @@ exports.getFotos = function(params) {
 
             console.log("params", params)
 
-            if (params.orderby == '') orderby = 'param.id_empresa,param.id_empresa,param.id_local,param.id_inventario,param.id_imobilizado,param.id_pasta,,param.id_file,param.file_name';
+            if (params.orderby == '') orderby = 'param.id_empresa,param.id_empresa,param.id_local,param.id_inventario,param.id_imobilizado,param.id_pasta,param.id_file,param.file_name';
             if (params.orderby == 'Imobilizado') orderby = 'param.id_empresa,param.id_empresa,param.id_local,param.id_inventario,param.id_imobilizado,param.id_pasta,param.id_file,param.file_name';
 
             if (orderby != "") orderby = " order by " + orderby;
@@ -97,12 +97,9 @@ exports.getFotos = function(params) {
             }
             if (params.destaque.trim() !== '') {
                 if (where != "") where += " and ";
-                if (params.sharp) {
-                    where += `foto.destaque = '${params.destaque}' `;
-                } else {
-                    where += `foto.destaque like '%${params.destaque.trim()}%' `;
-                }
+                where += `foto.destaque = '${params.destaque}' `;
             }
+
             if (where != "") where = " where " + where;
             if (params.contador == 'S') {
                 sqlStr = `SELECT COALESCE(COUNT(*),0) as total 
@@ -127,7 +124,7 @@ exports.getFotos = function(params) {
 			,  foto.user_update as  user_update     
 			FROM fotos foto      
 			${where} 			${ orderby} ${ paginacao} `;
-                console.log("strSql", strSql)
+                console.log("strSql", strSql);
                 return db.manyOrNone(strSql);
             }
         } else {
