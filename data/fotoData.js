@@ -38,7 +38,11 @@ exports.getFoto = function(id_empresa, id_local, id_inventario, id_imobilizado, 
 			,  foto.obs as  obs  
 			,  foto.user_insert as  user_insert  
 			,  foto.user_update as  user_update    
- 			FROM fotos foto 	     
+            ,  coalesce(imo.descricao,'') as imo_descricao
+            ,  coalesce(usu.razao,'') as usu_razao 
+ 			FROM fotos foto 
+             INNER JOIN imobilizados imo on imo.id_empresa = foto.id_empresa and imo.id_local = foto.id_local
+             INNER JOIN usuarios     usu on usu.id_empresa = usu.id_empresa  and usu.id = foto.id_usuario 	     
 			 where foto.id_empresa = ${id_empresa} and  foto.id_local = ${id_local} and  foto.id_inventario = ${id_inventario} and  foto.id_imobilizado = ${id_imobilizado} and  foto.id_pasta = '${id_pasta}' and  foto.id_file = '${id_file}' and  foto.file_name = '${file_name}'  `;
         return db.oneOrNone(strSql);
     }
@@ -103,7 +107,9 @@ exports.getFotos = function(params) {
             if (where != "") where = " where " + where;
             if (params.contador == 'S') {
                 sqlStr = `SELECT COALESCE(COUNT(*),0) as total 
-				  FROM fotos foto      
+				  FROM fotos foto   
+                  INNER JOIN imobilizados imo on imo.id_empresa = foto.id_empresa and imo.id_local = foto.id_local
+                  INNER JOIN usuarios     usu on usu.id_empresa = usu.id_empresa  and usu.id = foto.id_usuario    
 				  ${ where} `;
                 return db.one(sqlStr);
             } else {
@@ -117,12 +123,16 @@ exports.getFotos = function(params) {
 			,  foto.file_name as  file_name  
 			,  foto.file_name_original as  file_name_original  
 			,  foto.id_usuario as  id_usuario  
-			, to_char(foto.data, 'DD/MM/YYYY') as data  
+			,  to_char(foto.data, 'DD/MM/YYYY') as data  
 			,  foto.destaque as  destaque  
 			,  foto.obs as  obs  
 			,  foto.user_insert as  user_insert  
-			,  foto.user_update as  user_update     
-			FROM fotos foto      
+			,  foto.user_update as  user_update  
+            ,  coalesce(imo.descricao,'') as imo_descricao
+            ,  coalesce(usu.razao,'') as usu_razao      
+			FROM fotos foto     
+            INNER JOIN imobilizados imo on imo.id_empresa = foto.id_empresa and imo.id_local = foto.id_local
+            INNER JOIN usuarios     usu on usu.id_empresa = usu.id_empresa  and usu.id = foto.id_usuario 
 			${where} 			${ orderby} ${ paginacao} `;
                 console.log("strSql", strSql);
                 return db.manyOrNone(strSql);
