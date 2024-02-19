@@ -148,7 +148,7 @@ router.post("/api/uploadfoto", uploadFotos.single("file"), async function(req, r
     const id_empresa = req.body.id_empresa;
     const id_local = req.body.id_local;
     const id_inventario = req.body.id_inventario;
-    const id_imobilizado = req.body.id_inventario;
+    const id_imobilizado = req.body.id_imobilizado;
     const id_pasta = req.body.id_pasta;
     const id_file = req.body.id_file;
     const id_usuario = req.body.id_usuario;
