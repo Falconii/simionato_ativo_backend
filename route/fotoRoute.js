@@ -94,7 +94,7 @@ router.put("/api/foto", async function(req, res) {
 router.delete("/api/foto/:id_empresa/:id_local/:id_inventario/:id_imobilizado/:id_pasta/:id_file/:file_name", async function(req, res) {
         try {
             await fotoSrv.deleteFoto(req.params.id_empresa, req.params.id_local, req.params.id_inventario, req.params.id_imobilizado, req.params.id_pasta, req.params.id_file, req.params.file_name);
-            res.status(200).json({ message: 'Foto Excluído Com Sucesso!' });
+            res.status(200).json({ message: 'Foto Excluída Com Sucesso!' });
         } catch (err) {
             if (err.name == 'MyExceptionDB') {
                 res.status(409).json(err);
@@ -373,6 +373,78 @@ router.post("/api/uploadfoto", uploadFotos.single("file"), async function(req, r
        }
        */
 })
+
+router.post("/api/deleteuploadfoto", async function(req, res) {
+    let arquivo = "";
+    try {
+        const foto = req.body;
+        //deleta primeir do google
+        try {
+
+
+            if (PORT == 3000) {
+                arquivo = "C:/Repositorios Git/Simionato/controle de ativo/keys/googlekey.json"
+            } else {
+                arquivo = "./keys/googlekey.json"
+            }
+
+            const auth = new google.auth.GoogleAuth({
+
+                keyFile: arquivo,
+                scopes: ['https://www.googleapis.com/auth/drive']
+            })
+
+            const driveService = google.drive({
+                version: 'v3',
+                auth,
+            })
+
+            let existe = false
+
+            try {
+                // Verifincando se existe ok
+                const responseGet = await driveService.files.get({
+                    fileId: foto.id_file
+                })
+                console.log("Arquivo Existe No GooGle Drive")
+                existe = true;
+            } catch (error) {
+                console.log("Arquivo Não Existe No GooGle Drive")
+                existe = false;
+                console.log(error)
+            }
+
+            if (existe) {
+
+                //Excluindo
+                const responseDelete = await driveService.files.delete({
+                    fileId: foto.id_file
+                })
+
+                console.log("Arquivo Excluido Com Sucesso!!!");
+
+            }
+        } catch (erro) {
+            console.log(erro)
+        }
+        //deleta do banco
+        const registro = await fotoSrv.deleteFoto(foto.id_empresa, foto.id_local, foto.id_inventario, foto.id_imobilizado, foto.id_pasta, foto.id_file, foto.file_name);
+        if (registro == null) {
+            res.status(200).json({
+                message: 'Foto Excluída Com Sucesso!'
+            });
+        }
+    } catch (err) {
+        if (err.name == 'MyExceptionDB') {
+            res.status(409).json(err);
+        } else {
+            res.status(500).json({ erro: 'BAK-END', tabela: 'Foto', message: err.message });
+        }
+    }
+})
+
+
+
 
 
 module.exports = router;

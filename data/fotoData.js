@@ -41,7 +41,7 @@ exports.getFoto = function(id_empresa, id_local, id_inventario, id_imobilizado, 
             ,  coalesce(imo.descricao,'') as imo_descricao
             ,  coalesce(usu.razao,'') as usu_razao 
  			FROM fotos foto 
-             INNER JOIN imobilizados imo on imo.id_empresa = foto.id_empresa and imo.id_local = foto.id_local
+             INNER JOIN imobilizados imo on imo.id_empresa = foto.id_empresa and imo.id_filial = foto.id_local and imo.codigo = foto.id_imobilizado
              INNER JOIN usuarios     usu on usu.id_empresa = usu.id_empresa  and usu.id = foto.id_usuario 	     
 			 where foto.id_empresa = ${id_empresa} and  foto.id_local = ${id_local} and  foto.id_inventario = ${id_inventario} and  foto.id_imobilizado = ${id_imobilizado} and  foto.id_pasta = '${id_pasta}' and  foto.id_file = '${id_file}' and  foto.file_name = '${file_name}'  `;
         return db.oneOrNone(strSql);
