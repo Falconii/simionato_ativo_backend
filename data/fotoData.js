@@ -108,7 +108,7 @@ exports.getFotos = function(params) {
             if (params.contador == 'S') {
                 sqlStr = `SELECT COALESCE(COUNT(*),0) as total 
 				  FROM fotos foto   
-                  INNER JOIN imobilizados imo on imo.id_empresa = foto.id_empresa and imo.id_filial = foto.id_local and  and imo.codigo = foto.id_imobilizado
+                  INNER JOIN imobilizados imo on imo.id_empresa = foto.id_empresa and imo.id_filial = foto.id_local  and imo.codigo = foto.id_imobilizado
                   INNER JOIN usuarios     usu on usu.id_empresa = usu.id_empresa  and usu.id = foto.id_usuario    
 				  ${ where} `;
                 return db.one(sqlStr);
@@ -131,7 +131,7 @@ exports.getFotos = function(params) {
             ,  coalesce(imo.descricao,'') as imo_descricao
             ,  coalesce(usu.razao,'') as usu_razao      
 			FROM fotos foto     
-            INNER JOIN imobilizados imo on imo.id_empresa = foto.id_empresa and imo.id_filial = foto.id_local
+            INNER JOIN imobilizados imo on imo.id_empresa = foto.id_empresa and imo.id_filial = foto.id_local  and imo.codigo = foto.id_imobilizado
             INNER JOIN usuarios     usu on usu.id_empresa = usu.id_empresa  and usu.id = foto.id_usuario 
 			${where} 			${ orderby} ${ paginacao} `;
                 console.log("strSql", strSql);
