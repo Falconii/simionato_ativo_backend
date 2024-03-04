@@ -63,11 +63,12 @@ exports.getImobilizadosinventarios = function(params) {
             orderby = "";
             paginacao = "";
 
-            if (params.orderby == '') orderby = 'imo_inv.id_empresa,imo_inv.id_filial';
-            if (params.orderby == 'Filial') orderby = 'imo_inv.id_empresa,imo_inv.id_filial';
-            if (params.orderby == 'Inventario') orderby = 'imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario';
-            if (params.orderby == 'Imobilizado') orderby = 'imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_imobilizado';
-            if (params.orderby == 'CC') orderby = 'imo_inv.id_empresa,imo_inv.id_filial,imo.id_cc';
+            if (params.orderby == '') orderby = 'imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo_inv.id_imobilizado';
+            if (params.orderby == 'Filial') orderby = 'imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo_inv.id_imobilizado';
+            if (params.orderby == 'Inventario') orderby = 'imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo_inv.id_imobilizado';
+            if (params.orderby == 'Imobilizado') orderby = 'imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo_inv.id_imobilizado';
+            if (params.orderby == 'Descrição') orderby = 'imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo.descricao';
+            if (params.orderby == 'CC') orderby = 'imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo.id_cc,imo_inv.id_imobilizado';
 
             if (orderby != "") orderby = " order by " + orderby;
             if (params.id_empresa !== 0) {
@@ -124,7 +125,7 @@ exports.getImobilizadosinventarios = function(params) {
             }
             if (params.id_usuario !== 0) {
                 if (where != "") where += " and ";
-                where += `imo_inv.id_usuario = ${params.id_usuario} `;
+                where += `lanca.id_usuario = ${params.id_usuario} `;
             }
             if (params.origem.trim() !== '') {
                 if (where != "") where += " and ";
