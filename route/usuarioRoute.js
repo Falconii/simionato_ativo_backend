@@ -3,6 +3,10 @@ const db = require('../infra/database');
 const express = require('express');
 const router = express.Router();
 const usuarioSrv = require('../service/usuarioService');
+const padraoSrv = require('../service/padraoService');
+const empresaSrv = require('../service/empresaService');
+const localSrv = require('../service/localService');
+const inventarioSrv = require('../service/inventarioService');
 
 /* ROTA GETONE usuario */
 router.get("/api/usuario/:id_empresa/:id", async function(req, res) {
@@ -22,7 +26,100 @@ router.get("/api/usuario/:id_empresa/:id", async function(req, res) {
             }
         }
     })
-    /* ROTA GETALL usuario */
+    //Get Ambiente
+router.get("/api/ambiente/:id_empresa/:id_usuario", async function(req, res) {
+    let PADRAO = null;
+    let EMPRESA = null;
+    let USUARIO = null;
+    let LOCAL = null;
+    let INVENTARIO = null;
+
+    //Buscao Padrao
+    try {
+        const padrao = await padraoSrv.getPadrao(req.params.id_empresa, req.params.id_usuario);
+        PADRAO = padrao;
+    } catch (err) {
+        if (err.name == 'MyExceptionDB') {
+            res.status(500).json({ erro: 'BAK-END', tabela: 'padrao', message: err.message });
+        }
+    }
+
+
+    //Busca Empresa
+    if (PADRAO !== null) {
+        try {
+            const empresa = await empresaSrv.getEmpresa(PADRAO.id_empresa_padrao);
+            EMPRESA = empresa;
+        } catch (err) {
+            if (err.name == 'MyExceptionDB') {
+                res.status(500).json({ erro: 'BAK-END', tabela: 'empresa', message: err.message });
+            }
+        }
+    }
+    //Usuario
+    if (PADRAO !== null) {
+        try {
+            const usuario = await usuarioSrv.getUsuario(PADRAO.id_empresa_padrao, PADRAO.id_usuario);
+            USUARIO = usuario
+        } catch (err) {
+            res.status(500).json({ erro: 'BAK-END', tabela: 'usuario', message: err.message });
+        }
+    }
+
+
+    //Local
+    if (PADRAO !== null) {
+        try {
+            const local = await localSrv.getLocal(PADRAO.id_empresa_padrao, PADRAO.id_local_padrao);
+            LOCAL = local;
+        } catch (err) {
+            if (err.name == 'MyExceptionDB') {
+                res.status(500).json({ erro: 'BAK-END', tabela: 'local', message: err.message });
+            }
+        }
+    }
+
+
+    //inventario
+    if (PADRAO !== null) {
+        try {
+            const inventario = await inventarioSrv.getInventario(PADRAO.id_empresa_padrao, PADRAO.id_local_padrao, PADRAO.id_inv_padrao);
+            INVENTARIO = inventario
+        } catch (err) {
+            if (err.name == 'MyExceptionDB') {
+                res.status(500).json({ erro: 'BAK-END', tabela: 'local', message: err.message });
+            }
+        }
+    }
+
+    let id_retorno = 200;
+    let mensa_retorno = "Ambiente OK";
+
+    if (PADRAO == null ||
+        EMPRESA == null ||
+        USUARIO == null ||
+        LOCAL == null ||
+        INVENTARIO == null
+    ) {
+        id_retorno = 409;
+        mensa_retorno = "Ambiente Não Existe. Ou Está Incompleto"
+    }
+
+    const retorno = {
+        id_retorno: id_retorno,
+        mensa_retorno: mensa_retorno,
+        padrao: PADRAO,
+        empresa: EMPRESA,
+        local: LOCAL,
+        inventario: INVENTARIO
+    }
+
+    res.status(200).json(retorno);
+
+
+})
+
+/* ROTA GETALL usuario */
 router.get("/api/usuarios", async function(req, res) {
         try {
             const lsLista = await usuarioSrv.getUsuarios();
