@@ -110,6 +110,7 @@ router.get("/api/ambiente/:id_empresa/:id_usuario", async function(req, res) {
         mensa_retorno: mensa_retorno,
         padrao: PADRAO,
         empresa: EMPRESA,
+        usuario: USUARIO,
         local: LOCAL,
         inventario: INVENTARIO
     }
