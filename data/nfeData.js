@@ -39,8 +39,8 @@ exports.getNfe = function(params) {
 			,  nf.serie as  serie  
 			,  nf.item as  item  
 			,  nf.chavee as  chavee  
-			, to_char(nf.dtemissao, 'DD/MM/YYYY') as dtemissao  
-			, to_char(nf.dtlancamento, 'DD/MM/YYYY') as dtlancamento  
+			,  coalesce (to_char(nf.dtemissao, 'DD/MM/YYYY'),'') as dtemissao  
+			,  coalesce (to_char(nf.dtlancamento, 'DD/MM/YYYY'),'') as dtlancamento  
 			,  nf.qtd as  qtd  
 			,  nf.punit as  punit  
 			,  nf.totalitem as  totalitem  
@@ -71,8 +71,8 @@ exports.getNfeByImobilizado = function(id_empresa, id_filial, id_imobilizado, nf
 			,  nf.serie as  serie  
 			,  nf.item as  item  
 			,  nf.chavee as  chavee  
-			, to_char(nf.dtemissao, 'DD/MM/YYYY') as dtemissao  
-			, to_char(nf.dtlancamento, 'DD/MM/YYYY') as dtlancamento  
+			,  coalesce (to_char(nf.dtemissao, 'DD/MM/YYYY'),'') as dtemissao  
+			,  coalesce (to_char(nf.dtlancamento, 'DD/MM/YYYY'),'') as dtlancamento  
 			,  nf.qtd as  qtd  
 			,  nf.punit as  punit  
 			,  nf.totalitem as  totalitem  
@@ -180,8 +180,8 @@ exports.getNfes = function(params) {
 			,  nf.serie as  serie  
 			,  nf.item as  item  
 			,  nf.chavee as  chavee  
-			, to_char(nf.dtemissao, 'DD/MM/YYYY') as dtemissao  
-			, to_char(nf.dtlancamento, 'DD/MM/YYYY') as dtlancamento  
+			,  coalesce (to_char(nf.dtemissao, 'DD/MM/YYYY'),'') as dtemissao  
+			,  coalesce (to_char(nf.dtlancamento, 'DD/MM/YYYY'),'') as dtlancamento  
 			,  nf.qtd as  qtd  
 			,  nf.punit as  punit  
 			,  nf.totalitem as  totalitem  
@@ -209,8 +209,8 @@ exports.getNfes = function(params) {
 			,  nf.serie as  serie  
 			,  nf.item as  item  
 			,  nf.chavee as  chavee  
-			, to_char(nf.dtemissao, 'DD/MM/YYYY') as dtemissao  
-			, to_char(nf.dtlancamento, 'DD/MM/YYYY') as dtlancamento  
+			,  coalesce (to_char(nf.dtemissao, 'DD/MM/YYYY'),'') as dtemissao  
+			,   coalesce (to_char(nf.dtlancamento, 'DD/MM/YYYY'),'') as dtlancamento  
 			,  nf.qtd as  qtd  
 			,  nf.punit as  punit  
 			,  nf.totalitem as  totalitem  
