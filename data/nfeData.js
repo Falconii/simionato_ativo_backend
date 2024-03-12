@@ -60,7 +60,7 @@ exports.getNfe = function(params) {
 
 
 exports.getNfeByImobilizado = function(id_empresa, id_filial, id_imobilizado, nfe, serie, item) {
-    console.log('params', id_empresa, id_filial, id_imobilizado, nfe);
+    console.log('params getNfeByImobilizado', id_empresa, id_filial, id_imobilizado, nfe, serie, item);
     strSql = ` select   
 			   nf.id_empresa as  id_empresa  
 			,  nf.id_filial as  id_filial  
@@ -86,7 +86,7 @@ exports.getNfeByImobilizado = function(id_empresa, id_filial, id_imobilizado, nf
  			FROM nfes nf 	  
 				 inner join imobilizados imo on imo.id_empresa = nf.id_empresa and imo.id_filial = nf.id_filial and imo.codigo = nf.id_imobilizado   
 			 where nf.id_empresa = ${id_empresa} and  nf.id_filial = ${id_filial} and  nf.id_imobilizado = ${id_imobilizado} and  nf.nfe = '${nfe}' and nf.serie = '${serie}' and nf.item = '${item}'`;
-    console.log('nfe by imob', strSql)
+    console.log('select getNfeByImobilizado => ', strSql)
     return db.manyOrNone(strSql);
 }
 
