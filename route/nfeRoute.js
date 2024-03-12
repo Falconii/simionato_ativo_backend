@@ -34,10 +34,15 @@ router.post("/api/nfegetone", async function(req, res) {
         }
     }
 })
-router.get("/api/nfebyimobilizado/:id_empresa/:id_filial/:id_imobilizado/:nfe", async function(req, res) {
+router.get("/api/nfebyimobilizado/:id_empresa/:id_filial/:id_imobilizado/:nfe/:serie/:item", async function(req, res) {
 
         try {
-            const lsLista = await nfeSrv.getNfeByImobilizado(req.params.id_empresa, req.params.id_filial, req.params.id_imobilizado, req.params.nfe);
+            const lsLista = await nfeSrv.getNfeByImobilizado(req.params.id_empresa,
+                req.params.id_filial,
+                req.params.id_imobilizado,
+                req.params.nfe,
+                req.params.serie,
+                req.params.item);
             if (lsLista == null) {
                 res.status(409).json({ message: 'Nfe Não Encontrada.' });
             } else {

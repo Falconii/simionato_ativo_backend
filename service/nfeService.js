@@ -11,8 +11,8 @@ exports.getNfe = async function(params) {
     return nfeData.getNfe(params);
 };
 
-exports.getNfeByImobilizado = async function(id_empresa, id_filial, id_imobilizado, nfe) {
-    return nfeData.getNfeByImobilizado(id_empresa, id_filial, id_imobilizado, nfe);
+exports.getNfeByImobilizado = async function(id_empresa, id_filial, id_imobilizado, nfe, serie, item) {
+    return nfeData.getNfeByImobilizado(id_empresa, id_filial, id_imobilizado, nfe, serie, item);
 };
 
 /* CRUD GET ALL SERVICE */
