@@ -119,6 +119,7 @@ CREATE TABLE public.imobilizadosinventarios  (
 	status        	int4 NOT NULL,
 	new_codigo    	int4 NOT NULL,
 	new_cc        	varchar(10) NOT NULL,
+	fotos           int4 NOT NULL defaul 0,
 	user_insert   	int4 NOT NULL,
 	user_update   	int4 NOT NULL,
 	PRIMARY KEY(id_empresa,id_filial,id_inventario,id_imobilizado)

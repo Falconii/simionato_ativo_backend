@@ -199,10 +199,6 @@ router.post("/api/uploadfoto", uploadFotos.single("file"), async function(req, r
         foto.user_update = id_usuario;
     }
 
-
-    //res.status(200).json({ code: "200", message: "Processado", acao: acao });
-
-
     if (PORT == 3000) {
         arquivo = "C:/Repositorios Git/Simionato/controle de ativo/keys/googlekey.json"
     } else {
