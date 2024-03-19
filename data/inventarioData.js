@@ -20,7 +20,7 @@ exports.getCampos = function(Inventario) {
 };
 /* CRUD GET */
 exports.getInventario = function(id_empresa, id_filial, codigo) {
-        strSql = ` select   
+    strSql = ` select   
 			   inv.id_empresa as  id_empresa  
 			,  inv.id_filial as  id_filial  
 			,  inv.codigo as  codigo  
@@ -38,6 +38,24 @@ exports.getInventario = function(id_empresa, id_filial, codigo) {
 				 inner join locais local on local.id_empresa = inv.id_empresa and local.id = inv.id_filial
 				 inner join usuarios resp on resp.id_empresa = inv.id_empresa and resp.id = inv.id_responsavel   
 			 where inv.id_empresa = ${id_empresa} and  inv.id_filial = ${id_filial} and  inv.codigo = ${codigo}  `;
+    return db.oneOrNone(strSql);
+}
+
+exports.getResumo = function(id_empresa, id_filial, codigo) {
+        strSql = ` select   
+		_descricao as descricao,
+		_responsavel as responsavel,
+		_situacao as situacao,
+		_total_ativos as total_ativos,
+		_total_inventariados as total_inventariados, 
+		_situacao_0 as situacao_0,
+		_situacao_1 as situacao_1,
+		_situacao_2 as situacao_2,
+		_situacao_3 as situacao_3,
+		_situacao_4 as situacao_4,
+		_situacao_5 as situacao_5,
+		_fotos      as fotos
+ 			FROM resumo_inventario(${id_empresa},${id_filial},${codigo})`;
         return db.oneOrNone(strSql);
     }
     /* CRUD GET ALL*/
