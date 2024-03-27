@@ -1,15 +1,7 @@
-Client Id: tam150
-ad4ef071ff95286ac58508d99f21c195266fab6a
-Client Secret: tam 150
-137452b9150016a50c705116480a86982056c287d50b0909f60378e82aa0
-link text
-https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id=ad4ef071ff95286ac58508d99f21c195266fab6a&state=5ab7657e2e2ae8dea99b042918f4eb2a
-Url Redirecionamento text
-http://localhost:3000/api/bling/recebercode
-code: tam 100
-6fce56b86c009f6ef82eb50a92111c78cebc54ca
-token: tam 100
-f69223e0d7af02833b3ae7d771052dddb01f39a1
-refresh_code tam 100
-64019c25fd1e3a32eb72f141c9b50981be944860
-
+Cecho "# adrinfer" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/Falconi-IOT/adrinfer.git
+git push -u origin main
