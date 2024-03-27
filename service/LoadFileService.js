@@ -151,7 +151,7 @@ exports.create = async(req, res, id_empresa, id_local, id_usuario) => {
             }
 
 
-            //nfe
+            //nfe nro errados
             ct = 0;
             const idx_nfe = nfes.findIndex(nf => {
                 return (nf.imobilizado == campos[6] && nf.nfe == campos[14] && nf.serie == campos[15] && nf.item == campos[16]);
