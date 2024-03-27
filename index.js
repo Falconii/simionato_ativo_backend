@@ -59,7 +59,7 @@ async function refresh() {
 
     let arquivo = "";
 
-    //Buscando key google preciso alterar 
+    //Buscando key google 
     const param = await parametroSrv.getParametro(1, "key", "googledrive", 999);
     if (param == null) {
         console.log('Não Foi Encontrada Chave GOOGLE DRIVE');
