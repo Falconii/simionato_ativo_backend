@@ -1,5 +1,5 @@
 const express = require('express');
-
+//lixo
 const fs = require('fs');
 const parametroSrv = require('./service/parametroService');
 var os = require('os');
