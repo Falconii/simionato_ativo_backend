@@ -1,10 +1,10 @@
 /* SERVICE usuarios */
-const usuarioData = require('../data/usuarioData');
-const validacao = require('../util/validacao');
-const parametros = require('../util/usuarioParametros');
-const erroDB = require('../util/userfunctiondb');
-const regras = require('../util/usuarioRegra');
-const TABELA = 'USUARIOS';
+const usuarioData = require("../data/usuarioData");
+const validacao = require("../util/validacao");
+const parametros = require("../util/usuarioParametros");
+const erroDB = require("../util/userfunctiondb");
+const regras = require("../util/usuarioRegra");
+const TABELA = "USUARIOS";
 /* CRUD GET SERVICE */
 exports.getUsuario = async function(id_empresa, id) {
     return usuarioData.getUsuario(id_empresa, id);
@@ -13,6 +13,11 @@ exports.getUsuario = async function(id_empresa, id) {
 exports.getUsuarios = async function(params) {
     return usuarioData.getUsuarios(params);
 };
+
+exports.getUsuariosByAmbiente = async function(params) {
+    return usuarioData.getUsuariosByAmbiente(params);
+};
+
 //* CRUD - INSERT - SERVICE */
 exports.insertUsuario = async function(usuario) {
     try {
@@ -43,6 +48,10 @@ exports.deleteUsuario = async function(id_empresa, id) {
     }
 };
 
-exports.getUsuariosInventario = async function(id_empresa, id_local, id_inventario) {
+exports.getUsuariosInventario = async function(
+    id_empresa,
+    id_local,
+    id_inventario
+) {
     return usuarioData.getUsuariosInventario(id_empresa, id_local, id_inventario);
 };
