@@ -48,6 +48,8 @@ _fotos      := 0;
 	  
 	  if (tempo.status <> 0) then
 	    _total_inventariados := _total_inventariados + 1;
+	  else 
+	    _situacao_0 :=  _situacao_0  + 1;
 	  end if;
 	  if (tempo.status = 1) then
 	    _situacao_1 := _situacao_1 + 1;

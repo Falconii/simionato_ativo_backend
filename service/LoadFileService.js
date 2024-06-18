@@ -173,90 +173,89 @@ exports.create = async (req, res, id_empresa, id_local, id_usuario) => {
           ImobilizadoModel
         );
       }
-      /*
-                        //nfe nro errados
-                  
-                              ct = 0;
-                              const idx_nfe = nfes.findIndex((nf) => {
-                                return (
-                                  nf.imobilizado == campos[6] &&
-                                  nf.nfe == campos[14] &&
-                                  nf.serie == campos[15] &&
-                                  nf.item == campos[16]
-                                );
-                              });
-                              if (campos[14].trim() !== "" && idx_nfe == -1) {
-                                nfes.push({
-                                  idx: ct,
-                                  id_empresa: id_empresa,
-                                  id_filial: id_local,
-                                  cnpj_fornecedor: campos[12],
-                                  razao_fornecedor: shared.excluirCaracteres(campos[13]).toUpperCase(),
-                                  id_imobilizado: campos[6],
-                                  nfe: campos[14],
-                                  serie: campos[15],
-                                  item: campos[16],
-                                });
-                                const NfesModel = {
-                                  id_empresa: id_empresa,
-                                  id_filial: id_local,
-                                  cnpj_fornecedor: campos[12],
-                                  razao_fornecedor: shared.excluirCaracteres(campos[13]).toUpperCase(),
-                                  id_imobilizado: campos[6],
-                                  nfe: campos[14],
-                                  serie: campos[15],
-                                  item: campos[16],
-                                  chavee: campos[17],
-                                  dtemissao: campos[25],
-                                  dtlancamento: campos[26],
-                                  qtd: shared.excluirVirgulasePontos(campos[18]),
-                                  punit: shared.excluirVirgulasePontos(campos[19]),
-                                  totalitem: shared.excluirVirgulasePontos(campos[20]),
-                                  vlrcontabil: shared.excluirVirgulasePontos(campos[21]),
-                                  baseicms: shared.excluirVirgulasePontos(campos[22]),
-                                  percicms: shared.excluirVirgulasePontos(campos[23]),
-                                  vlrcicms: shared.excluirVirgulasePontos(campos[24]),
-                                  user_insert: id_usuario,
-                                  user_update: 0,
-                                };
-                                const registro = await nfeSrv.insertNfe(NfesModel);
-                              }
-                              
-                        //valores
-                  
-                        ct = 0;
-                        const idx_valor = valores.findIndex((val) => {
-                          return (
-                            val.id_empresa == id_empresa &&
-                            val.id_filial == id_local &&
-                            val.id_imobilizado == campos[6]
-                          );
-                        });
-                        if (idx_valor == -1) {
-                          ct++;
-                          valores.push({
-                            idx: ct,
-                            cod_imobilizado: campos[12],
-                            dtaquisicao: campos[27],
-                          });
 
-                          const ValorModel = {
-                            id_empresa: id_empresa,
-                            id_filial: id_local,
-                            id_imobilizado: campos[6],
-                            dtaquisicao: campos[27],
-                            vlraquisicao: shared.excluirVirgulasePontos(campos[28]),
-                            totaldepreciado: shared.excluirVirgulasePontos(campos[29]),
-                            vlrresidual: shared.excluirVirgulasePontos(campos[30]),
-                            reavalicao: shared.excluirVirgulasePontos(campos[31]),
-                            deemed: shared.excluirVirgulasePontos(campos[32]),
-                            vlrconsolidado: shared.excluirVirgulasePontos(campos[33]),
-                            user_insert: id_usuario,
-                            user_update: 0,
-                          };
-                          const registro = await valorSrv.insertValor(ValorModel);
-                        }
-                        */
+      //nfe nro errados
+
+      ct = 0;
+      const idx_nfe = nfes.findIndex((nf) => {
+        return (
+          nf.imobilizado == campos[6] &&
+          nf.nfe == campos[14] &&
+          nf.serie == campos[15] &&
+          nf.item == campos[16]
+        );
+      });
+      if (campos[14].trim() !== "" && idx_nfe == -1) {
+        nfes.push({
+          idx: ct,
+          id_empresa: id_empresa,
+          id_filial: id_local,
+          cnpj_fornecedor: campos[12],
+          razao_fornecedor: shared.excluirCaracteres(campos[13]).toUpperCase(),
+          id_imobilizado: campos[6],
+          nfe: campos[14],
+          serie: campos[15],
+          item: campos[16],
+        });
+        const NfesModel = {
+          id_empresa: id_empresa,
+          id_filial: id_local,
+          cnpj_fornecedor: campos[12],
+          razao_fornecedor: shared.excluirCaracteres(campos[13]).toUpperCase(),
+          id_imobilizado: campos[6],
+          nfe: campos[14],
+          serie: campos[15],
+          item: campos[16],
+          chavee: campos[17],
+          dtemissao: campos[25],
+          dtlancamento: campos[26],
+          qtd: shared.excluirVirgulasePontos(campos[18]),
+          punit: shared.excluirVirgulasePontos(campos[19]),
+          totalitem: shared.excluirVirgulasePontos(campos[20]),
+          vlrcontabil: shared.excluirVirgulasePontos(campos[21]),
+          baseicms: shared.excluirVirgulasePontos(campos[22]),
+          percicms: shared.excluirVirgulasePontos(campos[23]),
+          vlrcicms: shared.excluirVirgulasePontos(campos[24]),
+          user_insert: id_usuario,
+          user_update: 0,
+        };
+        const registro = await nfeSrv.insertNfe(NfesModel);
+      }
+
+      //valores
+
+      ct = 0;
+      const idx_valor = valores.findIndex((val) => {
+        return (
+          val.id_empresa == id_empresa &&
+          val.id_filial == id_local &&
+          val.id_imobilizado == campos[6]
+        );
+      });
+      if (idx_valor == -1) {
+        ct++;
+        valores.push({
+          idx: ct,
+          cod_imobilizado: campos[12],
+          dtaquisicao: campos[27],
+        });
+
+        const ValorModel = {
+          id_empresa: id_empresa,
+          id_filial: id_local,
+          id_imobilizado: campos[6],
+          dtaquisicao: campos[27],
+          vlraquisicao: shared.excluirVirgulasePontos(campos[28]),
+          totaldepreciado: shared.excluirVirgulasePontos(campos[29]),
+          vlrresidual: shared.excluirVirgulasePontos(campos[30]),
+          reavalicao: shared.excluirVirgulasePontos(campos[31]),
+          deemed: shared.excluirVirgulasePontos(campos[32]),
+          vlrconsolidado: shared.excluirVirgulasePontos(campos[33]),
+          user_insert: id_usuario,
+          user_update: 0,
+        };
+        const registro = await valorSrv.insertValor(ValorModel);
+      }
     }
   }
 
