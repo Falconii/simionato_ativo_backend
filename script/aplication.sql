@@ -292,7 +292,7 @@ CREATE TABLE public.valores  (
 	id_filial      	int4 NOT NULL,
 	id_imobilizado 	int4 NOT NULL,
 	dtaquisicao    	date NOT NULL,
-	vlraquisicao   	numeric(15,4) NOT NULL,
+	vlraquisicao   	numeric(15,4) ,
 	totaldepreciado	numeric(15,4) NOT NULL,
 	vlrresidual    	numeric(15,4) NOT NULL,
 	reavalicao     	numeric(15,4) NOT NULL,
