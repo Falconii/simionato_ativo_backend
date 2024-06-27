@@ -50,6 +50,7 @@ CREATE TABLE public.empresas  (
 	PRIMARY KEY(id)
 )
 GO
+/*
 CREATE TABLE public.filiais  ( 
 	id_empresa  	int4 NOT NULL,
 	id_filial   	int4 NOT NULL,
@@ -75,6 +76,7 @@ CREATE TABLE public.filiais  (
 	PRIMARY KEY(id_empresa,id_filial,id)
 )
 GO
+*/
 CREATE TABLE public.grupos  ( 
 	id_empresa 	int4 NOT NULL,
 	id_filial  	int4 NOT NULL,
@@ -105,6 +107,8 @@ CREATE TABLE public.imobilizados  (
 	serie      	varchar(3) NOT NULL,
 	item       	varchar(10) NOT NULL,
 	origem     	char(1) NOT NULL,
+	condicao    int4 NOT NULL,
+	apelido     varchar(30) NOT NULL,
 	user_insert	int4 NOT NULL,
 	user_update	int4 NOT NULL,
 	PRIMARY KEY(id_empresa,id_filial,codigo)

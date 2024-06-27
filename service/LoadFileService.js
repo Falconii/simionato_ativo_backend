@@ -37,8 +37,12 @@ exports.create = async (req, res, _id_empresa, _id_local, _id_usuario) => {
     nro_linha++;
     if (nro_linha > 1) {
       const campos = parse.ParseCVS("", linha, ";");
-      if (campos.length != 34) {
-        result = { message: "Processamento Com Erro!" };
+      if (campos.length != 36) {
+        result = { message: "Quantidade De Colunas Deferente Do Padrão (35)!" };
+        console.log(
+          `Quantidade De Colunas Deferente Do Padrão (35) ${campos.length}`
+        );
+        break;
       }
       const retornoModel = _centroCusto(campos);
       if (retornoModel != null) {
@@ -221,9 +225,11 @@ function _imobilizado(campos) {
       descricao: shared.excluirCaracteres(campos[7]).toUpperCase(),
       cod_grupo: campos[8],
       cod_cc: campos[10],
-      nfe: campos[14],
-      serie: campos[15],
-      item: campos[16],
+      nfe: campos[16],
+      serie: campos[17],
+      item: campos[18],
+      condicao: campos[12],
+      apelido: campos[13],
       origem: "P",
       user_insert: id_usuario,
       user_update: 0,
@@ -238,42 +244,42 @@ function _nfe(campos) {
   const idx_nfe = nfes.findIndex((nf) => {
     return (
       nf.imobilizado == campos[6] &&
-      nf.nfe == campos[14] &&
-      nf.serie == campos[15] &&
-      nf.item == campos[16]
+      nf.nfe == campos[16] &&
+      nf.serie == campos[17] &&
+      nf.item == campos[18]
     );
   });
-  if (campos[14].trim() !== "" && idx_nfe == -1) {
+  if (campos[16].trim() !== "" && idx_nfe == -1) {
     nfes.push({
       idx: ct,
       id_empresa: id_empresa,
       id_filial: id_local,
-      cnpj_fornecedor: campos[12],
-      razao_fornecedor: shared.excluirCaracteres(campos[13]).toUpperCase(),
+      cnpj_fornecedor: campos[14],
+      razao_fornecedor: shared.excluirCaracteres(campos[15]).toUpperCase(),
       id_imobilizado: campos[6],
-      nfe: campos[14],
-      serie: campos[15],
-      item: campos[16],
+      nfe: campos[16],
+      serie: campos[17],
+      item: campos[18],
     });
     NfesModel = {
       id_empresa: id_empresa,
       id_filial: id_local,
-      cnpj_fornecedor: campos[12],
-      razao_fornecedor: shared.excluirCaracteres(campos[13]).toUpperCase(),
+      cnpj_fornecedor: campos[14],
+      razao_fornecedor: shared.excluirCaracteres(campos[15]).toUpperCase(),
       id_imobilizado: campos[6],
-      nfe: campos[14],
-      serie: campos[15],
-      item: campos[16],
-      chavee: campos[17],
-      dtemissao: campos[25],
-      dtlancamento: campos[26],
-      qtd: shared.excluirVirgulasePontos(campos[18]),
-      punit: shared.excluirVirgulasePontos(campos[19]),
-      totalitem: shared.excluirVirgulasePontos(campos[20]),
-      vlrcontabil: shared.excluirVirgulasePontos(campos[21]),
-      baseicms: shared.excluirVirgulasePontos(campos[22]),
-      percicms: shared.excluirVirgulasePontos(campos[23]),
-      vlrcicms: shared.excluirVirgulasePontos(campos[24]),
+      nfe: campos[16],
+      serie: campos[17],
+      item: campos[18],
+      chavee: campos[19],
+      dtemissao: campos[27],
+      dtlancamento: campos[28],
+      qtd: shared.excluirVirgulasePontos(campos[20]),
+      punit: shared.excluirVirgulasePontos(campos[21]),
+      totalitem: shared.excluirVirgulasePontos(campos[22]),
+      vlrcontabil: shared.excluirVirgulasePontos(campos[23]),
+      baseicms: shared.excluirVirgulasePontos(campos[24]),
+      percicms: shared.excluirVirgulasePontos(campos[25]),
+      vlrcicms: shared.excluirVirgulasePontos(campos[26]),
       user_insert: id_usuario,
       user_update: 0,
     };
@@ -296,20 +302,20 @@ function _valores(campos) {
     valores.push({
       idx: ct,
       cod_imobilizado: campos[12],
-      dtaquisicao: campos[27],
+      dtaquisicao: campos[29],
     });
 
     ValorModel = {
       id_empresa: id_empresa,
       id_filial: id_local,
       id_imobilizado: campos[6],
-      dtaquisicao: campos[27],
-      vlraquisicao: shared.excluirVirgulasePontos(campos[28]),
-      totaldepreciado: shared.excluirVirgulasePontos(campos[29]),
-      vlrresidual: shared.excluirVirgulasePontos(campos[30]),
-      reavalicao: shared.excluirVirgulasePontos(campos[31]),
-      deemed: shared.excluirVirgulasePontos(campos[32]),
-      vlrconsolidado: shared.excluirVirgulasePontos(campos[33]),
+      dtaquisicao: campos[29],
+      vlraquisicao: shared.excluirVirgulasePontos(campos[20]),
+      totaldepreciado: shared.excluirVirgulasePontos(campos[31]),
+      vlrresidual: shared.excluirVirgulasePontos(campos[32]),
+      reavalicao: shared.excluirVirgulasePontos(campos[33]),
+      deemed: shared.excluirVirgulasePontos(campos[34]),
+      vlrconsolidado: shared.excluirVirgulasePontos(campos[35]),
       user_insert: id_usuario,
       user_update: 0,
     };

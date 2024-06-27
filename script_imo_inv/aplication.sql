@@ -10,22 +10,24 @@ GO
 /* Script Tabelas */
 /* TABELA imobilizadosinventarios  */
 DROP TABLE IF EXISTS imobilizadosinventarios;
-CREATE TABLE Public.imobilizadosinventarios (
-		id_empresa int4  NOT NULL  , 
-		id_filial int4  NOT NULL  , 
-		id_inventario int4  NOT NULL  , 
-		id_imobilizado int4  NOT NULL  , 
-		id_lanca int4  NOT NULL  , 
-		status int4  NOT NULL  , 
-		new_codigo int4  NOT NULL  , 
-		new_cc varchar(10)  NOT NULL  , 
-		user_insert int4  NOT NULL  , 
-		user_update int4  NOT NULL  , 
-		PRIMARY KEY(id_empresa,id_filial,id_inventario,id_imobilizado) 
+CREATE TABLE IF NOT EXISTS public.imobilizadosinventarios
+(
+    id_empresa integer NOT NULL,
+    id_filial integer NOT NULL,
+    id_inventario integer NOT NULL,
+    id_imobilizado integer NOT NULL,
+    id_lanca integer NOT NULL,
+    status integer NOT NULL,
+    new_codigo integer NOT NULL,
+    new_cc character varying(10) NOT NULL,
+	condicao int4 NOT NULL,
+	book     char(1) NOT NULL,
+    user_insert integer NOT NULL,
+    user_update integer NOT NULL,
+    fotos integer DEFAULT 0,
+    CONSTRAINT imobilizadosinventarios_pkey PRIMARY KEY (id_empresa, id_filial, id_inventario, id_imobilizado)
 )
- WITHOUT OIDS 
- TABLESPACE "Producao" 
- GO 
+ 
 /* TRUNCATE TABLES */ 
 TRUNCATE TABLE Public.imobilizadosinventarios RESTART IDENTITY; 
 GO 
