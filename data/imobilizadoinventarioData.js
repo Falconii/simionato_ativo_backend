@@ -187,20 +187,22 @@ exports.getImobilizadosinventarios = function (params) {
 			,  imo_inv.user_insert as  user_insert  
 			,  imo_inv.user_update as  user_update  
 			,  imo.descricao as  imo_descricao  
-            ,  imo.cod_cc    as  imo_cod_cc
-            ,  imo.cod_grupo as  imo_cod_grupo 
-            ,  imo.nfe           as imo_nfe 
-            ,  imo.serie         as imo_serie 
-            ,  imo.item          as imo_item  
-            ,  imo.origem        as imo_origem
+      ,  imo.cod_cc    as  imo_cod_cc
+      ,  imo.cod_grupo as  imo_cod_grupo 
+      ,  imo.nfe           as imo_nfe 
+      ,  imo.serie         as imo_serie 
+      ,  imo.item          as imo_item  
+      ,  imo.origem        as imo_origem
 			,  cc.descricao as  cc_descricao  
 			,  gru.descricao as  grupo_descricao  
 			,  coalesce(lanca.id_usuario,0) as  lanc_id_usuario  
 			,  coalesce(lanca.obs,'') as  lanc_obs 
 			,  coalesce(to_char(lanca.dtlanca, 'DD/MM/YYYY'),'') as  lanc_dt_lanca 
 			,  coalesce(lanca.estado,0) as  lanc_estado  
+      ,  coalesce(lanca.condicao,0) as  lanc_condicao
+      ,  coalesce(lanca.book,"N") as  lanc_book    
 			,  coalesce(usu.razao,'') as  usu_razao   
-            ,  coalesce(new_cc.descricao,'') as  new_cc_descricao   
+      ,  coalesce(new_cc.descricao,'') as  new_cc_descricao   
 			FROM imobilizadosinventarios imo_inv   
 				 inner join imobilizados imo on imo.id_empresa = imo_inv.id_empresa and imo.id_filial = imo_inv.id_filial and imo.codigo = imo_inv.id_imobilizado
 				 inner join centroscustos cc on cc.id_empresa = imo_inv.id_empresa and cc.id_filial = imo_inv.id_filial and cc.codigo = imo.cod_cc
