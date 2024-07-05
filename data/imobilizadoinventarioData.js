@@ -200,7 +200,7 @@ exports.getImobilizadosinventarios = function (params) {
 			,  coalesce(to_char(lanca.dtlanca, 'DD/MM/YYYY'),'') as  lanc_dt_lanca 
 			,  coalesce(lanca.estado,0) as  lanc_estado  
       ,  coalesce(lanca.condicao,0) as  lanc_condicao
-      ,  coalesce(lanca.book,"N") as  lanc_book    
+      ,  coalesce(lanca.book,'N') as  lanc_book    
 			,  coalesce(usu.razao,'') as  usu_razao   
       ,  coalesce(new_cc.descricao,'') as  new_cc_descricao   
 			FROM imobilizadosinventarios imo_inv   
