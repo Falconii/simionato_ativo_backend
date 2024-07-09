@@ -33,8 +33,8 @@ exports.getImobilizado = function (id_empresa, id_filial, codigo) {
 			,  imo.serie as  serie  
 			,  imo.item as  item  
 			,  imo.origem  as origem
-            ,  imo.condicao  as condicao
-            ,  imo.apelido  as apelido
+      ,  imo.condicao  as condicao
+      ,  imo.apelido  as apelido
 			,  imo.user_insert as  user_insert  
 			,  imo.user_update as  user_update  
 			,  gru.descricao as  grupo_descricao  
@@ -140,6 +140,7 @@ exports.getImobilizados = function (params) {
 				 inner join centroscustos cc on cc.id_empresa = imo.id_empresa and cc.id_filial = imo.id_filial and cc.codigo = imo.cod_cc
 				 left  join nfes nfe on nfe.id_empresa = imo.id_empresa and nfe.id_filial = imo.id_filial and nfe.id_imobilizado = imo.codigo   
 			${where} 			${orderby} ${paginacao} `;
+      console.log("getImobilizados", strSql);
       return db.manyOrNone(strSql);
     }
   } else {
