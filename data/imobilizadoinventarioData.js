@@ -69,8 +69,14 @@ exports.getImobilizadoinventarioExisteNew = function (
   id_empresa,
   id_filial,
   id_inventario,
-  new_codigo
+  id_imobilizado,
+  new_codigo,
+  inclusao
 ) {
+  let where = "";
+  if (!inclusao) {
+    where = ` and  imo_inv.id_imobilizado <> ${id_imobilizado} `;
+  }
   strSql = ` select   
 			   imo_inv.id_empresa as  id_empresa  
 			,  imo_inv.id_filial as  id_filial  
@@ -78,7 +84,7 @@ exports.getImobilizadoinventarioExisteNew = function (
 			,  imo_inv.id_imobilizado as  id_imobilizado  
 			,  imo_inv.new_codigo as  new_codigo 
  			FROM imobilizadosinventarios imo_inv
-			where imo_inv.id_empresa = ${id_empresa} and  imo_inv.id_filial = ${id_filial} and  imo_inv.id_inventario = ${id_inventario} and  imo_inv.new_codigo = ${new_codigo}  `;
+			where imo_inv.id_empresa = ${id_empresa} and  imo_inv.id_filial = ${id_filial} and  imo_inv.id_inventario = ${id_inventario} ${where} and  imo_inv.new_codigo = ${new_codigo}  `;
   console.log("getimobilizado", strSql);
   return db.manyOrNone(strSql);
 };

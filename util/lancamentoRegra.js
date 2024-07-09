@@ -26,9 +26,11 @@ exports.lancamento_Inclusao = async function (lancamento) {
         lancamento.id_empresa,
         lancamento.id_filial,
         lancamento.id_inventario,
-        lancamento.new_codigo
+        lancamento.id_imobilizado,
+        lancamento.new_codigo,
+        true
       );
-    if (obj_new != null) {
+    if (obj_new.length > 0) {
       throw new erroDB.UserException("Regra de negócio", [
         {
           tabela: "IMOBILIZADOINVENTARIO",
@@ -64,10 +66,11 @@ exports.lancamento_Alteracao = async function (lancamento) {
         lancamento.id_empresa,
         lancamento.id_filial,
         lancamento.id_inventario,
-        lancamento.new_codigo
+        lancamento.id_imobilizado,
+        lancamento.new_codigo,
+        false
       );
-
-    if (obj_new == null || obj_new.length > 1) {
+    if (obj_new.length > 0) {
       throw new erroDB.UserException("Regra de negócio", [
         {
           tabela: "IMOBILIZADOINVENTARIO",

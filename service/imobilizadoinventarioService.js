@@ -24,13 +24,17 @@ exports.getImobilizadoinventarioExisteNew = async function (
   id_empresa,
   id_filial,
   id_inventario,
-  new_codigo
+  id_imobilizado,
+  new_codigo,
+  inclusao
 ) {
   return imobilizadoinventarioData.getImobilizadoinventarioExisteNew(
     id_empresa,
     id_filial,
     id_inventario,
-    new_codigo
+    id_imobilizado,
+    new_codigo,
+    inclusao
   );
 };
 
