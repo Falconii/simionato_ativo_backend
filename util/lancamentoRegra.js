@@ -21,22 +21,24 @@ exports.lancamento_Inclusao = async function (lancamento) {
       ]);
     }
 
-    const obj_new =
-      await imobilizadoinventarioSrv.getImobilizadoinventarioExisteNew(
-        lancamento.id_empresa,
-        lancamento.id_filial,
-        lancamento.id_inventario,
-        lancamento.id_imobilizado,
-        lancamento.new_codigo,
-        true
-      );
-    if (obj_new.length > 0) {
-      throw new erroDB.UserException("Regra de negócio", [
-        {
-          tabela: "IMOBILIZADOINVENTARIO",
-          message: `"INCLUSÃO" NOVO CÓDIGO Já Existe Na Base De Dados.!`,
-        },
-      ]);
+    if (lancamento.new_codigo > 0) {
+      const obj_new =
+        await imobilizadoinventarioSrv.getImobilizadoinventarioExisteNew(
+          lancamento.id_empresa,
+          lancamento.id_filial,
+          lancamento.id_inventario,
+          lancamento.id_imobilizado,
+          lancamento.new_codigo,
+          true
+        );
+      if (obj_new.length > 0) {
+        throw new erroDB.UserException("Regra de negócio", [
+          {
+            tabela: "IMOBILIZADOINVENTARIO",
+            message: `"INCLUSÃO" NOVO CÓDIGO Já Existe Na Base De Dados.!`,
+          },
+        ]);
+      }
     }
   } catch (err) {
     throw err;
@@ -61,22 +63,24 @@ exports.lancamento_Alteracao = async function (lancamento) {
         },
       ]);
     }
-    const obj_new =
-      await imobilizadoinventarioSrv.getImobilizadoinventarioExisteNew(
-        lancamento.id_empresa,
-        lancamento.id_filial,
-        lancamento.id_inventario,
-        lancamento.id_imobilizado,
-        lancamento.new_codigo,
-        false
-      );
-    if (obj_new.length > 0) {
-      throw new erroDB.UserException("Regra de negócio", [
-        {
-          tabela: "IMOBILIZADOINVENTARIO",
-          message: `"ALTERAÇÃO" NOVO CÓDIGO Já Existe Na Base De Dados.!`,
-        },
-      ]);
+    if (lancamento.new_codigo > 0) {
+      const obj_new =
+        await imobilizadoinventarioSrv.getImobilizadoinventarioExisteNew(
+          lancamento.id_empresa,
+          lancamento.id_filial,
+          lancamento.id_inventario,
+          lancamento.id_imobilizado,
+          lancamento.new_codigo,
+          false
+        );
+      if (obj_new.length > 0) {
+        throw new erroDB.UserException("Regra de negócio", [
+          {
+            tabela: "IMOBILIZADOINVENTARIO",
+            message: `"ALTERAÇÃO" NOVO CÓDIGO Já Existe Na Base De Dados.!`,
+          },
+        ]);
+      }
     }
   } catch (err) {
     throw err;
