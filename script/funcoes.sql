@@ -68,16 +68,19 @@ _fotos      := 0;
 	  end if;
 	  _fotos = _fotos + tempo.fotos;
 	  
-	  select inv.descricao,inv.id_responsavel,coalesce(to_char(inv.data_encerra, 'DD/MM/YYYY'),'EM ABERTO') from public.inventarios inv into _descricao, id_usuario , _situacao
-	  where inv.id_empresa = _id_empresa  and inv.id_filial = _id_local and  inv.codigo = _id_inventario; 
-	  
-	  select usu.razao from public.usuarios usu into _responsavel 
-	  where usu.id_empresa = _id_empresa and usu.id = id_usuario; 
 	  
  END LOOP;
- raise notice 'FIM ';
+
+select inv.descricao,inv.id_responsavel,coalesce(to_char(inv.data_encerra, 'DD/MM/YYYY'),'EM ABERTO') from public.inventarios inv into _descricao, id_usuario , _situacao
+	  where inv.id_empresa = _id_empresa  and inv.id_filial = _id_local and  inv.codigo = _id_inventario; 
+	  
+select usu.razao from public.usuarios usu into _responsavel 
+	  where usu.id_empresa = _id_empresa and usu.id = id_usuario; 
+
 END;
 $$
 LANGUAGE 'plpgsql'
 ;
+/*
 select * from resumo_inventario(1,8,2)
+/*
