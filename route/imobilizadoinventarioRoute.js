@@ -149,24 +149,24 @@ router.delete(
 /* ROTA CONSULTA POST imobilizadosinventarios */
 router.post("/api/imobilizadosinventarios", async function(req, res) {
     /*
-                                                    	{
-                                                    		"id_empresa":0, 
-                                                    		"id_filial":0, 
-                                                    		"id_inventario":0, 
-                                                    		"id_imobilizado":0, 
-                                                    		"id_cc":"", 
-                                                    		"id_grupo":0, 
-                                                    		"status":0, 
-                                                    		"new_cc":"", 
-                                                    		"new_codigo":0, 
-                                                    		"id_usuario":0, 
-                                                    		"pagina":0, 
-                                                    		"tamPagina":50, 
-                                                    		"contador":"N", 
-                                                    		"orderby":"", 
-                                                    		"sharp":false 
-                                                    	}
-                                                    */
+                                                      	{
+                                                      		"id_empresa":0, 
+                                                      		"id_filial":0, 
+                                                      		"id_inventario":0, 
+                                                      		"id_imobilizado":0, 
+                                                      		"id_cc":"", 
+                                                      		"id_grupo":0, 
+                                                      		"status":0, 
+                                                      		"new_cc":"", 
+                                                      		"new_codigo":0, 
+                                                      		"id_usuario":0, 
+                                                      		"pagina":0, 
+                                                      		"tamPagina":50, 
+                                                      		"contador":"N", 
+                                                      		"orderby":"", 
+                                                      		"sharp":false 
+                                                      	}
+                                                      */
     try {
         const params = req.body;
         const lsRegistros =
@@ -194,12 +194,12 @@ router.post("/api/imobilizadosinventarios", async function(req, res) {
 /* Anexar Produto No Inventario */
 router.post("/api/anexarprodutoinventario", async function(req, res) {
     /*
-                                                            {
-                                                                "id_empresa":0, 
-                                                                "id_filial":0, 
-                                                                "id_inventario":0, 
-                                                            }
-                                                        */
+                                                              {
+                                                                  "id_empresa":0, 
+                                                                  "id_filial":0, 
+                                                                  "id_inventario":0, 
+                                                              }
+                                                          */
     try {
         const params = req.body;
         await imobilizadoinventarioSrv.anexarImobilizadoinventario(params);
@@ -250,26 +250,26 @@ router.post("/api/imobilizadosinventariosexcel", async function(req, res) {
     console.log("rota imobilizadosinventariosexcel");
     try {
         /*
-                                                            {
-                                                            "id_empresa":   1,
-                                                            "id_filial":   14,
-                                                            "id_inventario":   10,
-                                                            "id_imobilizado": 308,
-                                                            "id_cc":   "",
-                                                            "id_grupo":   0,
-                                                            "descricao":   "",
-                                                            "status":   1,
-                                                            "new_cc":   "",
-                                                            "new_codigo":   0,
-                                                            "id_usuario":   0,
-                                                            "origem":   "",
-                                                            "pagina":   1,
-                                                            "tamPagina":  20,
-                                                            "contador":   "N",
-                                                            "orderby":   "",
-                                                            "sharp":   false
-                                                            }
-                                                            */
+                                                                {
+                                                                "id_empresa":   1,
+                                                                "id_filial":   14,
+                                                                "id_inventario":   10,
+                                                                "id_imobilizado": 308,
+                                                                "id_cc":   "",
+                                                                "id_grupo":   0,
+                                                                "descricao":   "",
+                                                                "status":   1,
+                                                                "new_cc":   "",
+                                                                "new_codigo":   0,
+                                                                "id_usuario":   0,
+                                                                "origem":   "",
+                                                                "pagina":   1,
+                                                                "tamPagina":  20,
+                                                                "contador":   "N",
+                                                                "orderby":   "",
+                                                                "sharp":   false
+                                                                }
+                                                                */
         const params = req.body;
         console.log("parametros imobilizadosinventariosexcel", params);
 
@@ -296,7 +296,7 @@ router.post("/api/imobilizadosinventariosexcel", async function(req, res) {
             if (lsRegistros == null || lsRegistros.length == 0) {
                 res.status(409).json({ message: "Nenhum Registro Encontrado!" });
             } else {
-                //await generateExcel(lsRegistros, inventario, complemento);
+                await generateExcel(lsRegistros, inventario, complemento);
                 res.status(200).json({ message: "Excel gerado com sucesso!" });
             }
         }
