@@ -41,6 +41,9 @@ exports.create = async(req, res, _id_empresa, _id_local, _id_usuario) => {
                 result = {
                     message: `Quantidade De Colunas Deferente Do Padrão (35)! ${campos.length}}`,
                 };
+                console.log(
+                    `Quantidade De Colunas Deferente Do Padrão (35)! ${campos.length}}`
+                );
                 break;
             }
             const retornoModel = _centroCusto(campos);
