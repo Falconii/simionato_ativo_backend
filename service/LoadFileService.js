@@ -89,7 +89,6 @@ exports.create = async(req, res, _id_empresa, _id_local, _id_usuario) => {
             }
         }
     }
-
     return result;
 };
 

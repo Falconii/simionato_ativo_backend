@@ -4,6 +4,11 @@ const fs = require("fs");
 const express = require("express");
 const router = express.Router();
 const imobilizadoinventarioSrv = require("../service/imobilizadoinventarioService");
+const inventarioSrv = require("../service/inventarioService.js");
+const empresaSrv = require("../service/empresaService.js");
+const localSrv = require("../service/localService.js");
+const generateExcel = require("../geradorExcel/generateExcel.js");
+
 const parametroSrv = require("../service/parametroService");
 const { google } = require("googleapis");
 const uploadFotos = require("../config/uploadFotos");
@@ -32,13 +37,11 @@ router.get(
             if (err.name == "MyExceptionDB") {
                 res.status(409).json(err);
             } else {
-                res
-                    .status(500)
-                    .json({
-                        erro: "BAK-END",
-                        tabela: "imobilizadoinventario",
-                        message: err.message,
-                    });
+                res.status(500).json({
+                    erro: "BAK-END",
+                    tabela: "imobilizadoinventario",
+                    message: err.message,
+                });
             }
         }
     }
@@ -58,13 +61,11 @@ router.get("/api/imobilizadosinventarios", async function(req, res) {
         if (err.name == "MyExceptionDB") {
             res.status(409).json(err);
         } else {
-            res
-                .status(500)
-                .json({
-                    erro: "BAK-END",
-                    tabela: "imobilizadoinventario",
-                    message: err.message,
-                });
+            res.status(500).json({
+                erro: "BAK-END",
+                tabela: "imobilizadoinventario",
+                message: err.message,
+            });
         }
     }
 });
@@ -84,13 +85,11 @@ router.post("/api/imobilizadoinventario", async function(req, res) {
         if (err.name == "MyExceptionDB") {
             res.status(409).json(err);
         } else {
-            res
-                .status(500)
-                .json({
-                    erro: "BAK-END",
-                    tabela: "Imobilizadoinventario",
-                    message: err.message,
-                });
+            res.status(500).json({
+                erro: "BAK-END",
+                tabela: "Imobilizadoinventario",
+                message: err.message,
+            });
         }
     }
 });
@@ -112,13 +111,11 @@ router.put("/api/imobilizadoinventario", async function(req, res) {
         if (err.name == "MyExceptionDB") {
             res.status(409).json(err);
         } else {
-            res
-                .status(500)
-                .json({
-                    erro: "BAK-END",
-                    tabela: "Imobilizadoinventario",
-                    message: err.message,
-                });
+            res.status(500).json({
+                erro: "BAK-END",
+                tabela: "Imobilizadoinventario",
+                message: err.message,
+            });
         }
     }
 });
@@ -140,13 +137,11 @@ router.delete(
             if (err.name == "MyExceptionDB") {
                 res.status(409).json(err);
             } else {
-                res
-                    .status(500)
-                    .json({
-                        erro: "BAK-END",
-                        tabela: "Imobilizadoinventario",
-                        message: err.message,
-                    });
+                res.status(500).json({
+                    erro: "BAK-END",
+                    tabela: "Imobilizadoinventario",
+                    message: err.message,
+                });
             }
         }
     }
@@ -154,24 +149,24 @@ router.delete(
 /* ROTA CONSULTA POST imobilizadosinventarios */
 router.post("/api/imobilizadosinventarios", async function(req, res) {
     /*
-      	{
-      		"id_empresa":0, 
-      		"id_filial":0, 
-      		"id_inventario":0, 
-      		"id_imobilizado":0, 
-      		"id_cc":"", 
-      		"id_grupo":0, 
-      		"status":0, 
-      		"new_cc":"", 
-      		"new_codigo":0, 
-      		"id_usuario":0, 
-      		"pagina":0, 
-      		"tamPagina":50, 
-      		"contador":"N", 
-      		"orderby":"", 
-      		"sharp":false 
-      	}
-      */
+                                                    	{
+                                                    		"id_empresa":0, 
+                                                    		"id_filial":0, 
+                                                    		"id_inventario":0, 
+                                                    		"id_imobilizado":0, 
+                                                    		"id_cc":"", 
+                                                    		"id_grupo":0, 
+                                                    		"status":0, 
+                                                    		"new_cc":"", 
+                                                    		"new_codigo":0, 
+                                                    		"id_usuario":0, 
+                                                    		"pagina":0, 
+                                                    		"tamPagina":50, 
+                                                    		"contador":"N", 
+                                                    		"orderby":"", 
+                                                    		"sharp":false 
+                                                    	}
+                                                    */
     try {
         const params = req.body;
         const lsRegistros =
@@ -187,13 +182,11 @@ router.post("/api/imobilizadosinventarios", async function(req, res) {
         if (err.name == "MyExceptionDB") {
             res.status(409).json(err);
         } else {
-            res
-                .status(500)
-                .json({
-                    erro: "BAK-END",
-                    tabela: "Imobilizadoinventario",
-                    message: err.message,
-                });
+            res.status(500).json({
+                erro: "BAK-END",
+                tabela: "Imobilizadoinventario",
+                message: err.message,
+            });
         }
     }
 });
@@ -201,12 +194,12 @@ router.post("/api/imobilizadosinventarios", async function(req, res) {
 /* Anexar Produto No Inventario */
 router.post("/api/anexarprodutoinventario", async function(req, res) {
     /*
-              {
-                  "id_empresa":0, 
-                  "id_filial":0, 
-                  "id_inventario":0, 
-              }
-          */
+                                                            {
+                                                                "id_empresa":0, 
+                                                                "id_filial":0, 
+                                                                "id_inventario":0, 
+                                                            }
+                                                        */
     try {
         const params = req.body;
         await imobilizadoinventarioSrv.anexarImobilizadoinventario(params);
@@ -215,13 +208,11 @@ router.post("/api/anexarprodutoinventario", async function(req, res) {
         if (err.name == "MyExceptionDB") {
             res.status(409).json(err);
         } else {
-            res
-                .status(500)
-                .json({
-                    erro: "BAK-END",
-                    tabela: "Imobilizadoinventario",
-                    message: err.message,
-                });
+            res.status(500).json({
+                erro: "BAK-END",
+                tabela: "Imobilizadoinventario",
+                message: err.message,
+            });
         }
     }
 });
@@ -252,6 +243,73 @@ router.post("/api/fotokey", async function(req, res) {
         res
             .status(409)
             .json({ message: "Erro Na Gravação googlekey, No Servidor" });
+    }
+});
+
+router.post("/api/imobilizadosinventariosexcel", async function(req, res) {
+    console.log("rota imobilizadosinventariosexcel");
+    try {
+        /*
+                                                            {
+                                                            "id_empresa":   1,
+                                                            "id_filial":   14,
+                                                            "id_inventario":   10,
+                                                            "id_imobilizado": 308,
+                                                            "id_cc":   "",
+                                                            "id_grupo":   0,
+                                                            "descricao":   "",
+                                                            "status":   1,
+                                                            "new_cc":   "",
+                                                            "new_codigo":   0,
+                                                            "id_usuario":   0,
+                                                            "origem":   "",
+                                                            "pagina":   1,
+                                                            "tamPagina":  20,
+                                                            "contador":   "N",
+                                                            "orderby":   "",
+                                                            "sharp":   false
+                                                            }
+                                                            */
+        const params = req.body;
+        console.log("parametros imobilizadosinventariosexcel", params);
+
+        const inventario = await inventarioSrv.getInventario(
+            params.id_empresa,
+            params.id_filial,
+            params.id_inventario
+        );
+        const emp = await empresaSrv.getEmpresa(params.id_empresa);
+
+        const local = await localSrv.getLocal(params.id_empresa, params.id_filial);
+
+        if (emp == null || local == null || inventario == null) {
+            res
+                .status(409)
+                .json({ message: "Empresa, Local Ou Inventário Encontrados!" });
+        } else {
+            const complemento = {
+                emp_razao: emp.razao,
+                loc_razao: local.razao,
+            };
+            const lsRegistros =
+                await imobilizadoinventarioSrv.getImobilizadosinventarios(params);
+            if (lsRegistros == null || lsRegistros.length == 0) {
+                res.status(409).json({ message: "Nenhum Registro Encontrado!" });
+            } else {
+                //await generateExcel(lsRegistros, inventario, complemento);
+                res.status(200).json({ message: "Excel gerado com sucesso!" });
+            }
+        }
+    } catch (err) {
+        if (err.name === "MyExceptionDB") {
+            res.status(409).json(err);
+        } else {
+            res.status(500).json({
+                erro: "BAK-END",
+                tabela: "Imobilizadoinventarioexcel",
+                message: err.message,
+            });
+        }
     }
 });
 
