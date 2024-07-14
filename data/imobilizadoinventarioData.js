@@ -154,7 +154,11 @@ exports.getImobilizadosinventarios = function (params) {
     }
     if (params.status !== -1) {
       if (where != "") where += " and ";
-      where += `imo_inv.status = ${params.status} `;
+      if (params.status == 90) {
+        where += `imo_inv.status > 0 `;
+      } else {
+        where += `imo_inv.status = ${params.status} `;
+      }
     }
     if (params.new_cc.trim() !== "") {
       if (where != "") where += " and ";

@@ -50,43 +50,44 @@ exports.create = async(req, res, _id_empresa, _id_local, _id_usuario) => {
             if (retornoModel != null) {
                 const registro = await centrocustoSrv.insertCentrocusto(retornoModel);
             }
+            /*
+                  const grupoModel = _grupo(campos);
 
-            const grupoModel = _grupo(campos);
+                  if (grupoModel != null) {
+                      const registro = await grupoSrv.insertGrupo(grupoModel);
+                  }
 
-            if (grupoModel != null) {
-                const registro = await grupoSrv.insertGrupo(grupoModel);
-            }
+                  const produtosModel = _produto(campos);
 
-            const produtosModel = _produto(campos);
+                  if (produtosModel != null) {
+                      const registro = await produtoSrv.insertProduto(produtosModel);
+                  }
 
-            if (produtosModel != null) {
-                const registro = await produtoSrv.insertProduto(produtosModel);
-            }
+                  const principalModel = _principal(campos);
 
-            const principalModel = _principal(campos);
+                  if (principalModel != null) {
+                      const registro = await principalSrv.insertPrincipal(principalModel);
+                  }
 
-            if (principalModel != null) {
-                const registro = await principalSrv.insertPrincipal(principalModel);
-            }
+                  const ImobilizadoModel = _imobilizado(campos);
 
-            const ImobilizadoModel = _imobilizado(campos);
+                  if (ImobilizadoModel != null) {
+                      const registro = await imobilizadoSrv.insertImobilizado(
+                          ImobilizadoModel
+                      );
+                  }
+                  const NfesModel = _nfe(campos);
 
-            if (ImobilizadoModel != null) {
-                const registro = await imobilizadoSrv.insertImobilizado(
-                    ImobilizadoModel
-                );
-            }
-            const NfesModel = _nfe(campos);
+                  if (NfesModel != null) {
+                      const registro = await nfeSrv.insertNfe(NfesModel);
+                  }
 
-            if (NfesModel != null) {
-                const registro = await nfeSrv.insertNfe(NfesModel);
-            }
+                  const ValorModel = _valores(campos);
 
-            const ValorModel = _valores(campos);
-
-            if (ValorModel != null) {
-                const registro = await valorSrv.insertValor(ValorModel);
-            }
+                  if (ValorModel != null) {
+                      const registro = await valorSrv.insertValor(ValorModel);
+                  }
+                      */
         }
     }
     return result;
