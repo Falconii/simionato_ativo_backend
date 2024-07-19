@@ -1,0 +1,44 @@
+1-> Inventariado Sem Troca De Código Ou CC
+    (new_produto = 0 ) or (new_produto = old_produto)
+                      and 
+    (new_cc = "") or (new_cc = old_cc)
+
+2-> Inv. Troca Código
+    (new_produto > 0 ) and  (new_produto != old_produto)
+                      and 
+    (new_cc = "") or (new_cc = old_cc)
+
+3-> Inv. Troca CC
+      (new_produto = 0 ) or (new_produto = old_produto)
+                      and 
+    (new_cc != "") and (new_cc != old_cc)
+
+4-> Inv. Ambos Alterados
+    (new_produto > 0 ) and  (new_produto != old_produto)
+                      and 
+    (new_cc != "") and (new_cc != old_cc)
+
+
+//Calculo antigo
+          if (
+        lancamento.new_codigo != 0 &&
+        lancamento.id_imobilizado != lancamento.new_codigo &&
+        lancamento.new_cc.trim() != "" &&
+        lancamento.imo_cod_cc != lancamento.new_cc
+      ) {
+        lancamento.estado = 4;
+      } else {
+        lancamento.estado = 1;
+        if (
+          lancamento.new_codigo != 0 &&
+          lancamento.id_imobilizado != lancamento.new_codigo
+        ) {
+          lancamento.estado = 2;
+        }
+        if (
+          lancamento.new_cc.trim() != "" &&
+          lancamento.imo_cod_cc != lancamento.new_cc
+        ) {
+          lancamento.estado = 3;
+        }
+      }

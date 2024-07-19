@@ -59,28 +59,43 @@ router.post("/api/lancamento", async function (req, res) {
   try {
     const lancamento = req.body;
     //Recalcula situacao
+    lancamento.estado = 4;
     if (lancamento.estado !== 5) {
+      // sit 1
       if (
-        lancamento.new_codigo != 0 &&
-        lancamento.id_imobilizado != lancamento.new_codigo &&
-        lancamento.new_cc.trim() != "" &&
-        lancamento.imo_cod_cc != lancamento.new_cc
+        lancamento.new_codigo == 0 ||
+        (lancamento.id_imobilizado == lancamento.new_codigo &&
+          lancamento.new_cc.trim() == "") ||
+        lancamento.imo_cod_cc == lancamento.new_cc
+      ) {
+        lancamento.estado = 1;
+      }
+      // 2
+      if (
+        (lancamento.new_codigo > 0 &&
+          lancamento.id_imobilizado !== lancamento.new_codigo &&
+          lancamento.new_cc.trim() == "") ||
+        lancamento.imo_cod_cc == lancamento.new_cc
+      ) {
+        lancamento.estado = 2;
+      }
+      //3
+      if (
+        lancamento.new_codigo == 0 ||
+        (lancamento.id_imobilizado == lancamento.new_codigo &&
+          lancamento.new_cc.trim() !== "" &&
+          lancamento.imo_cod_cc !== lancamento.new_cc)
+      ) {
+        lancamento.estado = 3;
+      }
+      //4
+      if (
+        lancamento.new_codigo > 0 &&
+        lancamento.id_imobilizado !== lancamento.new_codigo &&
+        lancamento.new_cc.trim() !== "" &&
+        lancamento.imo_cod_cc !== lancamento.new_cc
       ) {
         lancamento.estado = 4;
-      } else {
-        lancamento.estado = 1;
-        if (
-          lancamento.new_codigo != 0 &&
-          lancamento.id_imobilizado != lancamento.new_codigo
-        ) {
-          lancamento.estado = 2;
-        }
-        if (
-          lancamento.new_cc.trim() != "" &&
-          lancamento.imo_cod_cc != lancamento.new_cc
-        ) {
-          lancamento.estado = 3;
-        }
       }
     } else {
       lancamento.estado = 5;
@@ -106,33 +121,48 @@ router.put("/api/lancamento", async function (req, res) {
   try {
     const lancamento = req.body;
 
-    //Recalcula situacao
+    lancamento.estado = 4;
     if (lancamento.estado !== 5) {
+      // sit 1
       if (
-        lancamento.new_codigo != 0 &&
-        lancamento.id_imobilizado != lancamento.new_codigo &&
-        lancamento.new_cc.trim() != "" &&
-        lancamento.imo_cod_cc != lancamento.new_cc
+        lancamento.new_codigo == 0 ||
+        (lancamento.id_imobilizado == lancamento.new_codigo &&
+          lancamento.new_cc.trim() == "") ||
+        lancamento.imo_cod_cc == lancamento.new_cc
+      ) {
+        lancamento.estado = 1;
+      }
+      // 2
+      if (
+        (lancamento.new_codigo > 0 &&
+          lancamento.id_imobilizado !== lancamento.new_codigo &&
+          lancamento.new_cc.trim() == "") ||
+        lancamento.imo_cod_cc == lancamento.new_cc
+      ) {
+        lancamento.estado = 2;
+      }
+      //3
+      if (
+        lancamento.new_codigo == 0 ||
+        (lancamento.id_imobilizado == lancamento.new_codigo &&
+          lancamento.new_cc.trim() !== "" &&
+          lancamento.imo_cod_cc !== lancamento.new_cc)
+      ) {
+        lancamento.estado = 3;
+      }
+      //4
+      if (
+        lancamento.new_codigo > 0 &&
+        lancamento.id_imobilizado !== lancamento.new_codigo &&
+        lancamento.new_cc.trim() !== "" &&
+        lancamento.imo_cod_cc !== lancamento.new_cc
       ) {
         lancamento.estado = 4;
-      } else {
-        lancamento.estado = 1;
-        if (
-          lancamento.new_codigo != 0 &&
-          lancamento.id_imobilizado != lancamento.new_codigo
-        ) {
-          lancamento.estado = 2;
-        }
-        if (
-          lancamento.new_cc.trim() != "" &&
-          lancamento.imo_cod_cc != lancamento.new_cc
-        ) {
-          lancamento.estado = 3;
-        }
       }
     } else {
       lancamento.estado = 5;
     }
+
     const registro = await lancamentoSrv.updateLancamento(lancamento);
     if (registro == null) {
       res.status(409).json({ message: "Lancamento Alterado Com Sucesso!" });
@@ -177,19 +207,19 @@ router.delete(
 /* ROTA CONSULTA POST lancamentos */
 router.post("/api/lancamentos", async function (req, res) {
   /*
-          	{
-          		"id_empresa":0, 
-          		"id_filial":0, 
-          		"id_lanca":0, 
-          		"id_inventario":0, 
-          		"id_imobilizado":0, 
-          		"pagina":0, 
-          		"tamPagina":50, 
-          		"contador":"N", 
-          		"orderby":"", 
-          		"sharp":false 
-          	}
-          */
+              	{
+              		"id_empresa":0, 
+              		"id_filial":0, 
+              		"id_lanca":0, 
+              		"id_inventario":0, 
+              		"id_imobilizado":0, 
+              		"pagina":0, 
+              		"tamPagina":50, 
+              		"contador":"N", 
+              		"orderby":"", 
+              		"sharp":false 
+              	}
+              */
   try {
     const params = req.body;
     const lsRegistros = await lancamentoSrv.getLancamentos(params);
@@ -214,12 +244,12 @@ router.post("/api/lancamentos", async function (req, res) {
 /* ROTA CONSULTA POST Resumo Lancamentos */
 router.post("/api/resumolancamentos", async function (req, res) {
   /*
-          	{
-          		public id_empresa: number = 0;
-                  public id_filial: number = 0;
-                  public id_inventario: number = 0;
-          	}
-          */
+              	{
+              		public id_empresa: number = 0;
+                      public id_filial: number = 0;
+                      public id_inventario: number = 0;
+              	}
+              */
   console.log(`Chegue na Rota resumolancamentos`);
   try {
     const params = req.body;

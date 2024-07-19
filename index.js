@@ -1,10 +1,12 @@
 const express = require("express");
-
+const path = require("path");
 const fs = require("fs");
 const parametroSrv = require("./service/parametroService");
 var os = require("os");
 const PORT = process.env.PORT || 3000;
 const app = express();
+global.appRoot = path.resolve(__dirname);
+
 app.use(express.json());
 
 const allowCors = (req, res, next) => {
@@ -52,6 +54,7 @@ app.use("/", require("./route/custom/parametroRoute.js"));
 app.use("/", require("./route/padraoRoute.js"));
 app.use("/", require("./route/LoadFileRouter.js"));
 app.use("/", require("./route/fotoRoute.js"));
+app.use("/", require("./route/diretorioRoute.js"));
 
 app.listen(PORT, () => {
   console.log(`Servidor No Ar. Porta ${PORT}`);
