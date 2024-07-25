@@ -17,62 +17,46 @@ router.get("/api/diretorio", async function (req, res) {
     console.log(filename);
   });
 
-  fileObjs = fs.readdirSync(dirBase, { withFileTypes: true });
+  /*  fileObjs = fs.readdirSync(dirBase, { withFileTypes: true });
 
-  fileObjs.forEach((file) => {
-    //console.log(file.Symbol(type));
+                                     fileObjs.forEach((file) => {
+                                       console.log(file.Symbol(type));
+                                     }); */
+
+  console.log("Arquivos Diretorio Fotos");
+
+  /*  const fotosList = fs.readdirSync(dirBase + "/fotos");
+
+         fotosList.forEach((arquivo) => {
+           console.log(arquivo);
+         });
+        */
+  console.log("Fotos Dia 15");
+
+  path15 = path.resolve("C:\\fotos\\15\\");
+
+  const fotos15List = fs.readdirSync(path15);
+  let idx = 0;
+  fotos15List.forEach((arquivo) => {
+    if (path.extname(arquivo) == ".png") {
+      console.log(arquivo);
+      idx++;
+    }
   });
+  console.log(`Total De Fotos Dia 15 ${idx}`);
 
-  console.log("Só diretorios");
+  /*
+                                            const diretorios = getDirectories(dirBase);
 
-  const diretorios = getDirectories(dirBase);
-
-  diretorios.forEach((diretorio) => {
-    console.log(diretorio);
-  });
+                                            diretorios.forEach((diretorio) => {
+                                              console.log(diretorio);
+                                            });
+                                            */
 
   res.status(200).json({
     dirBase: dirBase,
     dirCMD: path.basename(path.resolve(process.cwd())),
   });
-});
-/* ROTA CONSULTA POST empresas */
-router.post("/api/files", async function (req, res) {
-  /*
-                              	{
-                              		"id":0, 
-                              		"razao":"", 
-                              		"cnpj_cpf":"", 
-                              		"pagina":0, 
-                              		"tamPagina":50, 
-                              		"contador":"N", 
-                              		"orderby":"", 
-                              		"sharp":false 
-                              	}
-                              */
-  try {
-    res.status(200).json({ message: "OK" });
-    /*
-		const params = req.body;
-		const lsRegistros = await empresaSrv.getEmpresas(params);
-		if (lsRegistros.length == 0)
-		{
-			res.status(409).json({ message: 'Empresa Nenhum Registro Encontrado!' });
-		}
-		else
-		{
-			res.status(200).json(lsRegistros);
-		}
-            */
-  } catch (err) {
-    if (err.name == "MyExceptionDB") {
-      res.status(409).json(err);
-    } else {
-      res
-        .status(500)
-        .json({ erro: "BAK-END", tabela: "Empresa", message: err.message });
-    }
-  }
 });
 
 module.exports = router;
