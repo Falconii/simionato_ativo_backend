@@ -117,4 +117,34 @@ async function refresh() {
   } catch (error) {
     console.log(`Erro Na Gravação googlekey SIMIONATO, No Servidor ${error}`);
   }
+
+  //google drive intelli-simionato
+  //Buscando key google
+  const param3 = await parametroSrv.getParametro(
+    1,
+    "key-intelli",
+    "googledrive",
+    999
+  );
+  if (param3 == null) {
+    console.log("Não Foi Encontrada Chave GOOGLE DRIVE-INTELLI-SIMONATO");
+    return;
+  }
+  if (PORT == 3000) {
+    arquivo =
+      "C:/Repositorios Git/Simionato/controle de ativo/keys/intelli-simionato.json";
+  } else {
+    arquivo = "keys/intelli-simionato.json";
+  }
+
+  try {
+    var writeStream = fs.createWriteStream(arquivo);
+    writeStream.write(param3.parametro);
+    writeStream.end();
+    console.log("Chave Atualizada Com Sucesso iNTELLI-Simionato!");
+  } catch (error) {
+    console.log(
+      `Erro Na Gravação googlekey INTELLI-SIMIONATO, No Servidor ${error}`
+    );
+  }
 }
