@@ -141,22 +141,22 @@ router.delete(
 /* ROTA CONSULTA POST fotos */
 router.post("/api/fotos", async function (req, res) {
   /*
-          	{
-          		"id_empresa":0, 
-          		"id_local":0, 
-          		"id_inventario":0, 
-          		"id_imobilizado":0, 
-          		"id_pasta":"", 
-          		"id_file":"", 
-          		"file_name":"", 
-          		"destaque":"N", 
-          		"pagina":0, 
-          		"tamPagina":50, 
-          		"contador":"N", 
-          		"orderby":"", 
-          		"sharp":false 
-          	}
-          */
+              	{
+              		"id_empresa":0, 
+              		"id_local":0, 
+              		"id_inventario":0, 
+              		"id_imobilizado":0, 
+              		"id_pasta":"", 
+              		"id_file":"", 
+              		"file_name":"", 
+              		"destaque":"N", 
+              		"pagina":0, 
+              		"tamPagina":50, 
+              		"contador":"N", 
+              		"orderby":"", 
+              		"sharp":false 
+              	}
+              */
   try {
     const params = req.body;
     const lsRegistros = await fotoSrv.getFotos(params);
@@ -669,9 +669,9 @@ router.post(
         const responseGet = await driveService.files.get({
           fileId: foto.id_file,
         });
-        existe = true;
+        existeDrive = true;
       } catch (error) {
-        existe = false;
+        existeDrive = false;
       }
 
       if (!existeDrive) {
@@ -700,6 +700,11 @@ router.post(
         } else {
           console.log(`${URL_GOOGLE_DRIVE}${foto.id_file}`);
           res.status(200).json({ code: "200", message: "Foto Registrada" });
+          try {
+            fs.unlinkSync(`./fotos/${file_name}`);
+          } catch (err) {
+            console.error(err);
+          }
         }
       } else {
         //Excluindo
@@ -730,6 +735,11 @@ router.post(
           }
           console.log(URL_GOOGLE_DRIVE.join(foto.id_file));
           res.status(200).json({ code: "200", message: "Foto Alterada" });
+          try {
+            fs.unlinkSync(`./fotos/${file_name}`);
+          } catch (err) {
+            console.error(err);
+          }
         }
       }
     } catch (err) {
