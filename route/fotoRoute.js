@@ -6,6 +6,7 @@ const router = express.Router();
 const fotoSrv = require("../service/fotoService");
 const { google } = require("googleapis");
 const uploadFotos = require("../config/uploadFotos");
+const uploadFotosV2 = require("../config/uploadFotosV2");
 const GOOGLE_API_FOLDER_ID = "1Oc4S6bEQy_TPPPSsxzl1gYkOs8wvwuWq";
 const GOOGLE_API_FOLDER_ID_SIMIONATO = "1eQuwNcfTmpYUWUIvlGBouodico8WrjoD";
 const PORT = process.env.PORT || 3000;
@@ -141,22 +142,22 @@ router.delete(
 /* ROTA CONSULTA POST fotos */
 router.post("/api/fotos", async function (req, res) {
   /*
-              	{
-              		"id_empresa":0, 
-              		"id_local":0, 
-              		"id_inventario":0, 
-              		"id_imobilizado":0, 
-              		"id_pasta":"", 
-              		"id_file":"", 
-              		"file_name":"", 
-              		"destaque":"N", 
-              		"pagina":0, 
-              		"tamPagina":50, 
-              		"contador":"N", 
-              		"orderby":"", 
-              		"sharp":false 
-              	}
-              */
+                                  	{
+                                  		"id_empresa":0, 
+                                  		"id_local":0, 
+                                  		"id_inventario":0, 
+                                  		"id_imobilizado":0, 
+                                  		"id_pasta":"", 
+                                  		"id_file":"", 
+                                  		"file_name":"", 
+                                  		"destaque":"N", 
+                                  		"pagina":0, 
+                                  		"tamPagina":50, 
+                                  		"contador":"N", 
+                                  		"orderby":"", 
+                                  		"sharp":false 
+                                  	}
+                                  */
   try {
     const params = req.body;
     const lsRegistros = await fotoSrv.getFotos(params);
@@ -530,7 +531,7 @@ router.post("/api/deleteuploadfoto", async function (req, res) {
 /* ROTA UPLOADFOTOS imobilizadoinventario */
 router.post(
   "/api/uploadfotov2",
-  uploadFotos.single("file"),
+  uploadFotosV2.single("file"),
   async function (req, res) {
     console.log("Entrei Na Rota uPoloadfoto!");
 
@@ -544,13 +545,8 @@ router.post(
     const data = req.body.data;
     const destaque = req.body.destaque;
     const obs = req.body.obs;
-    const file_name = `${req.body.id_empresa.padStart(
-      2,
-      "0"
-    )}_${req.body.id_local.padStart(6, "0")}_${req.body.id_inventario.padStart(
-      6,
-      "0"
-    )}_${req.body.id_imobilizado.padStart(6, "0")}_${req.file.originalname}`;
+    const file_name = `${req.file.originalname}`;
+    const old_name = `${req.body.old_name}`;
     let existeDrive = false;
     let arquivo = "";
     let acao = "";
@@ -587,7 +583,7 @@ router.post(
       id_imobilizado,
       id_pasta,
       id_file,
-      file_name
+      old_name
     );
 
     console.log(
@@ -661,21 +657,24 @@ router.post(
         mimeType: "image/jpg",
         body: fs.createReadStream(`./fotos/${file_name}`),
       };
+      console.log("Buscando Arquivo No GoogleDrive", foto.id_file);
 
-      let existeDrive = false;
+      let existeDrive = foto.id_file == "" ? false : true;
 
-      try {
-        // Verifincando se existe ok
-        const responseGet = await driveService.files.get({
-          fileId: foto.id_file,
-        });
-        existeDrive = true;
-      } catch (error) {
-        existeDrive = false;
-      }
+      /*  try {
+                           // Verifincando se existe ok
+                           const responseGet = await driveService.files.get({
+                             fileId: foto.id_file,
+                           });
+                           existeDrive = true;
+                           console.log("Arquivo Existe No GoogleDrive", existeDrive);
+                           console.log("GET", responseGet.data.length());
+                         } catch (error) {
+                           existeDrive = false;
+                         } */
 
       if (!existeDrive) {
-        // Gravando
+        console.log("Gravando...");
         const response = await driveService.files.create({
           resource: fileMetaData,
           media: media,
@@ -718,7 +717,16 @@ router.post(
           media: media,
         });
         foto.id_file = response.data.id;
-        const ft = await fotoSrv.updateFoto(foto);
+        await fotoSrv.deleteFoto(
+          id_empresa,
+          id_local,
+          id_inventario,
+          id_imobilizado,
+          id_pasta,
+          id_file,
+          old_name
+        );
+        const ft = await fotoSrv.insertFoto(foto);
         if (ft == null) {
           res
             .status(200)
