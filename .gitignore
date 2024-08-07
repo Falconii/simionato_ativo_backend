@@ -1,3 +1,4 @@
 /node_modules
 /keys/*.json
 /keys_simionato/*.json
+/rel_excel/*.*

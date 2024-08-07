@@ -18,18 +18,18 @@ router.get("/api/diretorio", async function (req, res) {
 
   /*  fileObjs = fs.readdirSync(dirBase, { withFileTypes: true });
 
-                                       fileObjs.forEach((file) => {
-                                         console.log(file.Symbol(type));
-                                       }); */
+                                         fileObjs.forEach((file) => {
+                                           console.log(file.Symbol(type));
+                                         }); */
 
   console.log("Arquivos Diretorio Fotos");
 
   /*  const fotosList = fs.readdirSync(dirBase + "/fotos");
 
-           fotosList.forEach((arquivo) => {
-             console.log(arquivo);
-           });
-          */
+             fotosList.forEach((arquivo) => {
+               console.log(arquivo);
+             });
+            */
   console.log("Fotos Dia 15");
 
   path15 = path.resolve("C:\\fotos\\15\\");
@@ -45,12 +45,12 @@ router.get("/api/diretorio", async function (req, res) {
   console.log(`Total De Fotos Dia 15 ${idx}`);
 
   /*
-                                              const diretorios = getDirectories(dirBase);
+                                                const diretorios = getDirectories(dirBase);
 
-                                              diretorios.forEach((diretorio) => {
-                                                console.log(diretorio);
-                                              });
-                                              */
+                                                diretorios.forEach((diretorio) => {
+                                                  console.log(diretorio);
+                                                });
+                                                */
 
   res.status(200).json({
     dirBase: dirBase,
