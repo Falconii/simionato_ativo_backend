@@ -6,52 +6,56 @@ const erroDB = require("../util/userfunctiondb");
 const regras = require("../util/usuarioRegra");
 const TABELA = "USUARIOS";
 /* CRUD GET SERVICE */
-exports.getUsuario = async function(id_empresa, id) {
-    return usuarioData.getUsuario(id_empresa, id);
+exports.getUsuario = async function (id_empresa, id) {
+  return usuarioData.getUsuario(id_empresa, id);
 };
 /* CRUD GET ALL SERVICE */
-exports.getUsuarios = async function(params) {
-    return usuarioData.getUsuarios(params);
+exports.getUsuarios = async function (params) {
+  return usuarioData.getUsuarios(params);
 };
 
-exports.getUsuariosByAmbiente = async function(params) {
-    return usuarioData.getUsuariosByAmbiente(params);
+exports.getUsuarioByEmail = async function (id_empresa, email) {
+  return usuarioData.getUsuarioByEmail(id_empresa, email);
+};
+
+exports.getUsuariosByAmbiente = async function (params) {
+  return usuarioData.getUsuariosByAmbiente(params);
 };
 
 //* CRUD - INSERT - SERVICE */
-exports.insertUsuario = async function(usuario) {
-    try {
-        await regras.usuario_Inclusao(usuario);
-        validacao.Validacao(TABELA, usuario, parametros.usuarios());
-        return usuarioData.insertUsuario(usuario);
-    } catch (err) {
-        throw new erroDB.UserException(err.erro, err);
-    }
+exports.insertUsuario = async function (usuario) {
+  try {
+    await regras.usuario_Inclusao(usuario);
+    validacao.Validacao(TABELA, usuario, parametros.usuarios());
+    return usuarioData.insertUsuario(usuario);
+  } catch (err) {
+    throw new erroDB.UserException(err.erro, err);
+  }
 };
 //* CRUD - UPDATE - SERVICE */
-exports.updateUsuario = async function(usuario) {
-    try {
-        await regras.usuario_Alteracao(usuario);
-        validacao.Validacao(TABELA, usuario, parametros.usuarios());
-        return usuarioData.updateUsuario(usuario);
-    } catch (err) {
-        throw new erroDB.UserException(err.erro, err);
-    }
+exports.updateUsuario = async function (usuario) {
+  try {
+    await regras.usuario_Alteracao(usuario);
+    validacao.Validacao(TABELA, usuario, parametros.usuarios());
+    return usuarioData.updateUsuario(usuario);
+  } catch (err) {
+    throw new erroDB.UserException(err.erro, err);
+  }
 };
 //* CRUD - DELETE - SERVICE */
-exports.deleteUsuario = async function(id_empresa, id) {
-    try {
-        await regras.usuario_Exclusao(id_empresa, id);
-        return usuarioData.deleteUsuario(id_empresa, id);
-    } catch (err) {
-        throw new erroDB.UserException(err.erro, err);
-    }
+exports.deleteUsuario = async function (id_empresa, id) {
+  try {
+    await regras.usuario_Exclusao(id_empresa, id);
+    return usuarioData.deleteUsuario(id_empresa, id);
+  } catch (err) {
+    throw new erroDB.UserException(err.erro, err);
+  }
 };
 
-exports.getUsuariosInventario = async function(
-    id_empresa,
-    id_local,
-    id_inventario
+exports.getUsuariosInventario = async function (
+  id_empresa,
+  id_local,
+  id_inventario
 ) {
-    return usuarioData.getUsuariosInventario(id_empresa, id_local, id_inventario);
+  return usuarioData.getUsuariosInventario(id_empresa, id_local, id_inventario);
 };

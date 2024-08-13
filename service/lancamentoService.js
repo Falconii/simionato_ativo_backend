@@ -67,7 +67,12 @@ exports.deleteLancamento = async function(
         throw new erroDB.UserException(err.erro, err);
     }
 };
+
 exports.getResumoLancamentos = async function(params) {
     console.log(`Chegue na Servico getResumoLancamentos`);
     return lancamentoData.getResumoLancamentos(params);
+};
+
+exports.getEvolucaoLancamentos = async function(params) {
+    return lancamentoData.getEvolucaoLancamentos(params);
 };

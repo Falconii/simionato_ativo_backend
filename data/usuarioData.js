@@ -3,34 +3,34 @@ const db = require("../infra/database");
 const shared = require("../util/shared.js");
 
 /* GET CAMPOS */
-exports.getCampos = function(Usuario) {
-    return [
-        Usuario.id_empresa,
-        Usuario.id,
-        Usuario.cnpj_cpf,
-        Usuario.razao,
-        Usuario.cadastr,
-        Usuario.rua,
-        Usuario.nro,
-        Usuario.complemento,
-        Usuario.bairro,
-        Usuario.cidade,
-        Usuario.uf,
-        Usuario.cep,
-        Usuario.tel1,
-        Usuario.tel2,
-        Usuario.email,
-        Usuario.obs,
-        Usuario.senha,
-        Usuario.grupo,
-        Usuario.ativo,
-        Usuario.user_insert,
-        Usuario.user_update,
-    ];
+exports.getCampos = function (Usuario) {
+  return [
+    Usuario.id_empresa,
+    Usuario.id,
+    Usuario.cnpj_cpf,
+    Usuario.razao,
+    Usuario.cadastr,
+    Usuario.rua,
+    Usuario.nro,
+    Usuario.complemento,
+    Usuario.bairro,
+    Usuario.cidade,
+    Usuario.uf,
+    Usuario.cep,
+    Usuario.tel1,
+    Usuario.tel2,
+    Usuario.email,
+    Usuario.obs,
+    Usuario.senha,
+    Usuario.grupo,
+    Usuario.ativo,
+    Usuario.user_insert,
+    Usuario.user_update,
+  ];
 };
 /* CRUD GET */
-exports.getUsuario = function(id_empresa, id) {
-    strSql = ` select   
+exports.getUsuario = function (id_empresa, id) {
+  strSql = ` select   
 			   usu.id_empresa as  id_empresa  
 			,  usu.id as  id  
 			,  usu.cnpj_cpf as  cnpj_cpf  
@@ -56,78 +56,107 @@ exports.getUsuario = function(id_empresa, id) {
  			FROM usuarios usu 	  
 				 inner join gruposusuarios gru on gru.id_empresa = usu.id_empresa and gru.codigo = usu.grupo   
 			 where usu.id_empresa = ${id_empresa} and  usu.id = ${id}  `;
-    return db.oneOrNone(strSql);
+  return db.oneOrNone(strSql);
+};
+exports.getUsuarioByEmail = function (id_empresa, email) {
+  strSql = ` select   
+			   usu.id_empresa as  id_empresa  
+			,  usu.id as  id  
+			,  usu.cnpj_cpf as  cnpj_cpf  
+			,  usu.razao as  razao  
+			, to_char(usu.cadastr, 'DD/MM/YYYY') as cadastr  
+			,  usu.rua as  rua  
+			,  usu.nro as  nro  
+			,  usu.complemento as  complemento  
+			,  usu.bairro as  bairro  
+			,  usu.cidade as  cidade  
+			,  usu.uf as  uf  
+			,  usu.cep as  cep  
+			,  usu.tel1 as  tel1  
+			,  usu.tel2 as  tel2  
+			,  usu.email as  email  
+			,  usu.obs as  obs  
+			,  usu.senha as  senha  
+			,  usu.grupo as  grupo  
+			,  usu.ativo as  ativo  
+			,  usu.user_insert as  user_insert  
+			,  usu.user_update as  user_update  
+			,  gru.descricao as  grupo_descricao    
+ 			FROM usuarios usu 	  
+				 inner join gruposusuarios gru on gru.id_empresa = usu.id_empresa and gru.codigo = usu.grupo   
+			 where usu.id_empresa = ${id_empresa} and  usu.email = '${email}'  `;
+  return db.oneOrNone(strSql);
 };
 /* CRUD GET ALL*/
-exports.getUsuariosByAmbiente = function(params) {
-    if (params) {
-        where = "";
-        orderby = "";
-        paginacao = "";
+exports.getUsuariosByAmbiente = function (params) {
+  if (params) {
+    where = "";
+    orderby = "";
+    paginacao = "";
 
-        if (params.orderby == "") orderby = "usu.id_empresa,usu.id";
-        if (params.orderby == "Código") orderby = "usu.id_empresa,usu.id";
-        if (params.orderby == "Razão") orderby = "usu.id_empresa,usu.razao";
-        if (params.orderby == "Grupo")
-            orderby = "usu.id_empresa,usu.grupo,usu.razao";
-        if (params.orderby == "CNPJ/CPF")
-            orderby = "usu.id_empresa,usu.id,usu.cnpj_cpf";
+    if (params.orderby == "") orderby = "usu.id_empresa,usu.id";
+    if (params.orderby == "Código") orderby = "usu.id_empresa,usu.id";
+    if (params.orderby == "Razão") orderby = "usu.id_empresa,usu.razao";
+    if (params.orderby == "Grupo")
+      orderby = "usu.id_empresa,usu.grupo,usu.razao";
+    if (params.orderby == "CNPJ/CPF")
+      orderby = "usu.id_empresa,usu.id,usu.cnpj_cpf";
 
-        if (orderby != "") orderby = " order by " + orderby;
-        if (params.id_empresa !== 0) {
-            if (where != "") where += " and ";
-            where += `usu.id_empresa = ${params.id_empresa} `;
-        }
-        if (params.id !== 0) {
-            if (where != "") where += " and ";
-            where += `usu.id = ${params.id} `;
-        }
-        if (params.razao.trim() !== "") {
-            if (where != "") where += " and ";
-            if (params.sharp) {
-                where += `usu.razao = '${params.razao}' `;
-            } else {
-                where += `usu.razao like '%${params.razao.trim()}%' `;
-            }
-        }
-        if (params.cnpj_cpf.trim() !== "") {
-            if (where != "") where += " and ";
-            if (params.sharp) {
-                where += `usu.cnpj_cpf = '${params.cnpj_cpf}' `;
-            } else {
-                where += `usu.cnpj_cpf like '%${params.cnpj_cpf.trim()}%' `;
-            }
-        }
-        if (params.ativo.trim() !== "") {
-            if (where != "") where += " and ";
-            where += `usu.ativo = '${params.ativo.trim()}' `;
-        }
-        if (params.grupo !== 0) {
-            if (where != "") where += " and ";
-            where += `usu.grupo = ${params.grupo} `;
-        }
+    if (orderby != "") orderby = " order by " + orderby;
+    if (params.id_empresa !== 0) {
+      if (where != "") where += " and ";
+      where += `usu.id_empresa = ${params.id_empresa} `;
+    }
+    if (params.id !== 0) {
+      if (where != "") where += " and ";
+      where += `usu.id = ${params.id} `;
+    }
+    if (params.razao.trim() !== "") {
+      if (where != "") where += " and ";
+      if (params.sharp) {
+        where += `usu.razao = '${params.razao}' `;
+      } else {
+        where += `usu.razao like '%${params.razao.trim()}%' `;
+      }
+    }
+    if (params.cnpj_cpf.trim() !== "") {
+      if (where != "") where += " and ";
+      if (params.sharp) {
+        where += `usu.cnpj_cpf = '${params.cnpj_cpf}' `;
+      } else {
+        where += `usu.cnpj_cpf like '%${params.cnpj_cpf.trim()}%' `;
+      }
+    }
+    if (params.ativo.trim() !== "") {
+      if (where != "") where += " and ";
+      where += `usu.ativo = '${params.ativo.trim()}' `;
+    }
+    if (params.grupo !== 0) {
+      if (where != "") where += " and ";
+      where += `usu.grupo = ${params.grupo} `;
+    }
 
-        if (params.grupos.length > 0) {
-            console.log("===>", params.grupo, params.grupo.length);
+    if (params.grupos.length > 0) {
+      console.log("===>", params.grupo, params.grupo.length);
 
-            const grupos = params.grupos;
+      const grupos = params.grupos;
 
-            let filtro = grupos.toString();
+      let filtro = grupos.toString();
 
-            if (where != "") where += " and ";
+      if (where != "") where += " and ";
 
-            where += `usu.grupo in ( ${filtro} )`;
-        }
+      where += `usu.grupo in ( ${filtro} )`;
+    }
 
-        if (where != "") where = " where " + where;
-        if (params.contador == "S") {
-            sqlStr = `SELECT COALESCE(COUNT(*),0) as total 
+    if (where != "") where = " where " + where;
+    if (params.contador == "S") {
+      sqlStr = `SELECT COALESCE(COUNT(*),0) as total 
 				  FROM usuarios usu   
 				 inner join gruposusuarios gru on gru.id_empresa = usu.id_empresa and gru.codigo = usu.grupo   
 				  ${where} `;
-            return db.one(sqlStr);
-        } else {
-            strSql = `select   
+      return db.one(sqlStr);
+    } else {
+      strSql = `select   
 			   usu.id_empresa as  id_empresa  
 			,  usu.id as  id  
 			,  usu.cnpj_cpf as  cnpj_cpf  
@@ -165,10 +194,10 @@ exports.getUsuariosByAmbiente = function(params) {
 				 left  join locais         local on local.id_empresa = pad.id_empresa_padrao and local.id = pad.id_local_padrao
 				 left  join inventarios    inv   on inv.id_empresa   = pad.id_empresa_padrao  and inv.id_filial = pad.id_local_padrao and inv.codigo = pad.id_inv_padrao
   			${where} 			${orderby} ${paginacao} `;
-            return db.manyOrNone(strSql);
-        }
-    } else {
-        strSql = `select   
+      return db.manyOrNone(strSql);
+    }
+  } else {
+    strSql = `select   
 			   usu.id_empresa as  id_empresa  
 			,  usu.id as  id  
 			,  usu.cnpj_cpf as  cnpj_cpf  
@@ -193,79 +222,79 @@ exports.getUsuariosByAmbiente = function(params) {
 			,  gru.descricao as  grupo_descricao    
 			FROM usuarios usu			   
 				 inner join gruposusuarios gru on gru.id_empresa = usu.id_empresa and gru.codigo = usu.grupo  `;
-        return db.manyOrNone(strSql);
-    }
+    return db.manyOrNone(strSql);
+  }
 };
 
-exports.getUsuarios = function(params) {
-    if (params) {
-        where = "";
-        orderby = "";
-        paginacao = "";
+exports.getUsuarios = function (params) {
+  if (params) {
+    where = "";
+    orderby = "";
+    paginacao = "";
 
-        if (params.orderby == "") orderby = "usu.id_empresa,usu.id";
-        if (params.orderby == "Código") orderby = "usu.id_empresa,usu.id";
-        if (params.orderby == "Razão") orderby = "usu.id_empresa,usu.razao";
-        if (params.orderby == "Grupo")
-            orderby = "usu.id_empresa,usu.grupo,usu.razao";
-        if (params.orderby == "CNPJ/CPF")
-            orderby = "usu.id_empresa,usu.id,usu.cnpj_cpf";
+    if (params.orderby == "") orderby = "usu.id_empresa,usu.id";
+    if (params.orderby == "Código") orderby = "usu.id_empresa,usu.id";
+    if (params.orderby == "Razão") orderby = "usu.id_empresa,usu.razao";
+    if (params.orderby == "Grupo")
+      orderby = "usu.id_empresa,usu.grupo,usu.razao";
+    if (params.orderby == "CNPJ/CPF")
+      orderby = "usu.id_empresa,usu.id,usu.cnpj_cpf";
 
-        if (orderby != "") orderby = " order by " + orderby;
-        if (params.id_empresa !== 0) {
-            if (where != "") where += " and ";
-            where += `usu.id_empresa = ${params.id_empresa} `;
-        }
-        if (params.id !== 0) {
-            if (where != "") where += " and ";
-            where += `usu.id = ${params.id} `;
-        }
-        if (params.razao.trim() !== "") {
-            if (where != "") where += " and ";
-            if (params.sharp) {
-                where += `usu.razao = '${params.razao}' `;
-            } else {
-                where += `usu.razao like '%${params.razao.trim()}%' `;
-            }
-        }
-        if (params.cnpj_cpf.trim() !== "") {
-            if (where != "") where += " and ";
-            if (params.sharp) {
-                where += `usu.cnpj_cpf = '${params.cnpj_cpf}' `;
-            } else {
-                where += `usu.cnpj_cpf like '%${params.cnpj_cpf.trim()}%' `;
-            }
-        }
-        if (params.ativo.trim() !== "") {
-            if (where != "") where += " and ";
-            where += `usu.ativo = '${params.ativo.trim()}' `;
-        }
-        if (params.grupo !== 0) {
-            if (where != "") where += " and ";
-            where += `usu.grupo = ${params.grupo} `;
-        }
+    if (orderby != "") orderby = " order by " + orderby;
+    if (params.id_empresa !== 0) {
+      if (where != "") where += " and ";
+      where += `usu.id_empresa = ${params.id_empresa} `;
+    }
+    if (params.id !== 0) {
+      if (where != "") where += " and ";
+      where += `usu.id = ${params.id} `;
+    }
+    if (params.razao.trim() !== "") {
+      if (where != "") where += " and ";
+      if (params.sharp) {
+        where += `usu.razao = '${params.razao}' `;
+      } else {
+        where += `usu.razao like '%${params.razao.trim()}%' `;
+      }
+    }
+    if (params.cnpj_cpf.trim() !== "") {
+      if (where != "") where += " and ";
+      if (params.sharp) {
+        where += `usu.cnpj_cpf = '${params.cnpj_cpf}' `;
+      } else {
+        where += `usu.cnpj_cpf like '%${params.cnpj_cpf.trim()}%' `;
+      }
+    }
+    if (params.ativo.trim() !== "") {
+      if (where != "") where += " and ";
+      where += `usu.ativo = '${params.ativo.trim()}' `;
+    }
+    if (params.grupo !== 0) {
+      if (where != "") where += " and ";
+      where += `usu.grupo = ${params.grupo} `;
+    }
 
-        if (params.grupos.length > 0) {
-            console.log("===>", params.grupo, params.grupo.length);
+    if (params.grupos.length > 0) {
+      console.log("===>", params.grupo, params.grupo.length);
 
-            const grupos = params.grupos;
+      const grupos = params.grupos;
 
-            let filtro = grupos.toString();
+      let filtro = grupos.toString();
 
-            if (where != "") where += " and ";
+      if (where != "") where += " and ";
 
-            where += `usu.grupo in ( ${filtro} )`;
-        }
+      where += `usu.grupo in ( ${filtro} )`;
+    }
 
-        if (where != "") where = " where " + where;
-        if (params.contador == "S") {
-            sqlStr = `SELECT COALESCE(COUNT(*),0) as total 
+    if (where != "") where = " where " + where;
+    if (params.contador == "S") {
+      sqlStr = `SELECT COALESCE(COUNT(*),0) as total 
 				  FROM usuarios usu   
 				 inner join gruposusuarios gru on gru.id_empresa = usu.id_empresa and gru.codigo = usu.grupo   
 				  ${where} `;
-            return db.one(sqlStr);
-        } else {
-            strSql = `select   
+      return db.one(sqlStr);
+    } else {
+      strSql = `select   
 			   usu.id_empresa as  id_empresa  
 			,  usu.id as  id  
 			,  usu.cnpj_cpf as  cnpj_cpf  
@@ -291,10 +320,10 @@ exports.getUsuarios = function(params) {
 			FROM usuarios usu   
 				 inner join gruposusuarios gru on gru.id_empresa = usu.id_empresa and gru.codigo = usu.grupo   
 			${where} 			${orderby} ${paginacao} `;
-            return db.manyOrNone(strSql);
-        }
-    } else {
-        strSql = `select   
+      return db.manyOrNone(strSql);
+    }
+  } else {
+    strSql = `select   
 			   usu.id_empresa as  id_empresa  
 			,  usu.id as  id  
 			,  usu.cnpj_cpf as  cnpj_cpf  
@@ -319,13 +348,13 @@ exports.getUsuarios = function(params) {
 			,  gru.descricao as  grupo_descricao    
 			FROM usuarios usu			   
 				 inner join gruposusuarios gru on gru.id_empresa = usu.id_empresa and gru.codigo = usu.grupo  `;
-        return db.manyOrNone(strSql);
-    }
+    return db.manyOrNone(strSql);
+  }
 };
 
 /* CRUD - INSERT */
-exports.insertUsuario = function(usuario) {
-    strSql = `insert into usuarios (
+exports.insertUsuario = function (usuario) {
+  strSql = `insert into usuarios (
 		     id_empresa 
 		 ,   cnpj_cpf 
 		 ,   razao 
@@ -370,11 +399,11 @@ exports.insertUsuario = function(usuario) {
 		 ,   ${usuario.user_update} 
 		 ) 
  returning * `;
-    return db.oneOrNone(strSql);
+  return db.oneOrNone(strSql);
 };
 /* CRUD - UPDATE */
-exports.updateUsuario = function(usuario) {
-    strSql = `update   usuarios set  
+exports.updateUsuario = function (usuario) {
+  strSql = `update   usuarios set  
 		     cnpj_cpf = '${usuario.cnpj_cpf}' 
  		 ,   razao = '${usuario.razao}' 
  		 ,   cadastr = ${shared.formatDateYYYYMMDD(usuario.cadastr)} 
@@ -397,19 +426,19 @@ exports.updateUsuario = function(usuario) {
  		 where id_empresa = ${usuario.id_empresa} and  id = ${
     usuario.id
   }  returning * `;
-    return db.oneOrNone(strSql);
+  return db.oneOrNone(strSql);
 };
 /* CRUD - DELETE */
-exports.deleteUsuario = function(id_empresa, id) {
-    strSql = `delete from usuarios 
+exports.deleteUsuario = function (id_empresa, id) {
+  strSql = `delete from usuarios 
 		 where id_empresa = ${id_empresa} and  id = ${id}  `;
-    return db.oneOrNone(strSql);
+  return db.oneOrNone(strSql);
 };
 
 //post consulta personalizada
 
-exports.getUsuariosInventario = function(id_empresa, id_local, id_inventario) {
-    strSql = `select 
+exports.getUsuariosInventario = function (id_empresa, id_local, id_inventario) {
+  strSql = `select 
 				usu.id as id_usuario
 				,usu.razao
 				,coalesce(inv.descricao,'USUÁRIO NÃO ESTÁ NESTE INVENTÁRIO') as inventario
@@ -422,5 +451,5 @@ exports.getUsuariosInventario = function(id_empresa, id_local, id_inventario) {
 				left   join inventarios inv on inv.id_empresa = usu.id_empresa and inv.id_filial = usu_inv.id_filial and inv.codigo = usu_inv.id_filial and inv.codigo = usu_inv.id_inventario 
 				where usu.id_empresa = ${id_empresa}
               `;
-    return db.manyOrNone(strSql);
+  return db.manyOrNone(strSql);
 };

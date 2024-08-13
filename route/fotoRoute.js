@@ -12,6 +12,8 @@ const GOOGLE_API_FOLDER_ID_SIMIONATO = "1eQuwNcfTmpYUWUIvlGBouodico8WrjoD";
 const PORT = process.env.PORT || 3000;
 const URL_GOOGLE_DRIVE = "https://drive.google.com/uc?export=view&id=";
 
+const path = require("path");
+
 /*
 When you upload any file in Google Drive and share it, the shared link looks like this:
  
@@ -23,6 +25,24 @@ https://drive.google.com/uc?export=download&id=DRIVE_FILE_ID
 */
 
 /* ROTA GETONE foto */
+
+// Verifica o espaço de armazenamento disponível no Google Drive
+async function checkStorageQuota(driveService) {
+    try {
+        const about = await driveService.about.get({
+            fields: "storageQuota",
+        });
+        const totalStorage = (about.data.storageQuota.limit / 1024 ** 3).toFixed(2); //gb
+        const usedStorage = (about.data.storageQuota.usage / 1024 ** 3).toFixed(2); //gb
+        const remainingStorage = (totalStorage - usedStorage).toFixed(2); //gb
+
+        console.log(`Armazenamento total: ${totalStorage} GB`);
+        console.log(`Armazenamento usado: ${usedStorage} GB`);
+        console.log(`Armazenamento restante: ${remainingStorage} GB`);
+    } catch (error) {
+        console.error("Erro ao verificar a cota de armazenamento:", error.message);
+    }
+}
 router.get(
     "/api/foto/:id_empresa/:id_local/:id_inventario/:id_imobilizado/:id_pasta/:id_file/:file_name",
     async function(req, res) {
@@ -142,22 +162,22 @@ router.delete(
 /* ROTA CONSULTA POST fotos */
 router.post("/api/fotos", async function(req, res) {
     /*
-                                    	{
-                                    		"id_empresa":0, 
-                                    		"id_local":0, 
-                                    		"id_inventario":0, 
-                                    		"id_imobilizado":0, 
-                                    		"id_pasta":"", 
-                                    		"id_file":"", 
-                                    		"file_name":"", 
-                                    		"destaque":"N", 
-                                    		"pagina":0, 
-                                    		"tamPagina":50, 
-                                    		"contador":"N", 
-                                    		"orderby":"", 
-                                    		"sharp":false 
-                                    	}
-                                    */
+                                          	{
+                                          		"id_empresa":0, 
+                                          		"id_local":0, 
+                                          		"id_inventario":0, 
+                                          		"id_imobilizado":0, 
+                                          		"id_pasta":"", 
+                                          		"id_file":"", 
+                                          		"file_name":"", 
+                                          		"destaque":"N", 
+                                          		"pagina":0, 
+                                          		"tamPagina":50, 
+                                          		"contador":"N", 
+                                          		"orderby":"", 
+                                          		"sharp":false 
+                                          	}
+                                          */
     try {
         const params = req.body;
         const lsRegistros = await fotoSrv.getFotos(params);
@@ -657,21 +677,24 @@ router.post(
                 mimeType: "image/jpg",
                 body: fs.createReadStream(`./fotos/${file_name}`),
             };
+
+            await checkStorageQuota(driveService);
+
             console.log("Buscando Arquivo No GoogleDrive", foto.id_file);
 
             let existeDrive = foto.id_file == "" ? false : true;
 
             /*  try {
-                                 // Verifincando se existe ok
-                                 const responseGet = await driveService.files.get({
-                                   fileId: foto.id_file,
-                                 });
-                                 existeDrive = true;
-                                 console.log("Arquivo Existe No GoogleDrive", existeDrive);
-                                 console.log("GET", responseGet.data.length());
-                               } catch (error) {
-                                 existeDrive = false;
-                               } */
+                                                   // Verifincando se existe ok
+                                                   const responseGet = await driveService.files.get({
+                                                     fileId: foto.id_file,
+                                                   });
+                                                   existeDrive = true;
+                                                   console.log("Arquivo Existe No GoogleDrive", existeDrive);
+                                                   console.log("GET", responseGet.data.length());
+                                                 } catch (error) {
+                                                   existeDrive = false;
+                                                 } */
 
             if (!existeDrive) {
                 console.log("Gravando...");

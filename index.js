@@ -10,20 +10,20 @@ global.appRoot = path.resolve(__dirname);
 app.use(express.json());
 
 const allowCors = (req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*"); // colocar os dominios permitidos | ex: 127.0.0.1:3000
+    res.header("Access-Control-Allow-Origin", "*"); // colocar os dominios permitidos | ex: 127.0.0.1:3000
 
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Credentials, X-Access-Token, X-Key"
-  );
-  res.header(
-    "Access-Control-Allow-Methods",
-    "GET, PUT, POST, DELETE, OPTIONS, PATCH"
-  );
+    res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Credentials, X-Access-Token, X-Key"
+    );
+    res.header(
+        "Access-Control-Allow-Methods",
+        "GET, PUT, POST, DELETE, OPTIONS, PATCH"
+    );
 
-  res.header("Access-Control-Allow-Credentials", "false");
+    res.header("Access-Control-Allow-Credentials", "false");
 
-  next();
+    next();
 };
 
 app.use(allowCors);
@@ -57,8 +57,11 @@ app.use("/", require("./route/fotoRoute.js"));
 app.use("/", require("./route/correcaoRoute.js"));
 app.use("/", require("./route/googleDriveV4Route.js"));
 app.use("/", require("./route/diretorioRoute.js"));
+app.use("/", require("./route/sendMailRoute.js"));
+app.use("/", require("./route/googledriveinformationRoute.js"));
+
 app.listen(PORT, () => {
-  console.log(`Servidor No Ar. Porta ${PORT}`);
+    console.log(`Servidor No Ar. Porta ${PORT}`);
 });
 
 //atualizando a key
@@ -66,86 +69,86 @@ app.listen(PORT, () => {
 refresh();
 
 async function refresh() {
-  let arquivo = "";
+    let arquivo = "";
 
-  //google drive falconi
-  //Buscando key google
-  const param = await parametroSrv.getParametro(1, "key", "googledrive", 999);
-  if (param == null) {
-    console.log("Não Foi Encontrada Chave GOOGLE DRIVE");
-    return;
-  }
-  if (PORT == 3000) {
-    arquivo =
-      "C:/Repositorios Git/Simionato/controle de ativo/keys/googlekey.json";
-  } else {
-    arquivo = "keys/googlekey.json";
-  }
+    //google drive falconi
+    //Buscando key google
+    const param = await parametroSrv.getParametro(1, "key", "googledrive", 999);
+    if (param == null) {
+        console.log("Não Foi Encontrada Chave GOOGLE DRIVE");
+        return;
+    }
+    if (PORT == 3000) {
+        arquivo =
+            "C:/Repositorios Git/Simionato/controle de ativo/keys/googlekey.json";
+    } else {
+        arquivo = "keys/googlekey.json";
+    }
 
-  try {
-    var writeStream = fs.createWriteStream(arquivo);
-    writeStream.write(param.parametro);
-    writeStream.end();
-    console.log("Chave Atualizada Com Sucesso!");
-  } catch (error) {
-    console.log(`Erro Na Gravação googlekey, No Servidor ${error}`);
-  }
+    try {
+        var writeStream = fs.createWriteStream(arquivo);
+        writeStream.write(param.parametro);
+        writeStream.end();
+        console.log("Chave Atualizada Com Sucesso!");
+    } catch (error) {
+        console.log(`Erro Na Gravação googlekey, No Servidor ${error}`);
+    }
 
-  //google drive simionato
-  //Buscando key google
-  const param2 = await parametroSrv.getParametro(
-    1,
-    "key-000001-000014-000010",
-    "googledrive",
-    999
-  );
-  if (param2 == null) {
-    console.log("Não Foi Encontrada Chave GOOGLE DRIVE-SIMONATO");
-    return;
-  }
-  if (PORT == 3000) {
-    arquivo =
-      "C:/Repositorios Git/Simionato/controle de ativo/keys/google-simionato-000001-000014-000010-key.json";
-  } else {
-    arquivo = "keys/google-simionato-000001-000014-000010-key.json";
-  }
-
-  try {
-    var writeStream = fs.createWriteStream(arquivo);
-    writeStream.write(param2.parametro);
-    writeStream.end();
-    console.log("Chave Atualizada Com Sucesso Simionato!");
-  } catch (error) {
-    console.log(`Erro Na Gravação googlekey SIMIONATO, No Servidor ${error}`);
-  }
-
-  //google drive intelli-simionato
-  //Buscando key google
-  const param3 = await parametroSrv.getParametro(
-    1,
-    "key-intelli",
-    "googledrive",
-    999
-  );
-  if (param3 == null) {
-    console.log("Não Foi Encontrada Chave GOOGLE DRIVE-INTELLI-SIMONATO");
-    return;
-  }
-  if (PORT == 3000) {
-    arquivo =
-      "C:/Repositorios Git/Simionato/controle de ativo/keys/intelli-simionato.json";
-  } else {
-    arquivo = "keys/intelli-simionato.json";
-  }
-
-  try {
-    var writeStream = fs.createWriteStream(arquivo);
-    writeStream.write(param3.parametro);
-    writeStream.end();
-    console.log("Chave Atualizada Com Sucesso iNTELLI-Simionato!");
-  } catch (error) {
-    console.log(
-      `Erro Na Gravação googlekey INTELLI-SIMIONATO, No Servidor ${error}`
+    //google drive simionato
+    //Buscando key google
+    const param2 = await parametroSrv.getParametro(
+        1,
+        "key-000001-000014-000010",
+        "googledrive",
+        999
     );
-  }
+    if (param2 == null) {
+        console.log("Não Foi Encontrada Chave GOOGLE DRIVE-SIMONATO");
+        return;
+    }
+    if (PORT == 3000) {
+        arquivo =
+            "C:/Repositorios Git/Simionato/controle de ativo/keys/google-simionato-000001-000014-000010-key.json";
+    } else {
+        arquivo = "keys/google-simionato-000001-000014-000010-key.json";
+    }
+
+    try {
+        var writeStream = fs.createWriteStream(arquivo);
+        writeStream.write(param2.parametro);
+        writeStream.end();
+        console.log("Chave Atualizada Com Sucesso Simionato!");
+    } catch (error) {
+        console.log(`Erro Na Gravação googlekey SIMIONATO, No Servidor ${error}`);
+    }
+
+    //google drive intelli-simionato
+    //Buscando key google
+    const param3 = await parametroSrv.getParametro(
+        1,
+        "key-intelli",
+        "googledrive",
+        999
+    );
+    if (param3 == null) {
+        console.log("Não Foi Encontrada Chave GOOGLE DRIVE-INTELLI-SIMONATO");
+        return;
+    }
+    if (PORT == 3000) {
+        arquivo =
+            "C:/Repositorios Git/Simionato/controle de ativo/keys/intelli-simionato.json";
+    } else {
+        arquivo = "keys/intelli-simionato.json";
+    }
+
+    try {
+        var writeStream = fs.createWriteStream(arquivo);
+        writeStream.write(param3.parametro);
+        writeStream.end();
+        console.log("Chave Atualizada Com Sucesso iNTELLI-Simionato!");
+    } catch (error) {
+        console.log(
+            `Erro Na Gravação googlekey INTELLI-SIMIONATO, No Servidor ${error}`
+        );
+    }
 }

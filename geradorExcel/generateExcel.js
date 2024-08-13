@@ -82,6 +82,10 @@ async function generateExcel(lsRegistros, inventario, complemento) {
     const uniqueIds = {}; // objeto para armazenar IDs únicos e seus dados
 
     for await (const registro of lsRegistros) {
+      if (registro.id_imobilizado >= 6000 && registro.id_imobilizado <= 6008) {
+        continue;
+      }
+
       //Loop assíncrono sobre os registros fornecidos
       if (!uniqueIds[registro.id_imobilizado]) {
         // veriifica se o ID já foi add
@@ -140,6 +144,7 @@ async function generateExcel(lsRegistros, inventario, complemento) {
       "Plaqueta",
       "Nova Plaqueta",
       "Descrição do Imobilizado",
+      "Observação Lançamento",
       "Código CC",
       "Descrição CC",
       "Código Novo CC",
@@ -151,26 +156,25 @@ async function generateExcel(lsRegistros, inventario, complemento) {
       "Item NFE",
       "Condição",
       "Book",
-      "Observação Lançamento",
       "Data Lançamento",
       "Nome do Usuário",
-      "Valor Aquisição",
-      "Total Depreciado",
-      "Foto 1",
-      "Foto 2",
-      "Foto 3",
-      "Foto 4",
-      "Foto 5",
-      "Observação 1",
-      "Observação 2",
-      "Observação 3",
-      "Observação 4",
-      "Observação 5",
-      "Destaque 1",
-      "Destaque 2",
-      "Destaque 3",
-      "Destaque 4",
-      "Destaque 5",
+      //  "Valor Aquisição",
+      //  "Total Depreciado",
+      //  "Foto 1",
+      //  "Foto 2",
+      //  "Foto 3",
+      //  "Foto 4",
+      //  "Foto 5",
+      //  "Observação 1",
+      //  "Observação 2",
+      //  "Observação 3",
+      //  "Observação 4",
+      //  "Observação 5",
+      //  "Destaque 1",
+      //  "Destaque 2",
+      //  "Destaque 3",
+      //  "Destaque 4",
+      //  "Destaque 5",
     ];
     sheet.addRow(titles);
 
@@ -244,6 +248,7 @@ async function generateExcel(lsRegistros, inventario, complemento) {
           registro.id_imobilizado || "",
           registro.new_codigo || "",
           registro.imo_descricao || "",
+          registro.lanc_obs || "",
           registro.imo_cod_cc,
           registro.cc_descricao || "",
           registro.new_cc || "",
@@ -255,14 +260,13 @@ async function generateExcel(lsRegistros, inventario, complemento) {
           parseInt(registro.imo_item) || "",
           getCondicao(registro.condicao),
           registro.book == "S" ? "SIM" : "NÃO",
-          registro.lanc_obs || "",
           registro.lanc_dt_lanca || "",
           registro.usu_razao || "",
-          registro.vlraquisicao,
-          registro.totaldepreciado,
-          ...fotoCells,
-          ...obsCells,
-          ...highlightCells,
+          //registro.vlraquisicao,
+          //registro.totaldepreciado,
+          //...fotoCells,
+          //...obsCells,
+          //...highlightCells,
         ]);
       }
     );
