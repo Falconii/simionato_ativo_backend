@@ -121,11 +121,13 @@ router.post("/api/enviaremail", async(req, res) => {
     try {
         const { id_empresa, destinatario, assunto, mensagem } = req.body;
 
-        const mailList = [
-            destinatario,
-            "ronie@simionatoauditores.com.br",
-            "daniel.barros@simionatoauditores.com.br",
-        ];
+        /*  const mailList = [
+                destinatario,
+                "ronie@simionatoauditores.com.br",
+                "daniel.barros@simionatoauditores.com.br",
+            ]; */
+
+        const mailList = [destinatario];
 
         // Obtendo o HTML do email com os detalhes do usuário
         const html = await getHtml(id_empresa, destinatario);
