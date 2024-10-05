@@ -1,4 +1,7 @@
+const  dotenv = require("dotenv");
+dotenv.config();
 const express = require("express");
+const { google } = require("googleapis");
 const path = require("path");
 const fs = require("fs");
 const parametroSrv = require("./service/parametroService");
@@ -59,6 +62,9 @@ app.use("/", require("./route/googleDriveV4Route.js"));
 app.use("/", require("./route/diretorioRoute.js"));
 app.use("/", require("./route/sendMailRoute.js"));
 app.use("/", require("./route/googledriveinformationRoute.js"));
+app.use("/", require("./route/googleRoute.js"));
+app.use("/", require("./route/fileRoute.js"));
+
 
 app.listen(PORT, () => {
     console.log(`Servidor No Ar. Porta ${PORT}`);
@@ -70,17 +76,18 @@ refresh();
 
 async function refresh() {
     let arquivo = "";
-
     //google drive falconi
     //Buscando key google
+
     const param = await parametroSrv.getParametro(1, "key", "googledrive", 999);
+   
     if (param == null) {
         console.log("Não Foi Encontrada Chave GOOGLE DRIVE");
-        return;
+        return ;
     }
     if (PORT == 3000) {
         arquivo =
-            "C:/Repositorios Git/Simionato/controle de ativo/keys/googlekey.json";
+            "C:/Repositorios/Simionato/ativo web/keys/googlekey.json";
     } else {
         arquivo = "keys/googlekey.json";
     }
@@ -93,7 +100,7 @@ async function refresh() {
     } catch (error) {
         console.log(`Erro Na Gravação googlekey, No Servidor ${error}`);
     }
-
+ 
     //google drive simionato
     //Buscando key google
     const param2 = await parametroSrv.getParametro(
@@ -108,7 +115,7 @@ async function refresh() {
     }
     if (PORT == 3000) {
         arquivo =
-            "C:/Repositorios Git/Simionato/controle de ativo/keys/google-simionato-000001-000014-000010-key.json";
+            "C:/Repositorios/Simionato/ativo web/keys/google-simionato-000001-000014-000010-key.json";
     } else {
         arquivo = "keys/google-simionato-000001-000014-000010-key.json";
     }
@@ -136,7 +143,7 @@ async function refresh() {
     }
     if (PORT == 3000) {
         arquivo =
-            "C:/Repositorios Git/Simionato/controle de ativo/keys/intelli-simionato.json";
+            "C:/Repositorios/Simionato/ativo web/keys/intelli-simionato.json";
     } else {
         arquivo = "keys/intelli-simionato.json";
     }

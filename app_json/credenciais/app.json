@@ -1,0 +1,138 @@
+{
+    "app": {
+        "backend": {
+            "src": "C://Repositorios//Simionato//ativo web/simionato_ativo_backend",
+            "database": {
+                "type": "POSGRESQL",
+                "name": "nao_usado",
+                "conexao": {
+                    "user": "postgres",
+                    "password": "123456",
+                    "host": "localhost",
+                    "port": 5432
+                },
+                "script_src": "C://Repositorios//Simionato//ativo web/simionato_ativo_backend//script_credenciais"
+            },
+            "tables": [{
+                    "name": "credenciais",
+                    "fields": [{
+                            "name": "id",
+                            "type": "serial",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "client_id",
+                            "type": "varchar",
+                            "length": 255,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "client_secret",
+                            "type": "varchar",
+                            "length": 255,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "redirect_uri",
+                            "type": "varchar",
+                            "length": 255,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "code",
+                           "type": "varchar",
+                            "length": 255,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "tokens",
+                           "type": "varchar",
+                            "length": 255,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_insert",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_update",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }
+                    ],
+                    "inner_join": [],
+                    "left_join": [],
+                    "primaryKey": [
+                        {
+                            "key": "id"
+                        }
+                    ],
+                    "variables": {
+                        "getone": "credencial",
+                        "getall": "credenciais",
+                        "alias": "param"
+                    },
+                    "where": {
+                        "parametro_01": [
+                            { "name": "id", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "client_id"    , "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
+                            { "name": "client_secret", "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
+                        ]
+                    },
+                    "orderby": [
+                        { "label": "", "comparativo": " != '' ", "key": "param.id" },
+                        { "label": "CLIENTE_ID"   , "comparativo": " != '' ", "key": "param.client_id" },
+                        { "label": "CLIENTE_SECRET", "comparativo": " != 0 " , "key": "param.client_secret" }
+                    ],
+                    "tablespace": "Producao"
+                }
+            ],
+            "parametros": []
+        },
+        "frontend": {
+            "src": "C://Repositorios//Simionato//ativo web//simionato_ativo_frontend//src//app",
+            "server": {
+                "includes": [{
+                        "variable": "express",
+                        "from": "express"
+                    },
+                    {
+                        "variable": "cors",
+                        "from": "cors"
+                    }
+                ],
+                "app": "app",
+                "porta": 3000,
+                "rotas": [{ "path": "/", "require": ".//route//tarefaRoute.js" }]
+            }
+        }
+    }
+}
