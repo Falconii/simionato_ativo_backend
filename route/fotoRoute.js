@@ -639,7 +639,7 @@ router.post(
 
         if (PORT == 3000) {
             arquivo =
-                "C:/Repositorios Git/Simionato/controle de ativo/keys/google-simionato-000001-000014-000010-key.json";
+                "C:/Repositorios/Simionato/ativo web/keys/google-simionato-000001-000014-000010-key.json";
         } else {
             arquivo = "./keys/google-simionato-000001-000014-000010-key.json";
         }
@@ -857,7 +857,7 @@ router.post("/api/deleteuploadfotov2", async function(req, res) {
         try {
             if (PORT == 3000) {
                 arquivo =
-                    "C:/Repositorios Git/Simionato/controle de ativo/keys/google-simionato-000001-000014-000010-key.json";
+                    "C:/Repositorios/Simionato/ativo web/keys/google-simionato-000001-000014-000010-key.json";
             } else {
                 arquivo = "./keys/google-simionato-000001-000014-000010-key.json";
             }
@@ -923,5 +923,60 @@ router.post("/api/deleteuploadfotov2", async function(req, res) {
         }
     }
 });
+
+router.post("/api/changefilenameuploadfotov2", async function(req, res) {
+    let arquivo = "";
+    try {
+
+        try {
+            if (PORT == 3000) {
+                arquivo =
+                    "C:/Repositorios/Simionato/ativo web/keys/google-simionato-000001-000014-000010-key.json";
+            } else {
+                arquivo = "keys/google-simionato-000001-000014-000010-key.json";
+            }
+
+            const auth = new google.auth.GoogleAuth({
+                keyFile: arquivo,
+                scopes: ["https://www.googleapis.com/auth/drive"],
+            });
+
+            const driveService = google.drive({
+                version: "v3",
+                auth,
+            });
+          
+            const body = {
+                'name': 'foto do copo de agua'
+            }
+            
+            const response = await driveService.files.update({
+                fileId: '1My1uquyCu9aZ9C9ZIDn7iqlTUpsG4j9h',
+                resource: body,
+              });
+            console.log("Retorno Do Google: ", response);
+
+            res.status(200).json({"message" : "Nome Alterado Com Sucesso!"});
+
+        } catch(err){
+            if (err.name == "MyExceptionDB") {
+                res.status(409).json(err);
+            } else {
+                res
+                    .status(500)
+                    .json({ erro: "BAK-END", tabela: "Foto", message: err.message });
+            }
+        }
+    } catch (err) {
+        if (err.name == "MyExceptionDB") {
+            res.status(409).json(err);
+        } else {
+            res
+                .status(500)
+                .json({ erro: "BAK-END", tabela: "Foto", message: err.message });
+        }
+    }
+});
+
 
 module.exports = router;

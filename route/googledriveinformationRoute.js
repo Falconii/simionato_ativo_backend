@@ -33,10 +33,15 @@ async function checkStorageQuota(driveService) {
 router.post("/api/discofreev1", async function(req, res) {
     console.log("Entrei Na Rota discofreev1!");
 
-    const id_empresa = req.body.id_empresa;
+    /* const id_empresa = req.body.id_empresa;
     const id_local = req.body.id_local;
     const id_inventario = req.body.id_inventario;
-    const key = req.body.key;
+    const key = req.body.key; */
+
+    const {id_empresa }   = req.body;
+    const {id_local}      = req.body;
+    const {id_inventario} = req.body;
+    const {key}           = req.body;
     let arquivo = "";
 
     if (key == "") {
@@ -58,9 +63,10 @@ router.post("/api/discofreev1", async function(req, res) {
         if (key == "copperstill") {
             if (PORT == 3000) {
                 arquivo =
-                    "C:/Repositorios Git/Simionato/controle de ativo/keys/google-simionato-000001-000014-000010-key.json";
+                    "C:/Repositorios/Simionato/ativo web/simionato_ativo_backend/keys/google-simionato-000001-000014-000010-key.json";
+                   
             } else {
-                arquivo = "./keys/google-simionato-000001-000014-000010-key.json";
+                arquivo = "keys/google-simionato-000001-000014-000010-key.json";
             }
         }
         if (key == "intelli") {

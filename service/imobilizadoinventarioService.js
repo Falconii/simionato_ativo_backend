@@ -42,6 +42,12 @@ exports.getImobilizadoinventarioExisteNew = async function (
 exports.getImobilizadosinventarios = async function (params) {
   return imobilizadoinventarioData.getImobilizadosinventarios(params);
 };
+
+/* CRUD GET ALL SERVICE */
+exports.getImobilizadosinventariosFotos = async function (params) {
+  return imobilizadoinventarioData.getImobilizadosinventariosFotos(params);
+};
+
 //* CRUD - INSERT - SERVICE */
 exports.insertImobilizadoinventario = async function (imobilizadoinventario) {
   try {

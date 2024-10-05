@@ -30,6 +30,7 @@ exports.getInventario = function(id_empresa, id_filial, codigo) {
 			, to_char(inv.data_final, 'DD/MM/YYYY') as data_final  
 			, to_char(inv.data_encerra, 'DD/MM/YYYY') as data_encerra  
 			,  inv.laudo as  laudo  
+			,  inv.folder_id as folder_id
 			,  inv.user_insert as  user_insert  
 			,  inv.user_update as  user_update  
 			,  local.razao as  local_razao  

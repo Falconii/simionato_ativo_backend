@@ -7,6 +7,10 @@ CREATE DATABASE ?????????
 		TABLESPACE = "Producao" 
 		CONNECTION LIMIT = -1; 
 GO 
+
+CREATE EXTENSION unaccent;
+GO
+
 CREATE TABLE public.centroscustos  ( 
 	id_empresa 	int4 NOT NULL,
 	id_filial  	int4 NOT NULL,
@@ -141,6 +145,7 @@ CREATE TABLE public.inventarios  (
 	data_final    	date NOT NULL,
 	data_encerra  	date NULL,
 	laudo         	text NOT NULL,
+	folder_id       varchar(255) NOT NULL,
 	user_insert   	int4 NOT NULL,
 	user_update   	int4 NOT NULL,
 	PRIMARY KEY(id_empresa,id_filial,codigo)
@@ -307,6 +312,24 @@ CREATE TABLE public.valores  (
 	PRIMARY KEY(id_empresa,id_filial,id_imobilizado)
 )
 GO
+
+DROP TABLE IF EXISTS auditorias;
+CREATE TABLE public.auditorias  ( 
+	id_empresa     	int4 NOT NULL,
+	id_filial      	int4 NOT NULL,
+	id_inventario 	int4 NOT NULL,
+	id_imobilizado 	int4 NOT NULL,
+	id              serial NOT NULL,
+	dtacao      	date NOT NULL,
+	acao            varchar(15) NOT NULL,
+	escopo          varchar(15) NOT NULL,
+	id_usuario    	int4 NOT NULL,
+	histo_antes     text NOT NULL,
+	histo_atual     text NOT NULL,
+	user_insert    	int4 NOT NULL,
+	user_update    	int4 NOT NULL,
+	PRIMARY KEY(id_empresa,id_filial,id_inventario,id_imobilizado,id)
+)
 
 
     

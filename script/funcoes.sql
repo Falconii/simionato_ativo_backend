@@ -83,4 +83,115 @@ LANGUAGE 'plpgsql'
 ;
 /*
 select * from resumo_inventario(1,8,2)
-/*
+*/
+
+
+CREATE OR REPLACE FUNCTION "public"."call_change_inv" (
+	in _id_empresa    int4, 
+	in _id_local      int4, 
+	in _id_inventario int4, 
+	in _status        int4,
+	out _qtd          int4
+	) 
+AS
+$$
+DECLARE
+
+ tempo public.de_para%ROWTYPE;
+ 
+
+BEGIN
+_qtd := 0 ;
+ FOR tempo in  
+      SELECT *
+      FROM  public.de_para depara
+      WHERE depara.id_empresa        = _id_empresa 
+	        and depara.id_local      = _id_local 
+			and depara.id_inventario = _id_inventario
+			and depara.status        = (_status-1)
+      ORDER BY depara.id_empresa,depara.id_local,depara.id_inventario,depara.de
+      LOOP  
+	  if ((_status-1) = 0) then 
+
+         update lancamentos set id_inventario = tempo.para 
+		 where  id_empresa     = _id_empresa 
+	        and id_filial      = _id_local 
+			and id_inventario  = _id_inventario
+			and id_imobilizado = tempo.de;
+
+		update de_para set status = 1
+        where   id_empresa    = _id_empresa 
+	        and id_local      = _id_local 
+			and id_inventario = _id_inventario
+			and de            =  tempo.de;
+
+        _qtd := _qtd + 1;
+
+	  end if;
+
+	  if ((_status-1) =  1) then 
+
+         update fotos set id_imobilizado = tempo.para 
+		 where  id_empresa     = _id_empresa 
+	        and id_local       = _id_local 
+			and id_inventario  = _id_inventario
+			and id_imobilizado = tempo.de;
+
+		update de_para set status = 2
+        where   id_empresa    = _id_empresa 
+	        and id_local      = _id_local 
+			and id_inventario = _id_inventario
+			and de            =  tempo.de;
+
+        _qtd := _qtd + 1;
+
+	  end if;
+
+	  if ((_status-1) =  2) then 
+
+         delete from public.imobilizadosinventarios 
+	     where   id_empresa    = _id_empresa 
+	       	and id_filial      = _id_local 
+			and id_inventario  = _id_inventario
+			and id_imobilizado =  tempo.de;
+
+		delete from public.imobilizados
+		where   id_empresa     = _id_empresa 
+	       	and id_filial      = _id_local 
+			and codigo         =  tempo.de;
+
+		update de_para set status = 3
+        where   id_empresa    = _id_empresa 
+	        and id_local      = _id_local 
+			and id_inventario = _id_inventario
+			and de            =  tempo.de;
+
+        _qtd := _qtd + 1;
+
+	  end if;
+	  	  
+ END LOOP;
+
+
+END;
+$$
+LANGUAGE 'plpgsql'
+
+select * from de_para
+select * from call_change_inv(1,14,10,3)
+	
+select * from fotos foto
+inner join de_para de on 
+                de.id_empresa     = foto.id_empresa 
+	        and de.id_local       = foto.id_local 
+			and de.id_inventario  = foto.id_inventario
+			and de.para = foto.id_imobilizado;
+
+
+select * 
+from de_para depara
+inner join imobilizadosinventarios dp_de on 
+                dp_de.id_empresa     = depara.id_empresa 
+	        and dp_de.id_filial      = depara.id_local 
+			and dp_de.id_inventario  = depara.id_inventario
+			and dp_de.id_imobilizado = depara.de

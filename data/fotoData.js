@@ -87,6 +87,20 @@ exports.getFotos = function(params) {
             if (where != "") where += " and ";
             where += `foto.id_imobilizado = ${params.id_imobilizado} `;
         }
+        if (params.imobilizados){
+
+            if (params.imobilizados.length > 0) {
+    
+                const imobilizados = params.imobilizados;
+    
+                let filtro = imobilizados.toString();
+    
+                if (where != "") where += " and ";
+    
+                where += `foto.id_imobilizado in ( ${filtro} )`;
+            }
+        }
+
         if (params.id_pasta.trim() !== "") {
             if (where != "") where += " and ";
             if (params.sharp) {

@@ -2,25 +2,33 @@ const express = require("express");
 const router = express.Router();
 const nodemailer = require("nodemailer");
 const usuarioSrv = require("../service/usuarioService");
+const fs = require("fs");
 
 // Configurações de e-mail
 const configEmail = {
-    user: "inventario2024@outlook.com.br",
-    pass: "kamekameha01?",
-    smtp: "smtp.outlook.com",
+    user: "control_time@simionatoauditores.com.br",
+    pass: "uv0Hq0%7*pG^TUhT2qyu",
+    smtp: "mail-ssl.m9.network",
     nome: "Inventario-Web",
 };
 
 // Configurar o transporte SMTP
 const transporter = nodemailer.createTransport({
     host: configEmail.smtp,
-    port: 587,
-    secure: false, // true para 465, false para outras portas
+    port: 465,
+    secure: true,  // Definir para true para SSL na porta 465
     auth: {
         user: configEmail.user,
         pass: configEmail.pass,
     },
+    tls: {
+        rejectUnauthorized: false,
+    },
+    greetingTimeout: 15000,
+    logger: true,
 });
+
+
 
 async function getHtml(id_empresa, destinatario) {
     try {
@@ -146,6 +154,47 @@ router.post("/api/enviaremail", async(req, res) => {
         await transporter.sendMail(mailOptions);
 
         res.status(200).json({ message: "E-mail enviado com sucesso!" });
+    } catch (error) {
+        console.error("Erro ao enviar e-mail:", error);
+        res.status(500).json({ error: "Erro ao enviar e-mail" });
+    }
+});
+
+
+router.post("/api/enviaremailarquivo", async(req, res) => {
+    try {
+        const { id_empresa, id_local, id_inventario, destinatario, assunto, mensagem, fileName } = req.body;
+              
+        const mailList = [
+            destinatario
+        ];
+
+        // Obtendo o HTML do email com os detalhes do usuário
+        const html = await getHtml(id_empresa, destinatario);
+
+        // Opções do e-mail
+        const mailOptions = {
+            from: `"${configEmail.nome}" <${configEmail.user}>`,
+            to: mailList,
+            subject: assunto, // Assunto padrão se estiver vazio
+            text: mensagem, // Conteúdo de texto alternativo
+            attachments: [{
+                filename: fileName,
+                path: "./rel_excel/".concat(fileName),
+            }, ],
+        };
+
+        // Enviando o e-mail
+        await transporter.sendMail(mailOptions);
+
+        res.status(200).json({ message: "E-mail enviado com sucesso!" });
+
+        try {
+            fs.unlinkSync(`./rel_excel/${fileName}`);
+        } catch (err) {
+            console.error(err);
+        }
+
     } catch (error) {
         console.error("Erro ao enviar e-mail:", error);
         res.status(500).json({ error: "Erro ao enviar e-mail" });

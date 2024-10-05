@@ -22,6 +22,17 @@ exports.getCampos = function (Empresa) {
     Empresa.tel2,
     Empresa.email,
     Empresa.obs,
+	Empresa.client_id, 				
+	Empresa.client_secret, 			
+	Empresa.url, 					
+	Empresa.url_redirecionamento, 	
+	Empresa.code,  					
+	Empresa.access_token,  			
+	Empresa.refresh_token,  			
+	Empresa.access_token_validade, 	
+	Empresa.access_token_date, 		
+	Empresa.refresh_token_validade, 	
+	Empresa.refresh_token_date, 		
     Empresa.user_insert,
     Empresa.user_update,
   ];
@@ -45,7 +56,7 @@ exports.getEmpresa = function (id) {
 			,  emp.tel1 as  tel1  
 			,  emp.tel2 as  tel2  
 			,  emp.email as  email  
-			,  emp.obs as  obs  
+			,  emp.obs as  obs   
 			,  emp.user_insert as  user_insert  
 			,  emp.user_update as  user_update    
  			FROM empresas emp 	     

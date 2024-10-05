@@ -1,5 +1,6 @@
 /* ROUTE imobilizadosinventarios */
 const db = require("../infra/database");
+const crypto = require("crypto");
 const fs = require("fs");
 const express = require("express");
 const router = express.Router();
@@ -8,7 +9,6 @@ const inventarioSrv = require("../service/inventarioService.js");
 const empresaSrv = require("../service/empresaService.js");
 const localSrv = require("../service/localService.js");
 const generateExcel = require("../geradorExcel/generateExcel.js");
-
 const parametroSrv = require("../service/parametroService");
 const { google } = require("googleapis");
 const uploadFotos = require("../config/uploadFotos");
@@ -191,6 +191,51 @@ router.post("/api/imobilizadosinventarios", async function(req, res) {
     }
 });
 
+router.post("/api/imobilizadosinventariosfotos", async function(req, res) {
+    /*
+                                                      	{
+                                                      		"id_empresa":0, 
+                                                      		"id_filial":0, 
+                                                      		"id_inventario":0, 
+                                                      		"id_imobilizado":0, 
+                                                      		"id_cc":"", 
+                                                      		"id_grupo":0, 
+                                                      		"status":0, 
+                                                      		"new_cc":"", 
+                                                      		"new_codigo":0, 
+                                                      		"id_usuario":0, 
+                                                      		"pagina":0, 
+                                                      		"tamPagina":50, 
+                                                      		"contador":"N", 
+                                                      		"orderby":"", 
+                                                      		"sharp":false 
+                                                      	}
+                                                      */
+    try {
+        const params = req.body;       
+        console.log("params",params);
+        const lsRegistros =
+            await imobilizadoinventarioSrv.getImobilizadosinventariosFotos(params);
+        if (lsRegistros.length == 0) {
+            res
+                .status(409)
+                .json({ message: "Imobilizadoinventario Nenhum Registro Encontrado!" });
+        } else {
+            res.status(200).json(lsRegistros);
+        }
+    } catch (err) {
+        if (err.name == "MyExceptionDB") {
+            res.status(409).json(err);
+        } else {
+            res.status(500).json({
+                erro: "BAK-END",
+                tabela: "Imobilizadoinventario",
+                message: err.message,
+            });
+        }
+    }
+});
+
 /* Anexar Produto No Inventario */
 router.post("/api/anexarprodutoinventario", async function(req, res) {
     /*
@@ -296,8 +341,77 @@ router.post("/api/imobilizadosinventariosexcel", async function(req, res) {
             if (lsRegistros == null || lsRegistros.length == 0) {
                 res.status(409).json({ message: "Nenhum Registro Encontrado!" });
             } else {
-                await generateExcel(lsRegistros, inventario, complemento);
+                await generateExcel.generateExcel(lsRegistros, inventario, complemento);
                 res.status(200).json({ message: "Excel gerado com sucesso!" });
+            }
+        }
+    } catch (err) {
+        if (err.name === "MyExceptionDB") {
+            res.status(409).json(err);
+        } else {
+            res.status(500).json({
+                erro: "BAK-END",
+                tabela: "Imobilizadoinventarioexcel",
+                message: err.message,
+            });
+        }
+    }
+});
+
+router.post("/api/imobilizadosinventariosexcelv2", async function(req, res) {
+    console.log("rota imobilizadosinventariosexcelv2");
+    try {
+        /*
+                                                                {
+                                                                "id_empresa":   1,
+                                                                "id_filial":   14,
+                                                                "id_inventario":   10,
+                                                                "id_imobilizado": 308,
+                                                                "id_cc":   "",
+                                                                "id_grupo":   0,
+                                                                "descricao":   "",
+                                                                "status":   1,
+                                                                "new_cc":   "",
+                                                                "new_codigo":   0,
+                                                                "id_usuario":   0,
+                                                                "origem":   "",
+                                                                "pagina":   1,
+                                                                "tamPagina":  20,
+                                                                "contador":   "N",
+                                                                "orderby":   "",
+                                                                "sharp":   false
+                                                                }
+                                                                */
+        const params = req.body;
+        console.log("parametros imobilizadosinventariosexcel", params);
+        const inventario = await inventarioSrv.getInventario(
+            params.id_empresa,
+            params.id_filial,
+            params.id_inventario
+        );
+        const emp = await empresaSrv.getEmpresa(params.id_empresa);
+
+        const local = await localSrv.getLocal(params.id_empresa, params.id_filial);
+
+        if (emp == null || local == null || inventario == null) {
+            res
+                .status(409)
+                .json({ message: "Empresa, Local Ou Inventário Encontrados!" });
+        } else {
+            
+            const  uuid = crypto.randomUUID();
+            const  fileName = "excel_".concat(uuid,'.xlsx');
+            const complemento = {
+                emp_razao: emp.razao,
+                loc_razao: local.razao,
+            };
+            const lsRegistros =
+                await imobilizadoinventarioSrv.getImobilizadosinventarios(params);
+            if (lsRegistros == null || lsRegistros.length == 0) {
+                res.status(409).json({ message: "Nenhum Registro Encontrado!" });
+            } else {
+                await generateExcel.generateExcelv2(lsRegistros, inventario, complemento,fileName);
+                res.status(200).json({ filename : fileName });
             }
         }
     } catch (err) {

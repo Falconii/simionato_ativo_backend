@@ -1,5 +1,6 @@
 /* DATA imobilizadosinventarios */
 const db = require("../infra/database");
+const shared = require("../util/shared.js");
 
 /* GET CAMPOS */
 exports.getCampos = function (Imobilizadoinventario) {
@@ -99,23 +100,42 @@ exports.getImobilizadosinventarios = function (params) {
     if (params.orderby == "")
       orderby =
         "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo_inv.id_imobilizado";
-    if (params.orderby == "Filial")
+    //Ativo-Antigo    
+    if (params.orderby == "001")
       orderby =
         "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo_inv.id_imobilizado";
-    if (params.orderby == "Inventario")
+    //Ativo-Novo
+    if (params.orderby == "002")
       orderby =
-        "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo_inv.id_imobilizado";
-    if (params.orderby == "Imobilizado")
+        "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo_inv.new_codigo";
+    //CC-Antigo
+    if (params.orderby == "003")
       orderby =
-        "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo_inv.id_imobilizado";
-    if (params.orderby == "Descrição")
+        "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo.cod_cc,imo_inv.id_imobilizado";
+    //CC-Novo
+    if (params.orderby == "004")
+      orderby =
+        "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo_inv.new_cc,imo_inv.id_imobilizado";
+    //Grupo
+    if (params.orderby == "005")
+      orderby =
+        "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo.cod_grupo,imo_inv.id_imobilizado";
+    //Descrição
+    if (params.orderby == "006")
       orderby =
         "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo.descricao";
-    if (params.orderby == "CC")
+     //Observação
+     if (params.orderby == "007")
       orderby =
-        "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo.id_cc,imo_inv.id_imobilizado";
+        "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,coalesce(lanca.obs,'')";
+    //Data
+     //Data
+     if (params.orderby == "008")
+      orderby =
+        "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,lanca.dtlanca";
 
     if (orderby != "") orderby = " order by " + orderby;
+
     if (params.id_empresa !== 0) {
       if (where != "") where += " and ";
       where += `imo_inv.id_empresa = ${params.id_empresa} `;
@@ -134,12 +154,14 @@ exports.getImobilizadosinventarios = function (params) {
     }
     if (params.id_cc.trim() !== "") {
       if (where != "") where += " and ";
-      if (params.sharp) {
-        where += `imo.cod_cc = '${params.id_cc}' `;
-      } else {
-        where += `imo.cod_cc like '%${params.id_cc.trim()}%' `;
-      }
+       where += `imo.cod_cc = '${params.id_cc}' `;
     }
+
+    if (params.dtinicial !== '') {
+      if (where != "") where += " and ";
+      where += `( lanca.dtlanca >=  ${shared.formatDateYYYYMMDD(params.dtinicial)} and  lanca.dtlanca <=  ${shared.formatDateYYYYMMDD(params.dtfinal)} ) `;
+    }
+
     if (params.id_grupo !== 0) {
       if (where != "") where += " and ";
       where += `imo.cod_grupo = ${params.id_grupo} `;
@@ -147,9 +169,20 @@ exports.getImobilizadosinventarios = function (params) {
     if (params.descricao !== "") {
       if (where != "") where += " and ";
       if (params.sharp) {
-        where += `imo.descricao = '${params.descricao}' `;
+        where += `unaccent(imo.descricao) = '${shared.semAcento(params.descricao)})' `;
       } else {
-        where += `imo.descricao like '%${params.descricao.trim()}%' `;
+        where += `unaccent(imo.descricao) like '%${shared.semAcento(params.descricao.trim())}%' `;
+      }
+    }
+    console.log("observacao", params.observacao);
+    if (params.observacao) {
+      if (params.observacao !== "") {
+        if (where != "") where += " and ";
+        if (params.sharp) {
+          where += `unaccent(lanca.obs)  = '${shared.semAcento(params.observacao)}' `;
+        } else {
+          where += `unaccent(lanca.obs)  like '%${shared.semAcento(params.observacao.trim())}%' `;
+        }
       }
     }
     if (params.status !== -1) {
@@ -162,11 +195,7 @@ exports.getImobilizadosinventarios = function (params) {
     }
     if (params.new_cc.trim() !== "") {
       if (where != "") where += " and ";
-      if (params.sharp) {
-        where += `imo_inv.new_cc = '${params.new_cc}' `;
-      } else {
-        where += `imo_inv.new_cc like '%${params.new_cc.trim()}%' `;
-      }
+      where += `imo_inv.new_cc = '${params.new_cc}' `;
     }
     if (params.new_codigo !== 0) {
       if (where != "") where += " and ";
@@ -206,7 +235,7 @@ exports.getImobilizadosinventarios = function (params) {
 				 inner join grupos gru on gru.id_empresa = imo_inv.id_empresa and gru.id_filial = imo_inv.id_filial and gru.codigo = imo.cod_grupo
 				 left join lancamentos lanca on lanca.id_empresa = imo_inv.id_empresa and lanca.id_filial = imo_inv.id_filial and lanca.id_inventario = imo_inv.id_inventario and lanca.id_imobilizado = imo_inv.id_imobilizado and imo_inv.id_lanca = lanca.id_lanca   
 				  ${where} `;
-      console.log("getImobilizadosinventarios", sqlStr);
+      console.log("getImobilizadosinventarios-Contador", sqlStr);
       return db.one(sqlStr);
     } else {
       strSql = `select   
@@ -245,7 +274,7 @@ exports.getImobilizadosinventarios = function (params) {
 				 inner join grupos gru on gru.id_empresa = imo_inv.id_empresa and gru.id_filial = imo_inv.id_filial and gru.codigo = imo.cod_grupo
 				 left join lancamentos lanca on lanca.id_empresa = imo_inv.id_empresa and lanca.id_filial = imo_inv.id_filial and lanca.id_inventario = imo_inv.id_inventario and lanca.id_imobilizado = imo_inv.id_imobilizado and imo_inv.id_lanca = lanca.id_lanca   
 				 left join usuarios      usu on usu.id_empresa = imo_inv.id_empresa and usu.id = lanca.id_usuario
-                 left join centroscustos new_cc on new_cc.id_empresa = imo_inv.id_empresa and new_cc.id_filial = imo_inv.id_filial and new_cc.codigo = imo_inv.new_cc
+         left join centroscustos new_cc on new_cc.id_empresa = imo_inv.id_empresa and new_cc.id_filial = imo_inv.id_filial and new_cc.codigo = imo_inv.new_cc
 			${where} 			${orderby} ${paginacao} `;
       console.log("==>", strSql);
       return db.manyOrNone(strSql);
@@ -287,6 +316,196 @@ exports.getImobilizadosinventarios = function (params) {
     return db.manyOrNone(strSql);
   }
 };
+
+exports.getImobilizadosinventariosFotos = function (params) {
+    console.log("Fotos Inventario Parametros",params);
+    where = "";
+    orderby = "";
+    paginacao = "";
+
+    if (params.orderby == "")
+      orderby =
+        "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo_inv.id_imobilizado";
+    if (params.orderby == "Filial")
+      orderby =
+        "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo_inv.id_imobilizado";
+    if (params.orderby == "Inventario")
+      orderby =
+        "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo_inv.id_imobilizado";
+    if (params.orderby == "Imobilizado")
+      orderby =
+        "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo_inv.id_imobilizado";
+    if (params.orderby == "Descrição")
+      orderby =
+        "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo.descricao";
+    if (params.orderby == "CC")
+      orderby =
+        "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo.id_cc,imo_inv.id_imobilizado";
+
+    if (orderby != "") orderby = " order by " + orderby;
+
+    try {
+      if (params.id_empresa !== 0) {
+        if (where != "") where += " and ";
+        where += `imo_inv.id_empresa = ${params.id_empresa} `;
+      }
+      if (params.id_filial !== 0) {
+        if (where != "") where += " and ";
+        where += `imo_inv.id_filial = ${params.id_filial} `;
+      }
+      if (params.id_inventario !== 0) {
+        if (where != "") where += " and ";
+        where += `imo_inv.id_inventario = ${params.id_inventario} `;
+      }
+      if (params.id_imobilizado !== 0) {
+        if (where != "") where += " and ";
+        where += `imo_inv.id_imobilizado = ${params.id_imobilizado} `;
+      }
+      if (params.id_cc.trim() !== "") {
+        if (where != "") where += " and ";
+        where += `imo.cod_cc = '${params.id_cc}' `;
+      }
+
+      if (params.dtinicial !== '') {
+        if (where != "") where += " and ";
+        where += `( lanca.dtlanca >=  ${shared.formatDateYYYYMMDD(params.dtinicial)} and  lanca.dtlanca <=  ${shared.formatDateYYYYMMDD(params.dtfinal)} ) `;
+      }
+
+      if (params.id_grupo !== 0) {
+        if (where != "") where += " and ";
+        where += `imo.cod_grupo = ${params.id_grupo} `;
+      }
+      if (params.descricao !== "") {
+        if (where != "") where += " and ";
+        if (params.sharp) {
+          where += `unaccent(imo.descricao) = '${shared.semAcento(params.descricao)}' `;
+        } else {
+          where += `unaccent(imo.descricao) like '%${shared.semAcento(params.descricao.trim())}%' `;
+        }
+      }
+      if (params.observacao) {
+        if (params.observacao !== "") {
+          if (where != "") where += " and ";
+          if (params.sharp) {
+            where += `unaccent(lanca.obs)  = '${shared.semAcento(params.observacao)}' `;
+          } else {
+            where += `unaccent(lanca.obs)  like '%${shared(params.observacao.trim())}%' `;
+          }
+        }
+      }
+      if (params.status !== -1) {
+        if (where != "") where += " and ";
+        if (params.status == 90) {
+          where += `imo_inv.status > 0 `;
+        } else {
+          where += `imo_inv.status = ${params.status} `;
+        }
+      }
+      if (params.new_cc.trim() !== "") {
+        if (where != "") where += " and ";
+        where += `imo_inv.new_cc = '${params.new_cc}' `;
+      }
+      if (params.new_codigo !== 0) {
+        if (where != "") where += " and ";
+        where += `imo_inv.new_codigo = ${params.new_codigo} `;
+      }
+      if (params.condicao !== 0) {
+        if (where != "") where += " and ";
+        where += `imo_inv.condicao = ${params.condicao} `;
+      }
+      if (params.book !== "") {
+        if (where != "") where += " and ";
+        where += `imo_inv.book = '${params.book}'`;
+      }
+      if (params.id_usuario !== 0) {
+        if (where != "") where += " and ";
+        where += `lanca.id_usuario = ${params.id_usuario} `;
+      }
+      if (params.origem.trim() !== "") {
+        if (where != "") where += " and ";
+        if (params.sharp) {
+          where += `imo.origem = '${params.origem}' `;
+        } else {
+          where += `imo.origem like '%${params.origem.trim()}%' `;
+        }
+      }
+      if (where != "") where = " where " + where;
+
+      if (params.pagina != 0) {
+        paginacao = `limit ${params.tamPagina} offset ((${params.pagina} - 1) * ${params.tamPagina})`;
+      }
+    } catch(error){
+        console.log("Erro Na Montagem Do Where",error);
+    }
+    
+    if (params.contador == "S") {
+      sqlStr = `SELECT COALESCE(COUNT(*),0) as total  from
+                (select
+                      imo_inv.id_empresa    as  id_empresa
+                    ,  imo_inv.id_filial     as  id_filial
+                    ,  imo_inv.id_inventario as  id_inventario
+                    ,  imo_inv.id_imobilizado as  id_imobilizado
+                FROM imobilizadosinventarios imo_inv
+                inner join imobilizados imo on imo.id_empresa = imo_inv.id_empresa and imo.id_filial = imo_inv.id_filial and imo.codigo = imo_inv.id_imobilizado
+                inner join centroscustos cc on cc.id_empresa = imo_inv.id_empresa and cc.id_filial = imo_inv.id_filial and cc.codigo = imo.cod_cc
+                inner join grupos gru on gru.id_empresa = imo_inv.id_empresa and gru.id_filial = imo_inv.id_filial and gru.codigo = imo.cod_grupo
+                inner join fotos foto on foto.id_empresa = imo_inv.id_empresa and foto.id_local = imo_inv.id_filial and foto.id_inventario = imo_inv.id_inventario and foto.id_imobilizado = imo_inv.id_imobilizado
+                left join lancamentos lanca on lanca.id_empresa = imo_inv.id_empresa and lanca.id_filial = imo_inv.id_filial and lanca.id_inventario = imo_inv.id_inventario and lanca.id_imobilizado = imo_inv.id_imobilizado and imo_inv.id_lanca = lanca.id_lanca
+                left join usuarios      usu on usu.id_empresa = imo_inv.id_empresa and usu.id = lanca.id_usuario       
+                left join centroscustos new_cc on new_cc.id_empresa = imo_inv.id_empresa and new_cc.id_filial = imo_inv.id_filial and new_cc.codigo = imo_inv.new_cc
+                ${where}
+                group by 	
+                      imo_inv.id_empresa   
+                    ,  imo_inv.id_filial    
+                    ,  imo_inv.id_inventario
+                    ,  imo_inv.id_imobilizado ) as tabela
+				 `;
+      console.log("Fotos Inventario Contador", sqlStr);
+      return db.one(sqlStr);
+    } else {
+      strSql = `select   distinct
+	     imo_inv.id_empresa as  id_empresa
+	  ,  imo_inv.id_filial as  id_filial
+	  ,  imo_inv.id_inventario as  id_inventario
+	  ,  imo_inv.id_imobilizado as  id_imobilizado
+	  ,  imo_inv.id_lanca as  id_lanca
+	  ,  imo_inv.status as  status
+	  ,  imo_inv.new_codigo as  new_codigo
+	  ,  imo_inv.new_cc as  new_cc
+    ,  imo_inv.condicao as  condicao
+    ,  imo_inv.book     as  book
+	  ,  imo_inv.user_insert as  user_insert
+	  ,  imo_inv.user_update as  user_update
+	  ,  imo.descricao as  imo_descricao
+    ,  imo.cod_cc    as  imo_cod_cc
+    ,  imo.cod_grupo as  imo_cod_grupo
+    ,  imo.nfe           as imo_nfe
+    ,  imo.serie         as imo_serie
+    ,  imo.item          as imo_item
+    ,  imo.origem        as imo_origem
+	  ,  cc.descricao as  cc_descricao
+	  ,  gru.descricao as  grupo_descricao
+	  ,  coalesce(lanca.id_usuario,0) as  lanc_id_usuario
+	  ,  coalesce(lanca.obs,'') as  lanc_obs
+    ,  coalesce(to_char(lanca.dtlanca, 'DD/MM/YYYY'),'') as  lanc_dt_lanca
+	  ,  coalesce(lanca.estado,0) as  lanc_estado
+    ,  coalesce(lanca.condicao,0) as  lanc_condicao
+    ,  coalesce(lanca.book,'') as  lanc_book
+    ,  coalesce(usu.razao,'') as  usu_razao
+    ,  coalesce(new_cc.descricao,'') as  new_cc_descricao
+    FROM imobilizadosinventarios imo_inv
+    inner join imobilizados imo on imo.id_empresa = imo_inv.id_empresa and imo.id_filial = imo_inv.id_filial and imo.codigo = imo_inv.id_imobilizado
+    inner join centroscustos cc on cc.id_empresa = imo_inv.id_empresa and cc.id_filial = imo_inv.id_filial and cc.codigo = imo.cod_cc
+    inner join grupos gru on gru.id_empresa = imo_inv.id_empresa and gru.id_filial = imo_inv.id_filial and gru.codigo = imo.cod_grupo
+    inner join fotos foto on foto.id_empresa = imo_inv.id_empresa and foto.id_local = imo_inv.id_filial and foto.id_inventario = imo_inv.id_inventario and foto.id_imobilizado = imo_inv.id_imobilizado
+    left join lancamentos lanca on lanca.id_empresa = imo_inv.id_empresa and lanca.id_filial = imo_inv.id_filial and lanca.id_inventario = imo_inv.id_inventario and lanca.id_imobilizado = imo_inv.id_imobilizado and imo_inv.id_lanca = lanca.id_lanca
+    left join usuarios      usu on usu.id_empresa = imo_inv.id_empresa and usu.id = lanca.id_usuario       
+    left join centroscustos new_cc on new_cc.id_empresa = imo_inv.id_empresa and new_cc.id_filial = imo_inv.id_filial and new_cc.codigo = imo_inv.new_cc
+			${where} ${orderby} ${paginacao} `;
+      console.log("Fotos Inventario", strSql);
+      return db.manyOrNone(strSql);
+    }
+  };
 
 exports.getImobilizadosinventariosResumo = function (params) {
   if (params) {
@@ -333,12 +552,13 @@ exports.getImobilizadosinventariosResumo = function (params) {
     }
     if (params.id_cc.trim() !== "") {
       if (where != "") where += " and ";
-      if (params.sharp) {
-        where += `imo.cod_cc = '${params.id_cc}' `;
-      } else {
-        where += `imo.cod_cc like '%${params.id_cc.trim()}%' `;
-      }
+      where += `imo.cod_cc = '${params.id_cc}' `;
     }
+    if (params.dtinicial !== '') {
+      if (where != "") where += " and ";
+      where += `( lanca.dtlanca >=  ${shared.formatDateYYYYMMDD(params.dtinicial)} and  lanca.dtlanca <=  ${shared.formatDateYYYYMMDD(params.dtfinal)} ) `;
+    }
+
     if (params.id_grupo !== 0) {
       if (where != "") where += " and ";
       where += `imo.cod_grupo = ${params.id_grupo} `;
@@ -346,9 +566,9 @@ exports.getImobilizadosinventariosResumo = function (params) {
     if (params.descricao !== "") {
       if (where != "") where += " and ";
       if (params.sharp) {
-        where += `imo.descricao = '${params.descricao}' `;
+        where += `unaccent(imo.descricao) = '${shared.semAcento(params.descricao)}' `;
       } else {
-        where += `imo.descricao like '%${params.descricao.trim()}%' `;
+        where += `unaccent(imo.descricao) like '%${shared.semAcento(params.descricao.trim())}%' `;
       }
     }
     if (params.status !== -1) {
@@ -357,11 +577,7 @@ exports.getImobilizadosinventariosResumo = function (params) {
     }
     if (params.new_cc.trim() !== "") {
       if (where != "") where += " and ";
-      if (params.sharp) {
-        where += `imo_inv.new_cc = '${params.new_cc}' `;
-      } else {
-        where += `imo_inv.new_cc like '%${params.new_cc.trim()}%' `;
-      }
+      where += `imo_inv.new_cc = '${params.new_cc}' `;
     }
     if (params.new_codigo !== 0) {
       if (where != "") where += " and ";
@@ -588,9 +804,9 @@ exports.getControleEtiquetas = function (params) {
     if (params.descricao !== "") {
       if (where != "") where += " and ";
       if (params.sharp) {
-        where += `imo.descricao = '${params.descricao}' `;
+        where += `unaccent(imo.descricao) = '${shared.semAcento(params.descricao)}' `;
       } else {
-        where += `imo.descricao like '%${params.descricao.trim()}%' `;
+        where += `unaccent(imo.descricao) like '%${shared.semAcento(params.descricao.trim())}%' `;
       }
     }
     if (params.status !== -1) {
