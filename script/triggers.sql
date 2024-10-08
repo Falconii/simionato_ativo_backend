@@ -52,10 +52,18 @@ CREATE TRIGGER "trigger_locais"
 CREATE OR REPLACE FUNCTION "public"."function_fotos" () RETURNS trigger AS
 $$
 DECLARE 
+    histo_old text;
+    histo_atual text;
 BEGIN
     IF     (TG_OP = 'INSERT') THEN
        update public.imobilizadosinventarios set  fotos = fotos + 1
        where id_empresa = new.id_empresa and id_filial = new.id_local and id_inventario = new.id_inventario and id_imobilizado = new.id_imobilizado;
+
+       histo_old   = '';
+       histo_atual = json_agg(new.*);
+       insert into auditorias(id_empresa,id_filial,id_inventario,id_imobilizado,dtacao,acao,escopo,id_usuario,histo_antes,histo_atual,user_insert,user_update)
+		           values(new.id_empresa,new.id_filial,new.id_inventario,new.id_imobilizado,'2024-10-04','insert','fotos',new.id_usuario,histo_old,histo_atual,new.id_inventario,0);  
+		   
        RETURN NEW;
     ELSEIF (TG_OP = 'UPDATE') THEN
        update public.imobilizadosinventarios set fotos = fotos - 1
@@ -63,10 +71,23 @@ BEGIN
        update public.imobilizadosinventarios set  fotos = fotos + 1
        where id_empresa = new.id_empresa and id_filial = new.id_local and id_inventario = new.id_inventario and id_imobilizado = new.id_imobilizado;
        NEW.file_name := replace(NEW.file_name,lpad(cast(OLD.id_imobilizado as varchar),6,'0'),lpad(cast(NEW.id_imobilizado as varchar),6,'0'))
+
+       histo_old   = json_agg(old.*);
+       histo_atual = json_agg(new.*);
+       insert into auditorias(id_empresa,id_filial,id_inventario,id_imobilizado,dtacao,acao,escopo,id_usuario,histo_antes,histo_atual,user_insert,user_update)
+		           values(new.id_empresa,new.id_filial,new.id_inventario,new.id_imobilizado,'2024-10-04','update','fotos',new.id_usuario,histo_old,histo_atual,new.id_inventario,0);  
+		    
+
        RETURN NEW;
     ELSIF  (TG_OP = 'DELETE') THEN 
        update public.imobilizadosinventarios set fotos = fotos - 1
        where id_empresa = old.id_empresa and id_filial = old.id_local and id_inventario = old.id_inventario and id_imobilizado = old.id_imobilizado;
+
+       histo_old   = json_agg(old.*);
+       histo_atual = '';
+       insert into auditorias(id_empresa,id_filial,id_inventario,id_imobilizado,dtacao,acao,escopo,id_usuario,histo_antes,histo_atual,user_insert,user_update)
+		           values(old.id_empresa,old.id_filial,old.id_inventario,old.id_imobilizado,'2024-10-04','delete','fotos',old.id_usuario,histo_old,histo_atual,old.id_inventario,0);  
+		  
        RETURN OLD;
 
    END IF;
@@ -89,18 +110,21 @@ $$
 DECLARE 
  histo_old text;
  histo_atual text;
+ hoje    TIMESTAMP;
 BEGIN
     IF    (TG_OP = 'INSERT') THEN
+       hoje = NOW();
        update public.imobilizadosinventarios set id_lanca  = NEW.id_lanca, new_codigo = new.new_codigo, new_cc = new.new_cc , status = NEW.estado, condicao = NEW.condicao, book = NEW.book
        where id_empresa = new.id_empresa and id_filial = new.id_filial and id_inventario = new.id_inventario and id_imobilizado = new.id_imobilizado;
 
        histo_old   = '';
        histo_atual = json_agg(new.*);
        insert into auditorias(id_empresa,id_filial,id_inventario,id_imobilizado,dtacao,acao,escopo,id_usuario,histo_antes,histo_atual,user_insert,user_update)
-		           values(new.id_empresa,new.id_filial,new.id_inventario,new.id_imobilizado,'2024-10-04','insert','lancamentos',new.id_usuario,histo_old,histo_atual,16,0);  
+		           values(new.id_empresa,new.id_filial,new.id_inventario,new.id_imobilizado,hoje,'insert','lancamentos',new.id_usuario,histo_old,histo_atual,16,0);  
 		   
        RETURN NEW;
    ELSEIF (TG_OP = 'UPDATE') THEN
+       hoje = NOW();
        update public.imobilizadosinventarios set id_lanca  = 0, new_codigo = 0, new_cc = '', status = 0, condicao = 9, book = 'N'
        where id_empresa = old.id_empresa and id_filial = old.id_filial and id_inventario = old.id_inventario and id_imobilizado = old.id_imobilizado;
 
@@ -110,17 +134,18 @@ BEGIN
        histo_old   = json_agg(old.*);
        histo_atual = json_agg(new.*);
        insert into auditorias(id_empresa,id_filial,id_inventario,id_imobilizado,dtacao,acao,escopo,id_usuario,histo_antes,histo_atual,user_insert,user_update)
-		           values(new.id_empresa,new.id_filial,new.id_inventario,new.id_imobilizado,'2024-10-04','update','lancamentos',new.id_usuario,histo_old,histo_atual,16,0);  
+		           values(new.id_empresa,new.id_filial,new.id_inventario,new.id_imobilizado,hoje,'update','lancamentos',new.id_usuario,histo_old,histo_atual,16,0);  
 		   
        RETURN NEW;
    ELSIF  (TG_OP = 'DELETE') THEN 
+       hoje = NOW();
        update public.imobilizadosinventarios set id_lanca  = 0, status = 0 , new_codigo = 0 , new_cc = '' , condicao = '9', book = 'N'
        where id_empresa = old.id_empresa and id_filial = old.id_filial and id_inventario = old.id_inventario and id_imobilizado = old.id_imobilizado;
 
        histo_old   = json_agg(old.*);
        histo_atual = '';
        insert into auditorias(id_empresa,id_filial,id_inventario,id_imobilizado,dtacao,acao,escopo,id_usuario,histo_antes,histo_atual,user_insert,user_update)
-		           values(old.id_empresa,old.id_filial,old.id_inventario,old.id_imobilizado,'2024-10-04','delete','lancamentos',old.id_usuario,histo_old,histo_atual,16,0);  
+		           values(old.id_empresa,old.id_filial,old.id_inventario,old.id_imobilizado,hoje,'delete','lancamentos',old.id_usuario,histo_old,histo_atual,16,0);  
 		   
        RETURN OLD;
    END IF;
@@ -144,6 +169,6 @@ update lancamentos set obs = 'marcos renato falconi' where id_lanca = 172
 
 delete from lancamentos where id_lanca = 172;
 
-
+select dtacao  AT time zone INTERVAL '-03:00',auditorias from auditorias
 
 */

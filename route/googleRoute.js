@@ -38,6 +38,7 @@ router.get("/auth/google", async  (req, res) => {
 
 router.get("/google/redirect", async (req, res) => {
 
+  var url = "";
   const credencial = await credencialSrv.getCredencial(1);
   const client_id      = credencial.client_id;
   const client_secret  = credencial.client_secret;
@@ -49,10 +50,9 @@ router.get("/google/redirect", async (req, res) => {
     client_uri
     ); 
     if (PORT == 3000) {
-      arquivo =
-          "C:/Repositorios/Simionato/ativo web/simionato_ativo_backend/htmls/retorno.html";
+          url = "http://localhost:4200/";
     } else {
-        arquivo = "htmls/retorno.html";
+          url = "https://falconii.github.io/simionato_ativo_frontend/";
     }
 
     const html = `<html>
@@ -124,7 +124,7 @@ router.get("/google/redirect", async (req, res) => {
         <H2>Feche A Pagina e Reabra A Aplicação</H2>
         <link href='https://fonts.googleapis.com/css?family=Oswald:400' rel='stylesheet' type='text/css'>
         <div class="button-container-right">
-           <a href="http://localhost:4200/" class="btnStack">Voltar A Aplicação</b>.com</a>
+           <a href="${url}" class="btnStack">Voltar A Aplicação</b>.com</a>
         </div>
     </div>
   </body>

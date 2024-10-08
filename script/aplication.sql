@@ -320,7 +320,7 @@ CREATE TABLE public.auditorias  (
 	id_inventario 	int4 NOT NULL,
 	id_imobilizado 	int4 NOT NULL,
 	id              serial NOT NULL,
-	dtacao      	date NOT NULL,
+	dtacao      	TIMESTAMPTZ NOT NULL,
 	acao            varchar(15) NOT NULL,
 	escopo          varchar(15) NOT NULL,
 	id_usuario    	int4 NOT NULL,
