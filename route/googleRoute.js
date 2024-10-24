@@ -479,13 +479,76 @@ router.get(
 
       const driveService    = google.drive({ version: "v3", auth: oauth2Client });
      
-     const downLoad         = await funcoes.downloadFile(driveService,id_file);
+     const result        = await funcoes.downloadFile(driveService,id_file);
 
-     res.writeHead(200, {
-      'Content-Type': 'image/jpeg',
-      'Content-Length': downLoad.length
-     });
-     res.end(downLoad);
+     res.status(200).json(result);
+
+    } catch (err) {
+          if (err.name == "MyExceptionDB") {
+              res.status(409).json(err);
+          } else {
+              res
+                  .status(500)
+                  .json({ erro: "BAK-END", tabela: "fotos", message: err.message });
+          }
+    }
+  }
+);
+
+
+router.get(
+  "/api/showfotov5/:id_file",async function(req, res) {
+
+    try {
+      console.log("Entrei Na Rota downLoadfoto!");
+      
+      const {id_file} 				    = req.params;
+
+      const params          = await funcoes.loadCredencials(1);
+
+      const oauth2Client    = funcoes.getoauth2Client(params);
+
+      const driveService    = google.drive({ version: "v3", auth: oauth2Client });
+     
+     const image         = await funcoes.showPicture(driveService,id_file);
+
+     if (!image || image.length === 0) {
+      return res.status(404).send('Imagem não encontrada');
+     } else {
+      res.set('Content-Type', 'image/jpeg');
+      res.set('Content-Disposition', 'inline');
+      res.status(200).send(image);
+    }
+    } catch (err) {
+          if (err.name == "MyExceptionDB") {
+              res.status(409).json(err);
+          } else {
+              res
+                  .status(500)
+                  .json({ erro: "BAK-END", tabela: "fotos", message: err.message });
+          }
+    }
+  }
+);
+ 
+
+router.get(
+  "/api/diretorio",async function(req, res) {
+
+    try {
+      console.log("Entrei Na Rota diretorio!");
+      
+      const params          = await funcoes.loadCredencials(1);
+
+      const oauth2Client    = funcoes.getoauth2Client(params);
+
+      const driveService    = google.drive({ version: "v3", auth: oauth2Client });
+
+      const folder_id       = "1eQuwNcfTmpYUWUIvlGBouodico8WrjoD";
+     
+      const response        = await funcoes.diretorio(driveService,folder_id);
+
+      res.status(200).json(response);
 
     } catch (err) {
           if (err.name == "MyExceptionDB") {

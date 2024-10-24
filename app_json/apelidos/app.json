@@ -1,0 +1,346 @@
+{
+    "app": {
+        "backend": {
+            "src": "C://Repositorios//Simionato//ativo web/simionato_ativo_backend",
+            "database": {
+                "type": "POSGRESQL",
+                "name": "nao_usado",
+                "conexao": {
+                    "user": "postgres",
+                    "password": "123456",
+                    "host": "localhost",
+                    "port": 5432
+                },
+                "script_src": "C://Repositorios//Simionato//ativo web/simionato_ativo_backend/script/script_apelidos"
+            },
+            "tables": [{
+                    "name": "padroes_cab",
+                    "fields": [
+                    {
+                        "name": "id_empresa",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "id",
+                        "type": "serial",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "apelido",
+                        "type": "varchar",
+                        "length": 40,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "descricao",
+                        "type": "varchar",
+                        "length": 80,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "user_insert",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "user_update",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    }
+                    ],
+                    "inner_join": [{
+                        "name": "padroes_caracteristica",
+                        "inner_alias": "caract",
+                        "inner_on": "caract.id_empresa = cab.id_empresa and  caract.id_cab = cab.id",
+                        "inner_fields": [{
+                            "name": "descricao",
+                            "as_col": "caracteristica_descricao",
+                            "tipo": "char"
+                        },{
+                        "name": "padroes_caracteristica",
+                        "inner_alias": "caract",
+                        "inner_on": "caract.id_empresa = cab.id_empresa and  caract.id_cab = cab.id",
+                        "inner_fields": [{
+                            "name": "obrigatorio",
+                            "as_col": "caracteristica_obrigatorio",
+                            "tipo": "char"
+                        }],
+                    "left_join": [],
+                    "primaryKey": [
+                        {
+                         "key": "id_empresa"
+                        },
+                        {
+                         "key": "id"
+                        }
+                    ],
+                    "variables": {
+                        "getone": "padrao_cab",
+                        "getall": "padroes_cab",
+                        "alias": "cab"
+                    },
+                    "where": {
+                        "parametro_01": [
+                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id"        , "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "apelido"   , "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
+                            { "name": "descricao" , "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" }
+                        ]
+                    },
+                    "orderby": [
+                        { "label": ""            , "comparativo": " != '' ", "key": "cab.id_empresa,cab.id" },
+                        { "label": "ID"          , "comparativo": " != '' ", "key": "cab.id_empresa,cab.id" },
+                        { "label": "APELIDO"     , "comparativo": " != '' ", "key": "cab.id_empresa,cab.apelido" },
+                        { "label": "DESCRICAO"   , "comparativo": " != '' ", "key": "cab.id_empresa,cab.descricao" }
+                    ],
+                    "tablespace": "Producao"
+                },{
+                    "name": "padroes_caracteristica",
+                    "fields": [
+                    {
+                        "name": "id_empresa",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "id_cab",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "id",
+                        "type": "serial",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "descricao",
+                        "type": "varchar",
+                        "length": 40,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "obrigatorio",
+                        "type": "char",
+                        "length": 1,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "user_insert",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "user_update",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    }
+                    ],
+                    "inner_join": [],
+                    "left_join": [],
+                    "primaryKey": [
+                        {
+                            "key": "id_empresa"
+                        },
+                        {
+                            "key": "id_cab"
+                        },
+                        {
+                            "key": "id"
+                        }
+                    ],
+                    "variables": {
+                        "getone": "padrao_caracteristica",
+                        "getall": "padroes_caracteristica",
+                        "alias": "caract"
+                    },
+                    "where": {
+                        "parametro_01": [
+                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id_cab"    , "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id"        , "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "descricao" , "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
+                            { "name": "obrigatorio" , "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" }
+                        ]
+                    },
+                    "orderby": [
+                        { "label": ""            , "comparativo": " != '' "            , "key": "caract.id_empresa,caract.cab_id,caract.id" },
+                        { "label": "ID"          , "comparativo": " != 0  "            , "key": "caract.id_empresa,caract.cab_id,caract.id" },
+                        { "label": "DESCRICAO"   , "comparativo": " != '' "            , "key": "caract.id_empresa,caract.descricao" }
+                    ],
+                    "tablespace": "Producao"
+                },{
+                    "name": "padroes_sugestoes",
+                    "fields": [
+                    {
+                        "name": "id_empresa",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "id_cab",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    
+                    {
+                        "name": "id_caract",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "id",
+                        "type": "serial",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "descricao",
+                        "type": "varchar",
+                        "length": 40,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "user_insert",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "user_update",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    }
+                    ],
+                    "inner_join": [],
+                    "left_join": [],
+                    "primaryKey": [
+                        {
+                            "key": "id_empresa"
+                        },
+                        {
+                            "key": "id_cab"
+                        },
+                        {
+                            "key": "id_caract"
+                        },
+                        {
+                            "key": "id"
+                        }
+                    ],
+                    "variables": {
+                        "getone": "padroes_sugestao",
+                        "getall": "padroes_sugestoes",
+                        "alias":  "sug"
+                    },
+                    "where": {
+                        "parametro_01": [
+                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id_cab"    , "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id_caract" , "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id"        , "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "descricao" , "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" }
+                        ]
+                    },
+                    "orderby": [
+                        { "label": ""            , "comparativo": " != '' "            , "key": "sug.id_empresa,sug.id_cab,caract.id_" },
+                        { "label": "ID"          , "comparativo": " != 0  "            , "key": "sug.id_empresa,sug.id_cab,sug.id_carac,sug.id" },
+                        { "label": "DESCRICAO"   , "comparativo": " != '' "            , "key": "sug.id_empresa,sug.descricao" }
+                    ],
+                    "tablespace": "Producao"
+                }
+            ],
+            "parametros": []
+        },
+        "frontend": {
+            "src": "C://Repositorios//Simionato//ativo web//simionato_ativo_frontend//src//app",
+            "server": {
+                "includes": [{
+                        "variable": "express",
+                        "from": "express"
+                    },
+                    {
+                        "variable": "cors",
+                        "from": "cors"
+                    }
+                ],
+                "app": "app",
+                "porta": 3000,
+                "rotas": [{ "path": "/", "require": ".//route//lixoRoute.js" }]
+            }
+        }
+    }
+}
