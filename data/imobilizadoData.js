@@ -137,7 +137,7 @@ exports.getImobilizados = function(params) {
 			,  imo.item as  item  
 			,  imo.origem  as origem
             ,  imo.condicao  as condicao
-            ,  imo.apelido  as 
+            ,  imo.apelido  as apelido
             ,  imo.principal  as principal
 			,  imo.user_insert as  user_insert  
 			,  imo.user_update as  user_update  

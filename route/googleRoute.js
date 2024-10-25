@@ -410,7 +410,6 @@ router.post("/api/deleteuploadfotoV5", async function(req, res) {
   let arquivo = "";
   try {
       const foto = req.body;
-    
 
       try{
 

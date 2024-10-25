@@ -113,8 +113,13 @@ _qtd := 0 ;
       LOOP  
 	  if ((_status-1) = 0) then 
 
-         update lancamentos set id_inventario = tempo.para 
-		 where  id_empresa     = _id_empresa 
+		delete from public.imobilizados
+		where   id_empresa     = _id_empresa 
+	       	and id_filial      = _id_local 
+			and codigo         =  tempo.de;
+			
+        update lancamentos set id_imobilizado = tempo.para 
+		where  id_empresa     = _id_empresa 
 	        and id_filial      = _id_local 
 			and id_inventario  = _id_inventario
 			and id_imobilizado = tempo.de;
@@ -130,12 +135,12 @@ _qtd := 0 ;
 	  end if;
 
 	  if ((_status-1) =  1) then 
-
-         update fotos set id_imobilizado = tempo.para 
-		 where  id_empresa     = _id_empresa 
-	        and id_local       = _id_local 
+        
+		delete from public.imobilizadosinventarios 
+	    where   id_empresa    =  _id_empresa 
+	       	and id_filial      = _id_local 
 			and id_inventario  = _id_inventario
-			and id_imobilizado = tempo.de;
+			and id_imobilizado =  tempo.de;
 
 		update de_para set status = 2
         where   id_empresa    = _id_empresa 
@@ -148,17 +153,13 @@ _qtd := 0 ;
 	  end if;
 
 	  if ((_status-1) =  2) then 
-
-         delete from public.imobilizadosinventarios 
-	     where   id_empresa    = _id_empresa 
-	       	and id_filial      = _id_local 
+        		
+		update fotos set id_imobilizado = tempo.para , file_name = REPLACE(FILE_NAME,LPAD(tempo.de::text, 6, '0'),LPAD(tempo.para::text, 6, '0'))
+		where  id_empresa      = _id_empresa 
+	        and id_local       = _id_local 
 			and id_inventario  = _id_inventario
-			and id_imobilizado =  tempo.de;
+			and id_imobilizado = tempo.de;
 
-		delete from public.imobilizados
-		where   id_empresa     = _id_empresa 
-	       	and id_filial      = _id_local 
-			and codigo         =  tempo.de;
 
 		update de_para set status = 3
         where   id_empresa    = _id_empresa 
@@ -176,7 +177,7 @@ _qtd := 0 ;
 END;
 $$
 LANGUAGE 'plpgsql'
-
+/*
 select * from de_para
 select * from call_change_inv(1,14,10,3)
 	
@@ -195,3 +196,5 @@ inner join imobilizadosinventarios dp_de on
 	        and dp_de.id_filial      = depara.id_local 
 			and dp_de.id_inventario  = depara.id_inventario
 			and dp_de.id_imobilizado = depara.de
+
+			*/

@@ -59,7 +59,7 @@ router.post("/api/lancamento", async function (req, res) {
   try {
     const lancamento = req.body;
     //Recalcula situacao
-    lancamento.estado = 4;
+    //lancamento.estado = 4;
     if (lancamento.estado !== 5) {
       // sit 1
       if (
@@ -121,7 +121,7 @@ router.put("/api/lancamento", async function (req, res) {
   try {
     const lancamento = req.body;
 
-    lancamento.estado = 4;
+    //lancamento.estado = 4;
     if (lancamento.estado !== 5) {
       // sit 1
       if (

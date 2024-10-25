@@ -445,3 +445,37 @@ exports.diretorio = async function(driveService,folderId){
   }
 
 }
+
+exports.changeFileNameGoogleDrive = async function(driveService,foto){
+let arquivo = "";
+try {
+
+    try {
+ 
+        const body = {
+            'name': foto.file_name
+        }
+        
+        const response = await driveService.files.update({
+            fileId: foto.id_pasta,
+            resource: body,
+          });
+
+          
+        console.log("Retorno Do Google: ", response);
+
+    } catch(err){
+        throw err;
+    }
+} catch (err) {
+    if (err.name == "MyExceptionDB") {
+        res.status(409).json(err);
+    } else {
+        res
+            .status(500)
+            .json({ erro: "BAK-END", tabela: "Foto", message: err.message });
+    }
+  }
+};
+
+

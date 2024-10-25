@@ -113,6 +113,7 @@ CREATE TABLE public.imobilizados  (
 	origem     	char(1) NOT NULL,
 	condicao    int4 NOT NULL,
 	apelido     varchar(30) NOT NULL,
+	principal   varchar(30) NOT NULL,
 	user_insert	int4 NOT NULL,
 	user_update	int4 NOT NULL,
 	PRIMARY KEY(id_empresa,id_filial,codigo)
@@ -332,4 +333,15 @@ CREATE TABLE public.auditorias  (
 )
 
 
-    
+CREATE TABLE public.de_para  ( 
+	id_empresa     	int4 NOT NULL,
+	id_local       	int4 NOT NULL,
+	id_inventario	int4 NOT NULL,
+	de  	        int4 NOT NULL,
+	para    	    int4 NOT NULL,
+	status          int4 NOT NULL,
+	user_insert     int4 NOT NULL,
+	user_update     int4 NOT NULL,
+	PRIMARY KEY(id_empresa,id_local,id_inventario,de,para)
+)
+GO
