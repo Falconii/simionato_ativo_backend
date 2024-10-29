@@ -60,7 +60,7 @@ router.post("/api/lancamento", async function (req, res) {
     const lancamento = req.body;
     //Recalcula situacao
     //lancamento.estado = 4;
-    if (lancamento.estado !== 5) {
+    if (lancamento.estado < 5) {
       // sit 1
       if (
         lancamento.new_codigo == 0 ||
@@ -97,9 +97,8 @@ router.post("/api/lancamento", async function (req, res) {
       ) {
         lancamento.estado = 4;
       }
-    } else {
-      lancamento.estado = 5;
     }
+
     const registro = await lancamentoSrv.insertLancamento(lancamento);
     if (registro == null) {
       res.status(409).json({ message: "Lancamento Cadastrado!" });
@@ -122,7 +121,7 @@ router.put("/api/lancamento", async function (req, res) {
     const lancamento = req.body;
 
     //lancamento.estado = 4;
-    if (lancamento.estado !== 5) {
+    if (lancamento.estado < 5) {
       // sit 1
       if (
         lancamento.new_codigo == 0 ||
@@ -159,8 +158,6 @@ router.put("/api/lancamento", async function (req, res) {
       ) {
         lancamento.estado = 4;
       }
-    } else {
-      lancamento.estado = 5;
     }
 
     const registro = await lancamentoSrv.updateLancamento(lancamento);
