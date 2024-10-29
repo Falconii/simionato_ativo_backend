@@ -13,18 +13,10 @@
                 },
                 "script_src": "C://Repositorios//Simionato//ativo web/simionato_ativo_backend/script/script_apelidos"
             },
-            "tables": [{
+            "tables": [
+                {
                     "name": "padroes_cab",
                     "fields": [
-                    {
-                        "name": "id_empresa",
-                        "type": "int4",
-                        "length": 0,
-                        "precision": 0,
-                        "nulo": "N",
-                        "padrao": "",
-                        "validacao": []
-                    },
                     {
                         "name": "id",
                         "type": "serial",
@@ -71,28 +63,10 @@
                         "validacao": []
                     }
                     ],
-                    "inner_join": [{
-                        "name": "padroes_caracteristica",
-                        "inner_alias": "caract",
-                        "inner_on": "caract.id_empresa = cab.id_empresa and  caract.id_cab = cab.id",
-                        "inner_fields": [{
-                            "name": "descricao",
-                            "as_col": "caracteristica_descricao",
-                            "tipo": "char"
-                        },{
-                        "name": "padroes_caracteristica",
-                        "inner_alias": "caract",
-                        "inner_on": "caract.id_empresa = cab.id_empresa and  caract.id_cab = cab.id",
-                        "inner_fields": [{
-                            "name": "obrigatorio",
-                            "as_col": "caracteristica_obrigatorio",
-                            "tipo": "char"
-                        }],
+                    "inner_join": 
+                    [],
                     "left_join": [],
                     "primaryKey": [
-                        {
-                         "key": "id_empresa"
-                        },
                         {
                          "key": "id"
                         }
@@ -104,31 +78,26 @@
                     },
                     "where": {
                         "parametro_01": [
-                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
                             { "name": "id"        , "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
                             { "name": "apelido"   , "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
-                            { "name": "descricao" , "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" }
+                            { "name": "descricao" , "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" }, { "name": "id_usuario", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
+                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
+                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
+                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
+                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
                         ]
                     },
                     "orderby": [
-                        { "label": ""            , "comparativo": " != '' ", "key": "cab.id_empresa,cab.id" },
-                        { "label": "ID"          , "comparativo": " != '' ", "key": "cab.id_empresa,cab.id" },
-                        { "label": "APELIDO"     , "comparativo": " != '' ", "key": "cab.id_empresa,cab.apelido" },
-                        { "label": "DESCRICAO"   , "comparativo": " != '' ", "key": "cab.id_empresa,cab.descricao" }
+                        { "label": ""            , "comparativo": " != '' ", "key": "cab.id" },
+                        { "label": "ID"          , "comparativo": " != '' ", "key": "cab.id" },
+                        { "label": "APELIDO"     , "comparativo": " != '' ", "key": "cab.apelido" },
+                        { "label": "DESCRICAO"   , "comparativo": " != '' ", "key": "cab.descricao" }
                     ],
                     "tablespace": "Producao"
                 },{
                     "name": "padroes_caracteristica",
                     "fields": [
-                    {
-                        "name": "id_empresa",
-                        "type": "int4",
-                        "length": 0,
-                        "precision": 0,
-                        "nulo": "N",
-                        "padrao": "",
-                        "validacao": []
-                    },
                     {
                         "name": "id_cab",
                         "type": "int4",
@@ -157,15 +126,6 @@
                         "validacao": []
                     },
                     {
-                        "name": "obrigatorio",
-                        "type": "char",
-                        "length": 1,
-                        "precision": 0,
-                        "nulo": "N",
-                        "padrao": "",
-                        "validacao": []
-                    },
-                    {
                         "name": "user_insert",
                         "type": "int4",
                         "length": 0,
@@ -184,12 +144,21 @@
                         "validacao": []
                     }
                     ],
-                    "inner_join": [],
+                    "inner_join": [ {
+                        "name": "padroes_cab",
+                        "inner_alias": "cab",
+                        "inner_on": "caract.id_cab = cab.id",
+                        "inner_fields": 
+                        [
+                            {
+                            "name": "descricao",
+                            "as_col": "apelido_descricao",
+                            "tipo": "char"
+                            }
+                        ]
+                        }],
                     "left_join": [],
                     "primaryKey": [
-                        {
-                            "key": "id_empresa"
-                        },
                         {
                             "key": "id_cab"
                         },
@@ -204,31 +173,25 @@
                     },
                     "where": {
                         "parametro_01": [
-                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
                             { "name": "id_cab"    , "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
                             { "name": "id"        , "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
                             { "name": "descricao" , "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
-                            { "name": "obrigatorio" , "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" }
+                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
+                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
+                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
+                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
+                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
                         ]
                     },
                     "orderby": [
-                        { "label": ""            , "comparativo": " != '' "            , "key": "caract.id_empresa,caract.cab_id,caract.id" },
-                        { "label": "ID"          , "comparativo": " != 0  "            , "key": "caract.id_empresa,caract.cab_id,caract.id" },
-                        { "label": "DESCRICAO"   , "comparativo": " != '' "            , "key": "caract.id_empresa,caract.descricao" }
+                        { "label": ""            , "comparativo": " != '' "            , "key": "caract.cab_id,caract.id" },
+                        { "label": "ID"          , "comparativo": " != 0  "            , "key": "caract.cab_id,caract.id" },
+                        { "label": "DESCRICAO"   , "comparativo": " != '' "            , "key": "caract.descricao" }
                     ],
                     "tablespace": "Producao"
                 },{
                     "name": "padroes_sugestoes",
                     "fields": [
-                    {
-                        "name": "id_empresa",
-                        "type": "int4",
-                        "length": 0,
-                        "precision": 0,
-                        "nulo": "N",
-                        "padrao": "",
-                        "validacao": []
-                    },
                     {
                         "name": "id_cab",
                         "type": "int4",
@@ -285,12 +248,36 @@
                         "validacao": []
                     }
                     ],
-                    "inner_join": [],
+                    "inner_join": [ 
+                        {
+                        "name": "padroes_cab",
+                        "inner_alias": "cab",
+                        "inner_on": "sug.id_cab = cab.id",
+                        "inner_fields": 
+                        [
+                            {
+                            "name": "descricao",
+                            "as_col": "apelido_descricao",
+                            "tipo": "char"
+                            }
+                        ]
+                        },
+                        {
+                        "name": "padroes_caracteristica",
+                        "inner_alias": "caract",
+                        "inner_on": "sug.id_cab = cab.id and sug.id_caract = caract.id",
+                        "inner_fields": 
+                        [
+                            {
+                            "name": "descricao",
+                            "as_col": "caracteristica_descricao",
+                            "tipo": "char"
+                            }
+                        ]
+                        }
+                    ],
                     "left_join": [],
                     "primaryKey": [
-                        {
-                            "key": "id_empresa"
-                        },
                         {
                             "key": "id_cab"
                         },
@@ -302,23 +289,27 @@
                         }
                     ],
                     "variables": {
-                        "getone": "padroes_sugestao",
+                        "getone": "padrao_sugestao",
                         "getall": "padroes_sugestoes",
                         "alias":  "sug"
                     },
                     "where": {
                         "parametro_01": [
-                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
                             { "name": "id_cab"    , "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
                             { "name": "id_caract" , "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
                             { "name": "id"        , "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "descricao" , "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" }
+                            { "name": "descricao" , "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
+                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
+                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
+                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
+                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
+                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
                         ]
                     },
                     "orderby": [
-                        { "label": ""            , "comparativo": " != '' "            , "key": "sug.id_empresa,sug.id_cab,caract.id_" },
-                        { "label": "ID"          , "comparativo": " != 0  "            , "key": "sug.id_empresa,sug.id_cab,sug.id_carac,sug.id" },
-                        { "label": "DESCRICAO"   , "comparativo": " != '' "            , "key": "sug.id_empresa,sug.descricao" }
+                        { "label": ""            , "comparativo": " != '' "            , "key": "sug.id_cab,sug.id_caract" },
+                        { "label": "ID"          , "comparativo": " != 0  "            , "key": "sug.id_cab,sug.id_caract,sug.id" },
+                        { "label": "DESCRICAO"   , "comparativo": " != '' "            , "key": "sug.descricao" }
                     ],
                     "tablespace": "Producao"
                 }

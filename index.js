@@ -64,6 +64,10 @@ app.use("/", require("./route/sendMailRoute.js"));
 app.use("/", require("./route/googledriveinformationRoute.js"));
 app.use("/", require("./route/googleRoute.js"));
 app.use("/", require("./route/fileRoute.js"));
+app.use("/", require("./route/padrao_cabRoute.js"));
+app.use("/", require("./route/padrao_caracteristicaRoute.js"));
+app.use("/", require("./route/padrao_sugestaoRoute.js"));
+
 
 
 app.listen(PORT, () => {
