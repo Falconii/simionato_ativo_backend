@@ -415,30 +415,60 @@ router.post("/api/deleteuploadfotoV5", async function(req, res) {
 
         if (foto.id_pasta.trim() == '1Oc4S6bEQy_TPPPSsxzl1gYkOs8wvwuWq'){ //google falconi
 
-          funcoes.deleteFileOld(foto);
+          await funcoes.deleteFileOld(foto);
 
         } else {
 
+              var params          = await funcoes.loadCredencials(1);
 
-              const params          = await funcoes.loadCredencials(1);
+              var oauth2Client    = funcoes.getoauth2Client(params);
+        
+              var driveService    = google.drive({ version: "v3", auth: oauth2Client });
 
-              const oauth2Client    = funcoes.getoauth2Client(params);
-        
-              const driveService    = google.drive({ version: "v3", auth: oauth2Client });
-        
-              const inventario      = await inventarioSrv.getInventario(foto.id_empresa,foto.id_local,foto.id_inventario);
+              const owner = await funcoes.owner(driveService,foto.id_file);
+
+              console.log(owner[0].Owner);
+
+              if ( owner[0].Owner == "drive-simionato"){
+
+                if (PORT == 3000) {
+                         arquivo =
+                                "C:/Repositorios/Simionato/ativo web/keys/google-simionato-000001-000014-000010-key.json";
+                } else {
+                          arquivo = "./keys/google-simionato-000001-000014-000010-key.json";
+                }
+
+                const auth = new google.auth.GoogleAuth({
+                    keyFile: arquivo,
+                    scopes: ["https://www.googleapis.com/auth/drive"],
+                });
+    
+                driveService = google.drive({
+                    version: "v3",
+                    auth,
+                });
+    
+
+              }
               
-              funcoes.deleteFile(driveService,foto.id_file);
+              await funcoes.deleteFile(driveService,foto.id_file);
 
         }
 
-      } catch(error){
+      } catch(err){
 
-        throw error; 
+          if (err.name == "MyExceptionDB") {
+              res.status(409).json(err);
+          } else {
+              res
+                  .status(500)
+                  .json({ erro: "BAK-END", tabela: "Foto", message: "Falha Ao Excluir A Foto Do Google Drive" });
+          }
 
       }
 
       //deleta do banco
+      
       const registro = await fotoSrv.deleteFoto(
           foto.id_empresa,
           foto.id_local,
@@ -453,6 +483,7 @@ router.post("/api/deleteuploadfotoV5", async function(req, res) {
               message: "Foto Excluída Com Sucesso!",
           });
       }
+      
   } catch (err) {
       if (err.name == "MyExceptionDB") {
           res.status(409).json(err);
@@ -560,6 +591,38 @@ router.get(
     }
   }
 );
+
+
+router.get(
+  "/api/owner",async function(req, res) {
+
+    try {
+      console.log("Entrei Na Rota owner!");
+      
+      const params          = await funcoes.loadCredencials(1);
+
+      const oauth2Client    = funcoes.getoauth2Client(params);
+
+      const driveService    = google.drive({ version: "v3", auth: oauth2Client });
+
+      const fileId          = "1R-R77H8f2S3guBLp7F3K1BggTpbyjESF";
+     
+      const response        = await funcoes.owner(driveService,fileId);
+
+      res.status(200).json(response);
+
+    } catch (err) {
+          if (err.name == "MyExceptionDB") {
+              res.status(409).json(err);
+          } else {
+              res
+                  .status(500)
+                  .json({ erro: "BAK-END", tabela: "fotos", message: err.message });
+          }
+    }
+  }
+);
+
  
 
 module.exports = router;

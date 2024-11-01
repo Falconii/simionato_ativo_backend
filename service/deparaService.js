@@ -10,5 +10,9 @@ exports.processarDePara = async function(params){
 
 /* CRUD GET ALL SERVICE */
 exports.getDeparas = async function(params){
-	return deparaData.getDeParars(params);
+	return deparaData.getDeParas(params);
 };
+
+exports.updateDe_Para = async function(depara){
+	return deparaData.updateDe_Para(depara);
+}

@@ -161,6 +161,29 @@ async function listFiles(driveService,folderId,tamPage,onePage) {
   }
 }
 
+async function getFileOwner(driveService,fileId) {
+  try {
+    var lsOwner = [];
+
+    const response = await driveService.files.get({
+      fileId: fileId,
+      fields: 'owners',
+    });
+    const owners = response.data.owners;
+    owners.forEach(owner => {
+      const dono = {Owner: owner.displayName , Email: owner.emailAddress};
+      lsOwner.push(dono);
+    });
+
+    return lsOwner;
+
+  } catch (error) {
+    
+    throw error;
+
+  }
+}
+
 exports.checkStorageQuota = async function(driveService) { 
   try {
       const about = await driveService.about.get({
@@ -256,6 +279,7 @@ exports.deleteFile = async function(driveService,fileId){
         return {"result": true};
 
     } catch(error){
+      
         throw error; 
     }
 
@@ -344,14 +368,19 @@ exports.renameFile = async function(driveService,fileId,newName){
         'name': newName
     }
     
-    const response = await driveService.files.update({
+    try {
+
+      const response = await driveService.files.update({
         fileId: fileId,
         resource: body,
       });
 
-    console.log("Retorno Do Google: ", response);
-
     return ({"message" : "Nome Alterado Com Sucesso!"});
+
+    } catch(error){
+      throw error
+    }
+    
 }
 
 
@@ -477,5 +506,21 @@ try {
     }
   }
 };
+
+exports.owner = async function(driveService,fileId){
+    
+    
+  try {
+
+    const lsOwners = await getFileOwner(driveService,fileId);
+
+    return lsOwners;
+
+  } catch(error){
+    throw error
+  }
+  
+}
+
 
 

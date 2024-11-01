@@ -67,6 +67,7 @@ app.use("/", require("./route/fileRoute.js"));
 app.use("/", require("./route/padrao_cabRoute.js"));
 app.use("/", require("./route/padrao_caracteristicaRoute.js"));
 app.use("/", require("./route/padrao_sugestaoRoute.js"));
+app.use("/", require("./route/deparaRoute.js"));
 
 
 
