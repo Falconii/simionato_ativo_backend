@@ -154,7 +154,7 @@ exports.getImobilizadosinventarios = function (params) {
     }
     if (params.id_cc.trim() !== "") {
       if (where != "") where += " and ";
-       where += `imo.cod_cc = '${params.id_cc}' `;
+       where += `( imo.cod_cc = '${params.id_cc}' OR imo_inv.new_cc = '${params.id_cc}' )`;
     }
 
     if (params.dtinicial !== '') {

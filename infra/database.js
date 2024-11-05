@@ -17,7 +17,7 @@ const pgp = require("pg-promise")();
   host: "localhost",
   port: 5433,
   database: "db_simionato_ativo_homolog",
-});    */
+});     */
   
 
  const db = pgp({
