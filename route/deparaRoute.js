@@ -5,8 +5,36 @@ const router = express.Router();
 const deparaSrv = require('../service/deparaService');
 const funcoes = require("../util/deparaFuncoes")
 
+/* Insert De_Para */
+router.post("/api/de_para",async function(req, res) {
+    try 
+        {
+            const depara = req.body;
+            const registro = await deparaSrv.insertDe_Para(depara);
+            if (registro == null)
+            {
+                res.status(409).json({ message: 'De_Para Incluído Com Sucesso!' });
+            }
+            else
+            {
+                res.status(200).json(registro);
+            }
+    }
+    catch (err)
+        {
+            if(err.name == 'MyExceptionDB')
+            {
+                res.status(409).json(err);
+            }
+            else
+            {
+                res.status(500).json({ erro: 'BAK-END', tabela: 'De_Para', message: err.message });
+            }
+        }
+    })
 
-/* ROTA UPDATE empresa */
+
+/* ROTA UPDATE de_para */
 router.put("/api/de_para",async function(req, res) {
     try 
         {
@@ -63,11 +91,13 @@ catch (err)
 })
 
 
-router.post("/api/testedepara",async function(req, res) {
+router.post("/api/substituirativo",async function(req, res) {
     try 
         {
 
-            const registro = await funcoes.testeChangeInventario(1,14,10);
+            const { id_empresa, id_local, id_inventario } = req.body;
+
+            const registro = await funcoes.SubstituirAtivo(id_empresa, id_local, id_inventario );
 
             if (registro == null)
             {
@@ -108,8 +138,7 @@ router.post("/api/getDeparas",async function(req, res) {
         "orderby":"", 
         "sharp":false 
     }
-
-                  
+                 
 */
 try 
 	{
@@ -136,5 +165,31 @@ catch (err)
 		}
 	}
 })
+
+router.get("/api/testeretira_camera_foto/:filename",async function(req, res) {
+    try 
+        {
+
+            const fileName = req.params.filename;
+
+            const result = funcoes.retira_camera_foto(fileName);
+
+            console.log(result);
+            
+            res.status(200).json({"Novo_Nome":result});
+
+    }
+    catch (err)
+        {
+            if(err.name == 'MyExceptionDB')
+            {
+                res.status(409).json(err);
+            }
+            else
+            {
+                res.status(500).json({ erro: 'BAK-END', tabela: 'DePara', message: err.message });
+            }
+        }
+    })
 
 module.exports = router;

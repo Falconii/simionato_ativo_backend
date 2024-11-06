@@ -1,10 +1,30 @@
 const deparaSrv = require ("../service/deparaService");
 const fotoSrv   = require("../service/fotoService");
 const funcoes   = require("../util/googleFuncoes");
-
 const { google } = require("googleapis");
 
+function retira_camera_foto(fileName){
 
+    var retorno = fileName;
+
+    const now = new Date();
+
+    // Obtém a hora, minuto, segundos e milissegundos
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+    const seconds = now.getSeconds();
+    const milliseconds = now.getMilliseconds();
+    
+    // Formata os valores em um texto
+    const timeString = `${hours}_${minutes}_${seconds}_${milliseconds}`;
+
+    retorno = retorno.replace("camera_foto",timeString);
+
+    console.log('Novo Nome:', retorno);
+
+    return retorno;
+
+}
 async function atualizaFileName(lsFotos){
 
 
@@ -13,6 +33,10 @@ async function atualizaFileName(lsFotos){
     let  driveService;
 
     for (const foto of lsFotos) {
+
+        //Corrige no BD se necessario
+
+        const new_name  = retira_camera_foto(foto.file_name);
 
         if (foto.id_pasta.trim() == '1Oc4S6bEQy_TPPPSsxzl1gYkOs8wvwuWq') { //google falconi
 
@@ -45,7 +69,13 @@ async function atualizaFileName(lsFotos){
 
         try {
 
-                const res = await funcoes.renameFile(driveService,foto.id_file,foto.file_name);
+                
+               const res = await funcoes.renameFile(driveService,foto.id_file,new_name);
+
+                
+                const result = await fotoSrv.updateFotoFileName(foto,new_name);
+
+
 
         } catch(error){
 
@@ -59,7 +89,7 @@ async function atualizaFileName(lsFotos){
 
 }
 
-exports.testeChangeInventario = async function(id_empresa,id_local,id_inventario){
+exports.SubstituirAtivo = async function(id_empresa,id_local,id_inventario){
 
     var params = {
         id_empresa : id_empresa,
@@ -134,4 +164,8 @@ exports.testeChangeInventario = async function(id_empresa,id_local,id_inventario
     } catch( error){
         throw error;
     }
+}
+
+exports.retira_camera_foto = function(fileName){
+    return  retira_camera_foto(fileName);
 }

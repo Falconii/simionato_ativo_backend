@@ -13,6 +13,10 @@ exports.getDeparas = async function(params){
 	return deparaData.getDeParas(params);
 };
 
+exports.insertDe_Para = async function(depara){
+	return deparaData.insertDe_Para(depara);
+}
+
 exports.updateDe_Para = async function(depara){
 	return deparaData.updateDe_Para(depara);
 }

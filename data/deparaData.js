@@ -1,6 +1,25 @@
 /* DATA celulares */
 const db = require('../infra/database');
 
+   /* CRUD - INSERT */
+   exports.insertDe_Para = function(depara) {
+    strSql = `insert into de_para (
+		   id_empresa,id_local,id_inventario,de,para,status,user_insert,user_update
+		 ) 
+		 values(
+		     ${depara.id_empresa} 
+		 ,   ${depara.id_local} 
+		 ,   ${depara.id_inventario} 
+		 ,   ${depara.de}
+         ,   ${depara.para}
+         ,   ${depara.status}
+		 ,   ${depara.user_insert} 
+		 ,   ${depara.user_update} 
+		 ) 
+     returning * `;
+    console.log("Insert =>",strSql);
+    return db.oneOrNone(strSql);
+};
 
 /* CRUD - UPDATE */
 exports.updateDe_Para = function(depara) {
@@ -9,7 +28,7 @@ exports.updateDe_Para = function(depara) {
                  user_update   = ${depara.user_update}
               WHERE id_empresa = ${depara.id_empresa} and id_local = ${depara.id_local} and id_inventario = ${depara.id_inventario} and de = ${depara.de} and para = ${depara.para}
     RETURNING *`;
-    console.log("==>",strSql);
+    console.log("Update ==>",strSql);
     return db.oneOrNone(strSql);
 };
 

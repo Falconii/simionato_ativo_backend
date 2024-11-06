@@ -240,6 +240,20 @@ exports.updateFoto = function(foto) {
   }' and  file_name = '${foto.file_name}'  returning * `;
     return db.oneOrNone(strSql);
 };
+
+exports.updateFotoFileName = function(foto,new_name) {
+    strSql = `update   fotos set  
+		     file_name = '${new_name}'  
+ 		 where id_empresa = ${foto.id_empresa} and  id_local = ${
+    foto.id_local
+  } and  id_inventario = ${foto.id_inventario} and  id_imobilizado = ${
+    foto.id_imobilizado
+  } and  id_pasta = '${foto.id_pasta}' and  id_file = '${
+    foto.id_file
+  }' and  file_name = '${foto.file_name}'  returning * `;
+    return db.oneOrNone(strSql);
+};
+
 /* CRUD - DELETE */
 exports.deleteFoto = function(
     id_empresa,

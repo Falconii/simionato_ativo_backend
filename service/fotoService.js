@@ -27,7 +27,8 @@ catch (err)
 }
  };
 //* CRUD - UPDATE - SERVICE */
- exports.updateFoto = async function(foto){try 
+ exports.updateFoto = async function(foto){
+try 
 {
 	await regras.foto_Alteracao(foto);
 	validacao.Validacao(TABELA,foto, parametros.fotos());
@@ -38,8 +39,20 @@ catch (err)
 	throw new erroDB.UserException(err.erro, err); 
 }
  };
+
+
+ exports.updateFotoFileName = function(foto,new_name){
+	try {
+	   return fotoData.updateFoto(foto,new_name);
+	} catch (err)
+	{ 
+		throw err; 
+	}
+ }
+
 //* CRUD - DELETE - SERVICE */
- exports.deleteFoto = async function(id_empresa,id_local,id_inventario,id_imobilizado,id_pasta,id_file,file_name){try 
+ exports.deleteFoto = async function(id_empresa,id_local,id_inventario,id_imobilizado,id_pasta,id_file,file_name){
+try 
 {
 	await  regras.foto_Exclusao(id_empresa,id_local,id_inventario,id_imobilizado,id_pasta,id_file,file_name);
 	return fotoData.deleteFoto(id_empresa,id_local,id_inventario,id_imobilizado,id_pasta,id_file,file_name);
