@@ -62,7 +62,15 @@ if (params) {
 		if (where != "") where += " and "; 
 		where += `cab.id_usuario = ${params.id_usuario} `;
 	}
+
+
 	if (where != "") where = " where " + where;
+
+	
+	if (params.pagina != 0) {
+		paginacao = `limit ${params.tamPagina} offset ((${params.pagina} - 1) * ${params.tamPagina})`;
+	}
+
 	if (params.contador == 'S') {
 		sqlStr = `SELECT COALESCE(COUNT(*),0) as total 
 				  FROM padroes_cab cab      

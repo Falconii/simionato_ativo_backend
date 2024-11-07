@@ -3,6 +3,8 @@ const fotoSrv   = require("../service/fotoService");
 const funcoes   = require("../util/googleFuncoes");
 const { google } = require("googleapis");
 
+const PORT = process.env.PORT || 3000;
+
 function retira_camera_foto(fileName){
 
     var retorno = fileName;
