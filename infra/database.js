@@ -17,15 +17,15 @@ const pgp = require("pg-promise")();
   host: "localhost",
   port: 5433,
   database: "db_simionato_ativo_homolog",
-});     */
+});  */     
   
 
- const db = pgp({
+const db = pgp({
      user: "postgres",
      password: "511fAbAB-12bee6dCd3gDGAA5a4Ag4Ca",
      host: "roundhouse.proxy.rlwy.net",
      port: 59437,
      database: "railway",
- });   
+ });    
  
 module.exports = db;

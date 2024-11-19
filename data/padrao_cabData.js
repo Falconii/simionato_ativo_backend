@@ -24,79 +24,86 @@ exports.getPadrao_Cab = function(id){
 	return  db.oneOrNone(strSql);
 }
 /* CRUD GET ALL*/
-exports.getPadroes_Cab = function(params){
-if (params) {
-	where = "";
-	orderby = "";
-	paginacao = "";
+exports.getPadroes_Cab = function(params)
+{
+    if (params) {
 
-	if(params.orderby == '') orderby = 'cab.id';
-	if(params.orderby == 'ID') orderby = 'cab.id';
-	if(params.orderby == 'APELIDO') orderby = 'cab.apelido';
-	if(params.orderby == 'DESCRICAO') orderby = 'cab.descricao';
+			console.log|(params);
+			where = "";
+			orderby = "";
+			paginacao = "";
 
-	if (orderby != "") orderby = " order by " + orderby;
-	if(params.id  !== 0 ){
-		if (where != "") where += " and "; 
-		where += `cab.id = ${params.id} `;
-	}
-	if(params.apelido.trim()  !== ''){
-		if (where != "") where += " and ";
-		if (params.sharp) { 
-			 where +=  `cab.apelido = '${params.apelido}' `;
-		} else 
-		{
-			where += `cab.apelido like '%${params.apelido.trim()}%' `;
-		}
-	}
-	if(params.descricao.trim()  !== ''){
-		if (where != "") where += " and ";
-		if (params.sharp) { 
-			 where +=  `cab.descricao = '${params.descricao}' `;
-		} else 
-		{
-			where += `cab.descricao like '%${params.descricao.trim()}%' `;
-		}
-	}
-	if(params.id_usuario  !== 0 ){
-		if (where != "") where += " and "; 
-		where += `cab.id_usuario = ${params.id_usuario} `;
-	}
+			if(params.orderby == '') orderby = 'cab.id';
+			if(params.orderby == 'ID') orderby = 'cab.id';
+			if(params.orderby == 'APELIDO') orderby = 'cab.apelido';
+			if(params.orderby == 'DESCRICAO') orderby = 'cab.descricao';
+
+			if (orderby != "") orderby = " order by " + orderby;
+			if(params.id  !== 0 ){
+				if (where != "") where += " and "; 
+				where += `cab.id = ${params.id} `;
+			}
+			if(params.apelido.trim()  !== ''){
+				if (where != "") where += " and ";
+				if (params.sharp) { 
+					 where +=  `cab.apelido = '${params.apelido}' `;
+				} else 
+				{
+					where += `cab.apelido like '%${params.apelido.trim()}%' `;
+				}
+			}
+			if(params.descricao.trim()  !== ''){
+				if (where != "") where += " and ";
+				if (params.sharp) { 
+					 where +=  `cab.descricao = '${params.descricao}' `;
+				} else 
+				{
+					where += `cab.descricao like '%${params.descricao.trim()}%' `;
+				}
+			}
+			if(params.id_usuario  !== 0 ){
+				if (where != "") where += " and "; 
+				where += `cab.id_usuario = ${params.id_usuario} `;
+			}
 
 
-	if (where != "") where = " where " + where;
+			if (where != "") where = " where " + where;
 
-	
-	if (params.pagina != 0) {
-		paginacao = `limit ${params.tamPagina} offset ((${params.pagina} - 1) * ${params.tamPagina})`;
-	}
+			
+			if (params.pagina != 0) {
+				paginacao = `limit ${params.tamPagina} offset ((${params.pagina} - 1) * ${params.tamPagina})`;
+			}
 
-	if (params.contador == 'S') {
-		sqlStr = `SELECT COALESCE(COUNT(*),0) as total 
-				  FROM padroes_cab cab      
-				  ${ where} `;
-		return db.one(sqlStr);
-	}  else {
-		strSql = `select   
-			   cab.id as  id  
-			,  cab.apelido as  apelido  
-			,  cab.descricao as  descricao  
-			,  cab.user_insert as  user_insert  
-			,  cab.user_update as  user_update     
-			FROM padroes_cab cab      
-			${where} 			${ orderby} ${ paginacao} `;
+			if (params.contador == 'S') {
+				sqlStr = `SELECT COALESCE(COUNT(*),0) as total 
+						  FROM padroes_cab cab      
+						  ${ where} `;
+				return db.one(sqlStr);
+			}  else {
+				strSql = `select   
+					   cab.id as  id  
+					,  cab.apelido as  apelido  
+					,  cab.descricao as  descricao  
+					,  cab.user_insert as  user_insert  
+					,  cab.user_update as  user_update     
+					FROM padroes_cab cab    
+					${where} ${ orderby} ${ paginacao} `;
+					return  db.manyOrNone(strSql);
+			}
+     } else 
+	 {
+	        strSql = `select   
+					   cab.id as  id  
+					,  cab.apelido as  apelido  
+					,  cab.descricao as  descricao  
+					,  cab.user_insert as  user_insert  
+					,  cab.user_update as  user_update     
+					FROM padroes_cab cab `;
 			return  db.manyOrNone(strSql);
-		}	}  else {
-		strSql = `select   
-			   cab.id as  id  
-			,  cab.apelido as  apelido  
-			,  cab.descricao as  descricao  
-			,  cab.user_insert as  user_insert  
-			,  cab.user_update as  user_update    
-			FROM padroes_cab cab			     `;
-		return  db.manyOrNone(strSql);
-	}
+	 }
 }
+
+
 /* CRUD - INSERT */
  exports.insertPadrao_Cab = function(padrao_cab){
 	strSql = `insert into padroes_cab (

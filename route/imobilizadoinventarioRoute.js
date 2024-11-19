@@ -160,6 +160,7 @@ router.post("/api/imobilizadosinventarios", async function(req, res) {
                                                       		"new_cc":"", 
                                                       		"new_codigo":0, 
                                                       		"id_usuario":0, 
+                                                            "id_principal":0,
                                                       		"pagina":0, 
                                                       		"tamPagina":50, 
                                                       		"contador":"N", 

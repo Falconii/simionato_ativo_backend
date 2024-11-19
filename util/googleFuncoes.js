@@ -1,5 +1,5 @@
 const credencialSrv = require ("../service/credencialService");
-const { google } = require("googleapis");
+const { google }    = require("googleapis");
 const PORT = process.env.PORT || 3000;
 const path = require("path");
 const sharp = require('sharp');
@@ -465,7 +465,7 @@ exports.diretorio = async function(driveService,folderId){
 
   try {
       
-    const dir = await listFiles(driveService,folderId,50,false)
+    const dir = await listFiles(driveService,folderId,200,false)
 
     return dir;
 

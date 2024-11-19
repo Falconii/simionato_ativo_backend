@@ -48,13 +48,18 @@ exports.create = async (req, res, _id_empresa, _id_local, _id_usuario) => {
       }
       const retornoModel = _centroCusto(campos);
       if (retornoModel != null) {
-        const registro = await centrocustoSrv.insertCentrocusto(retornoModel);
+         const registro = await centrocustoSrv.insertCentrocusto(retornoModel);
       }
       const grupoModel = _grupo(campos);
-
+      
       if (grupoModel != null) {
-        const registro = await grupoSrv.insertGrupo(grupoModel);
+
+        if (grupoModel.codigo == 6) {
+          console.log(grupoModel);
       }
+
+        const registro = await grupoSrv.insertGrupo(grupoModel);
+      } 
 
       const produtosModel = _produto(campos);
 
@@ -84,6 +89,7 @@ exports.create = async (req, res, _id_empresa, _id_local, _id_usuario) => {
       const ValorModel = _valores(campos);
 
       if (ValorModel != null) {
+          console.log(ValorModel);
         const registro = await valorSrv.insertValor(ValorModel);
       }
     }
@@ -106,36 +112,48 @@ exports.update = async (req, res, _id_empresa, _id_local, _id_usuario) => {
   for await (let linha of dadosPlanilha) {
     nro_linha++;
     if (nro_linha > 1) {
-      const campos = parse.ParseCVS("", linha, ";");
-      if (campos.length != 34) {
+      const campos = parse.ParseCVS("", linha, ";");  
+      if (campos.length != 36) {
         result = {
-          message: `Quantidade De Colunas Deferente Do Padrão (34)! Tamanho Encontrado:  ${campos.length}}`,
+          message: `Quantidade De Colunas Deferente Do Padrão (35)! ${campos.length}}`,
         };
         console.log(
           `Quantidade De Colunas Deferente Do Padrão (35)! ${campos.length}}`
         );
         break;
       }
-
       
       const principalModel = _principalSemFiltro(campos);
 
-      if (principalModel != null) {
+        if (principalModel != null) {
 
-        const ImobilizadoModel = _imobilizado(campos);
+          const princImobilizadoModel = await imobilizadoSrv.getImobilizado(id_empresa,id_local,principalModel.codigo);
 
-        if (ImobilizadoModel != null) {
+          if (princImobilizadoModel != null)  {
+
+            princImobilizadoModel.principal = principalModel.codigo;
+
+            const alterado = await imobilizadoSrv.updateImobilizado(princImobilizadoModel);
+
+            }
+     
+
+         const ImobilizadoModel = _imobilizado(campos);
+
+          if (ImobilizadoModel != null) {
 
             const imobilizado = await imobilizadoSrv.getImobilizado(id_empresa,id_local,ImobilizadoModel.codigo);
         
-            console.log(`Principal ${principalModel.codigo} Imobilizado ${imobilizado.codigo}`);
+            if (imobilizado != null){
+                  console.log(`Principal ${principalModel.codigo} Imobilizado ${imobilizado.codigo}`);
 
-            imobilizado.principal =  principalModel.codigo;
+                  imobilizado.principal =  principalModel.codigo;
 
-            const alterado = await imobilizadoSrv.updateImobilizado(imobilizado);
-
-            console.log("Alterado!");
-        } 
+                  const alterado = await imobilizadoSrv.updateImobilizado(imobilizado);
+            } else {
+                  console.log("Não Encontrado No Imobilizado: ",ImobilizadoModel.codigo);
+            }
+          } 
       }
         
     }
@@ -148,19 +166,19 @@ function _centroCusto(campos) {
   let centrocustoModel = null;
   ct = 0;
   const idx_cc = centro_custos.findIndex((cc) => {
-    return cc.cod_cc.trim() == campos[10].trim();
+    return cc.cod_cc.trim().replace("#","-") == campos[10].trim().replace("#","-");
   });
   if (campos[10].trim() !== "" && idx_cc == -1) {
     ct++;
     centro_custos.push({
       idx: ct,
-      cod_cc: campos[10],
+      cod_cc: campos[10].replace("#","-"),
       desc_cc: campos[11],
     });
     centrocustoModel = {
       id_empresa: id_empresa,
       id_filial: id_local,
-      codigo: campos[10],
+      codigo: campos[10].replace("#","-"),
       descricao: campos[11],
       user_insert: id_usuario,
       user_update: 0,
@@ -292,13 +310,14 @@ function _imobilizado(campos) {
       codigo: campos[6],
       descricao: shared.excluirCaracteres(campos[7]).toUpperCase(),
       cod_grupo: campos[8],
-      cod_cc: campos[10],
+      cod_cc: campos[10].replace("#","-"),
       nfe: campos[16],
       serie: campos[17],
       item: campos[18],
       condicao: campos[12],
       apelido: campos[13],
       origem: "P",
+      principal: 0,
       user_insert: id_usuario,
       user_update: 0,
     };
@@ -339,8 +358,8 @@ function _nfe(campos) {
       serie: campos[17],
       item: campos[18],
       chavee: campos[19],
-      dtemissao: campos[27],
-      dtlancamento: campos[28],
+      dtemissao: null, //campos[27],
+      dtlancamento: null, //campos[28],
       qtd: shared.excluirVirgulasePontos(campos[20]),
       punit: shared.excluirVirgulasePontos(campos[21]),
       totalitem: shared.excluirVirgulasePontos(campos[22]),
@@ -377,8 +396,8 @@ function _valores(campos) {
       id_empresa: id_empresa,
       id_filial: id_local,
       id_imobilizado: campos[6],
-      dtaquisicao: campos[29],
-      vlraquisicao: shared.excluirVirgulasePontos(campos[20]),
+      dtaquisicao: null, //campos[29],
+      vlraquisicao: shared.excluirVirgulasePontos(campos[30]),
       totaldepreciado: shared.excluirVirgulasePontos(campos[31]),
       vlrresidual: shared.excluirVirgulasePontos(campos[32]),
       reavalicao: shared.excluirVirgulasePontos(campos[33]),

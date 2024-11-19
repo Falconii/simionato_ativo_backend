@@ -5,7 +5,8 @@ const router = express.Router();
 const padrao_cabSrv = require('../service/padrao_cabService');
 
 /* ROTA GETONE padrao_cab */
-router.get("/api/padrao_cab/:id",async function(req, res) {try 
+router.get("/api/padrao_cab/:id",async function(req, res) {
+try 
 	{
 		const lsLista = await padrao_cabSrv.getPadrao_Cab(req.params.id);
 		if (lsLista == null) 
@@ -30,7 +31,8 @@ catch (err)
 	}
 })
 /* ROTA GETALL padrao_cab */
-router.get("/api/padroes_cab",async function(req, res) {try 
+router.get("/api/padroes_cab",async function(req, res) {
+try 
 	{
 		const lsLista = await padrao_cabSrv.getPadroes_Cab();
 		if (lsLista.length == 0) 
@@ -55,11 +57,14 @@ catch (err)
 	}
 })
 /* ROTA INSERT padrao_cab */
-router.post("/api/padrao_cab",async function(req, res) {try 
+router.post("/api/padrao_cab",async function(req, res) {
+try 
 	{
 		const padrao_cab = req.body;
-		const registro = await padrao_cabSrv.insertPadrao_Cab(padrao_cab);		if (registro == null)
-		{			res.status(409).json({ message: 'Padrao_Cab Cadastrado!' });
+		const registro = await padrao_cabSrv.insertPadrao_Cab(padrao_cab);
+		if (registro == null)
+		{
+			res.status(409).json({ message: 'Padrao_Cab Cadastrado!' });
 		}
 		else
 		{
@@ -79,11 +84,14 @@ catch (err)
 	}
 })
 /* ROTA UPDATE padrao_cab */
-router.put("/api/padrao_cab",async function(req, res) {try 
+router.put("/api/padrao_cab",async function(req, res) {
+try 
 	{
 		const padrao_cab = req.body;
-		const registro = await padrao_cabSrv.updatePadrao_Cab(padrao_cab);		if (registro == null)
-		{			res.status(409).json({ message: 'Padrao_Cab Alterado Com Sucesso!' });
+		const registro = await padrao_cabSrv.updatePadrao_Cab(padrao_cab);
+		if (registro == null)
+		{
+			res.status(409).json({ message: 'Padrao_Cab Alterado Com Sucesso!' });
 		}
 		else
 		{
@@ -103,9 +111,11 @@ catch (err)
 	}
 })
 /* ROTA DELETE padrao_cab */
-router.delete("/api/padrao_cab/:id",async function(req, res) {try 
+router.delete("/api/padrao_cab/:id",async function(req, res) {
+try 
 	{
-		await padrao_cabSrv.deletePadrao_Cab(req.params.id);		res.status(200).json({ message: 'Padrao_Cab Excluído Com Sucesso!' });
+		await padrao_cabSrv.deletePadrao_Cab(req.params.id);
+		res.status(200).json({ message: 'Padrao_Cab Excluído Com Sucesso!' });
 }
 catch (err)
 	{
@@ -120,7 +130,8 @@ catch (err)
 	}
 })
 /* ROTA CONSULTA POST padroes_cab */
-router.post("/api/padroes_cab",async function(req, res) {/*
+router.post("/api/padroes_cab",async function(req, res) {
+/*
 	{
 		"id":0, 
 		"apelido":"", 
@@ -136,8 +147,13 @@ router.post("/api/padroes_cab",async function(req, res) {/*
 try 
 	{
 		const params = req.body;
-		const lsRegistros = await padrao_cabSrv.getPadroes_Cab(params);		if (lsRegistros.length == 0)
-		{			res.status(409).json({ message: 'Padrao_Cab Nenhum Registro Encontrado!' });
+
+		console.log("padroes_cab",params);
+
+		const lsRegistros = await padrao_cabSrv.getPadroes_Cab(params);
+		if (lsRegistros.length == 0)
+		{
+			res.status(409).json({ message: 'Padrao_Cab Nenhum Registro Encontrado!' });
 		}
 		else
 		{
@@ -146,6 +162,7 @@ try
 }
 catch (err)
 	{
+		console.log(err);
 		if(err.name == 'MyExceptionDB')
 		{
 			res.status(409).json(err);

@@ -40,12 +40,13 @@ exports.getImobilizadoinventario = function (
 			,  imo_inv.user_insert as  user_insert  
 			,  imo_inv.user_update as  user_update  
 			,  imo.descricao as  imo_descricao  
-            ,  imo.cod_cc    as  imo_cod_cc
-            ,  imo.cod_grupo as  imo_cod_grupo 
-            ,  imo.nfe           as imo_nfe 
-            ,  imo.serie         as imo_serie 
-            ,  imo.item          as imo_item  
-            ,  imo.origem        as imo_origem
+      ,  imo.cod_cc    as  imo_cod_cc
+      ,  imo.cod_grupo as  imo_cod_grupo 
+      ,  imo.nfe           as imo_nfe 
+      ,  imo.serie         as imo_serie 
+      ,  imo.item          as imo_item  
+      ,  imo.origem        as imo_origem
+      ,  imo.principal     as imo_principal
 			,  cc.descricao as  cc_descricao  
 			,  gru.descricao as  grupo_descricao  
 			,  coalesce(lanca.id_usuario,0) as  lanc_id_usuario  
@@ -53,14 +54,16 @@ exports.getImobilizadoinventario = function (
 			,  coalesce(to_char(lanca.dtlanca, 'DD/MM/YYYY'),'') as  lanc_dt_lanca 
 			,  coalesce(lanca.estado,0) as  lanc_estado    
 			,  coalesce(usu.razao,'') as  usu_razao     
-            ,  coalesce(new_cc.descricao,'') as  new_cc_descricao   
+      ,  coalesce(new_cc.descricao,'') as  new_cc_descricao 
+      ,  coalesce(princ.descricao,'') as  princ_descricao 
  			FROM imobilizadosinventarios imo_inv 	  
 				 inner join imobilizados  imo on imo.id_empresa = imo_inv.id_empresa and imo.id_filial = imo_inv.id_filial and imo.codigo = imo_inv.id_imobilizado
 				 inner join centroscustos cc  on cc.id_empresa = imo_inv.id_empresa and cc.id_filial = imo_inv.id_filial and cc.codigo = imo.cod_cc
 				 inner join grupos gru    on  gru.id_empresa = imo_inv.id_empresa and gru.id_filial = imo_inv.id_filial and gru.codigo = imo.cod_grupo
 				 left join  lancamentos   lanca on lanca.id_empresa = imo_inv.id_empresa and lanca.id_filial = imo_inv.id_filial and lanca.id_inventario = imo_inv.id_inventario and lanca.id_imobilizado = imo_inv.id_imobilizado and imo_inv.id_lanca = lanca.id_lanca   
-                 left join usuarios    usu   on usu.id_empresa = imo_inv.id_empresa and usu.id = lanca.id_usuario
-                 left join centroscustos new_cc on new_cc.id_empresa = imo_inv.id_empresa and new_cc.id_filial = imo_inv.id_filial and new_cc.codigo = imo_inv.new_cc
+         left join usuarios    usu   on usu.id_empresa = imo_inv.id_empresa and usu.id = lanca.id_usuario
+         left join centroscustos new_cc on new_cc.id_empresa = imo_inv.id_empresa and new_cc.id_filial = imo_inv.id_filial and new_cc.codigo = imo_inv.new_cc
+         left join principais princ  on imo.id_empresa = princ.id_empresa and imo.id_filial = princ.id_filial and imo.principal = princ.codigo
 			 where imo_inv.id_empresa = ${id_empresa} and  imo_inv.id_filial = ${id_filial} and  imo_inv.id_inventario = ${id_inventario} and  imo_inv.id_imobilizado = ${id_imobilizado}  `;
   console.log("getimobilizado", strSql);
   return db.oneOrNone(strSql);
@@ -213,6 +216,15 @@ exports.getImobilizadosinventarios = function (params) {
       if (where != "") where += " and ";
       where += `lanca.id_usuario = ${params.id_usuario} `;
     }
+
+    
+    if (params.id_principal){
+      if (params.id_principal !== 0) {
+        if (where != "") where += " and ";
+        where += `imo.principal = ${params.id_principal} `;
+      }
+   }
+    
     if (params.origem.trim() !== "") {
       if (where != "") where += " and ";
       if (params.sharp) {
@@ -258,6 +270,7 @@ exports.getImobilizadosinventarios = function (params) {
       ,  imo.serie         as imo_serie 
       ,  imo.item          as imo_item  
       ,  imo.origem        as imo_origem
+      ,  imo.principal     as imo_principal
 			,  cc.descricao as  cc_descricao  
 			,  gru.descricao as  grupo_descricao  
 			,  coalesce(lanca.id_usuario,0) as  lanc_id_usuario  
@@ -268,6 +281,7 @@ exports.getImobilizadosinventarios = function (params) {
       ,  coalesce(lanca.book,'') as  lanc_book    
 			,  coalesce(usu.razao,'') as  usu_razao   
       ,  coalesce(new_cc.descricao,'') as  new_cc_descricao   
+      ,  coalesce(princ.descricao,'') as  princ_descricao   
 			FROM imobilizadosinventarios imo_inv   
 				 inner join imobilizados imo on imo.id_empresa = imo_inv.id_empresa and imo.id_filial = imo_inv.id_filial and imo.codigo = imo_inv.id_imobilizado
 				 inner join centroscustos cc on cc.id_empresa = imo_inv.id_empresa and cc.id_filial = imo_inv.id_filial and cc.codigo = imo.cod_cc
@@ -275,6 +289,7 @@ exports.getImobilizadosinventarios = function (params) {
 				 left join lancamentos lanca on lanca.id_empresa = imo_inv.id_empresa and lanca.id_filial = imo_inv.id_filial and lanca.id_inventario = imo_inv.id_inventario and lanca.id_imobilizado = imo_inv.id_imobilizado and imo_inv.id_lanca = lanca.id_lanca   
 				 left join usuarios      usu on usu.id_empresa = imo_inv.id_empresa and usu.id = lanca.id_usuario
          left join centroscustos new_cc on new_cc.id_empresa = imo_inv.id_empresa and new_cc.id_filial = imo_inv.id_filial and new_cc.codigo = imo_inv.new_cc
+         left join principais princ  on imo.id_empresa = princ.id_empresa and imo.id_filial = princ.id_filial and imo.principal = princ.codigo
 			${where} 			${orderby} ${paginacao} `;
       console.log("==>", strSql);
       return db.manyOrNone(strSql);
@@ -298,12 +313,12 @@ exports.getImobilizadosinventarios = function (params) {
             ,  imo.serie         as imo_serie 
             ,  imo.item          as imo_item  
             ,  imo.origem        as imo_origem
-			,  cc.descricao as  cc_descricao  
-			,  gru.descricao as  grupo_descricao  
-			,  coalesce(lanca.id_usuario,0) as  lanc_id_usuario  
-			,  coalesce(lanca.obs,'') as  lanc_obs 
-			,  coalesce(to_char(lanca.dtlanca, 'DD/MM/YYYY'),'') as  lanc_dt_lanca
-			,  coalesce(lanca.estado,0) as  lanc_estado    
+            ,  cc.descricao as  cc_descricao  
+            ,  gru.descricao as  grupo_descricao  
+            ,  coalesce(lanca.id_usuario,0) as  lanc_id_usuario  
+            ,  coalesce(lanca.obs,'') as  lanc_obs 
+            ,  coalesce(to_char(lanca.dtlanca, 'DD/MM/YYYY'),'') as  lanc_dt_lanca
+            ,  coalesce(lanca.estado,0) as  lanc_estado    
             ,  coalesce(usu.razao,'') as  usu_razao   
             ,  coalesce(new_cc.descricao,'') as  new_cc_descricao   
 			FROM imobilizadosinventarios imo_inv			   
@@ -429,6 +444,13 @@ exports.getImobilizadosinventariosFotos = function (params) {
           where += `imo.origem like '%${params.origem.trim()}%' `;
         }
       }
+      if (params.id_principal){
+          if (params.id_principal !== 0) {
+            if (where != "") where += " and ";
+            where += `imo.principal = ${params.id_principal} `;
+          }
+       }
+
       if (where != "") where = " where " + where;
 
       if (params.pagina != 0) {

@@ -56,8 +56,6 @@ router.post(
     }
 );
 
-router.delete("/api/loadfile", upload.single("file"), uploadfileSrv.delete);
-
 router.get("/api/loadfilestatus", function(req, res) {
     res.status(200).json({ message: "Rota LoadFile No Ar" });
 });

@@ -4,7 +4,8 @@ const router = express.Router();
 const fotoSrv = require("../service/fotoService");
 const credencialSrv = require("../service/credencialService");
 const uploadFotosV2 = require("../config/uploadFotosV2");
-const inventarioSrv = require("../service/inventarioService")
+const inventarioSrv = require("../service/inventarioService");
+const fotodriveSrv  = require("../service/fotodriveService");
 const funcoes       = require("../util/googleFuncoes");
 const fs = require("fs");
 const PORT = process.env.PORT || 3000;
@@ -563,20 +564,75 @@ router.get(
  
 
 router.get(
-  "/api/diretorio",async function(req, res) {
+  "/api/diretorio/:id_empresa/:id_local/:id_inventario/:folder_id",async function(req, res) {
 
+    const id_empresa      = req.params.id_empresa;
+    const id_local        = req.params.id_local;
+    const id_inventario   = req.params.id_inventario;
+    const folder_id       = req.params.folder_id; //"1eQuwNcfTmpYUWUIvlGBouodico8WrjoD";
+
+    let  driveService;  
+    
     try {
+
       console.log("Entrei Na Rota diretorio!");
+
+      if (folder_id.trim() == '1Oc4S6bEQy_TPPPSsxzl1gYkOs8wvwuWq') { //google falconi
+
+        let arquivo = "";
+
+        if (PORT == 3000) {
+            arquivo =
+                "C:/Repositorios/Simionato/ativo web/keys/googlekey.json";
+        } else {
+            arquivo = "./keys/googlekey.json";
+        }
+
+        const auth = new google.auth.GoogleAuth({
+            keyFile: arquivo,
+            scopes: ["https://www.googleapis.com/auth/drive"],
+        });
+
+        driveService = google.drive({
+            version: "v3",
+            auth,
+        });
+
+    } else {
+          
+        const params          = await funcoes.loadCredencials(1);
+
+        const oauth2Client    = funcoes.getoauth2Client(params);
+    
+        driveService          = google.drive({ version: "v3", auth: oauth2Client });
+
+    }
       
-      const params          = await funcoes.loadCredencials(1);
+      /*const params          = await funcoes.loadCredencials(1);
 
-      const oauth2Client    = funcoes.getoauth2Client(params);
+        const oauth2Client    = funcoes.getoauth2Client(params);
 
-      const driveService    = google.drive({ version: "v3", auth: oauth2Client });
-
-      const folder_id       = "1eQuwNcfTmpYUWUIvlGBouodico8WrjoD";
-     
+        const driveService    = google.drive({ version: "v3", auth: oauth2Client }); 
+      */
+           
       const response        = await funcoes.diretorio(driveService,folder_id);
+
+     /*  response.forEach(async (res) => {
+        const foto = {
+          id_empresa    : id_empresa, 
+		      id_filial     : id_local,
+		      id_inventario : id_inventario,
+          id_file       : res.id_file , 
+          folder_id     : folder_id,
+          name_file     : res.name_file, 
+          size          : res.size,
+          data          : res.data
+        }
+
+        
+       //const newFoto = await fotodriveSrv.insertFotoDrive(foto);
+
+      }); */
 
       res.status(200).json(response);
 

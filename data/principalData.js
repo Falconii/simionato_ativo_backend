@@ -1,5 +1,6 @@
 /* DATA principais */
 const db = require('../infra/database');
+const shared = require("../util/shared.js");
 
 /* GET CAMPOS */
 exports.getCampos = function(Principal) {
@@ -53,9 +54,9 @@ exports.getPrincipais = function(params) {
             if (params.descricao.trim() !== '') {
                 if (where != "") where += " and ";
                 if (params.sharp) {
-                    where += `princ.descricao = '${params.descricao}' `;
+                    where += `unaccent(princ.descricao) = '${shared.semAcento(params.descricao)}' `;
                 } else {
-                    where += `princ.descricao like '%${params.descricao.trim()}%' `;
+                    where += `unaccent(princ.descricao) like '%${shared.semAcento(params.descricao.trim())}%' `;
                 }
             }
             if (where != "") where = " where " + where;
@@ -71,15 +72,16 @@ exports.getPrincipais = function(params) {
 				  ${ where} `;
                 return db.one(sqlStr);
             } else {
-                strSql = `select   
-			   princ.id_empresa as  id_empresa  
-			,  princ.id_filial as  id_filial  
-			,  princ.codigo as  codigo  
-			,  princ.descricao as  descricao  
-			,  princ.user_insert as  user_insert  
-			,  princ.user_update as  user_update     
-			FROM principais princ      
-			${where} 			${ orderby} ${ paginacao} `;
+                    strSql = `select   
+                princ.id_empresa as  id_empresa  
+                ,  princ.id_filial as  id_filial  
+                ,  princ.codigo as  codigo  
+                ,  princ.descricao as  descricao  
+                ,  princ.user_insert as  user_insert  
+                ,  princ.user_update as  user_update     
+                FROM principais princ      
+                ${where} 			${ orderby} ${ paginacao} `;
+                console.log("select principal =>",strSql)
                 return db.manyOrNone(strSql);
             }
         } else {
