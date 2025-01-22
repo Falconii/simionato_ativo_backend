@@ -27,6 +27,7 @@ exports.getCentrocusto = function(id_empresa, id_filial, codigo) {
     }
     /* CRUD GET ALL*/
 exports.getCentroscustos = function(params) {
+    console.log("Params CC =>",params);
         if (params) {
             where = "";
             orderby = "";
