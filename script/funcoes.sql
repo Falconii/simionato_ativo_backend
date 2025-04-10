@@ -198,3 +198,166 @@ inner join imobilizadosinventarios dp_de on
 			and dp_de.id_imobilizado = depara.de
 
 			*/
+
+
+
+
+CREATE OR REPLACE FUNCTION public.realocar(_id_empresa integer, _id_local integer, _id_inventario integer, _status integer, OUT _qtd integer)
+ RETURNS integer
+ LANGUAGE plpgsql
+AS $function$
+DECLARE
+
+ tempo public.realoc_transf%ROWTYPE;
+ 
+ proximo INT4;
+ 
+
+BEGIN
+_qtd := 0 ;
+ FOR tempo in  
+      SELECT *
+      FROM  public.realoc_transf realoc
+      WHERE     realoc.id_empresa    = _id_empresa 
+	        and realoc.id_local      = _id_local 
+			and realoc.id_inventario = _id_inventario
+			and realoc.status        = (_status-1)
+      ORDER BY realoc.id_empresa,realoc.id_local,realoc.id_inventario,realoc.id_realocado
+      LOOP  
+	  if ((_status-1) = 0) then 
+
+        select coalesce(max(codigo),0) from imobilizados where id_empresa = _id_empresa and id_filial = _id_local into proximo ;
+        
+        proximo := proximo + 1;
+        
+        update  imobilizados 
+        set     codigo = proximo
+		where   id_empresa     = _id_empresa 
+	       	and id_filial      = _id_local 
+			and codigo         =  tempo.id_realocado;
+			
+	    update nfes
+        set id_imobilizado     = proximo 
+		where  id_empresa      = _id_empresa 
+	        and id_filial      = _id_local 
+			and id_imobilizado = tempo.id_realocado  ;
+			
+		update valores
+        set id_imobilizado     = proximo 
+		where  id_empresa      = _id_empresa 
+	        and id_filial      = _id_local 
+			and id_imobilizado = tempo.id_realocado;
+			
+	    update  imobilizadosinventarios	
+	    set     id_imobilizado   = proximo
+		where   id_empresa       = _id_empresa 
+	       	and id_filial        = _id_local 
+	       	and id_inventario    = _id_inventario
+			and id_imobilizado   =  tempo.id_realocado;
+			
+        update lancamentos 
+        set id_imobilizado     = proximo
+		where  id_empresa      = _id_empresa 
+	        and id_filial      = _id_local 
+			and id_inventario  = _id_inventario
+			and id_imobilizado = tempo.id_realocado;
+			
+		update fotos 
+        set id_imobilizado     = proximo,
+		    file_name = REPLACE(FILE_NAME,LPAD(tempo.id_realocado::text, 6, '0'),LPAD(proximo::text, 6, '0'))
+		where  id_empresa      = _id_empresa 
+	        and id_local       = _id_local 
+			and id_inventario  = _id_inventario
+			and id_imobilizado = tempo.id_realocado;
+  
+        update realoc_transf
+               set novo_realocado  = proximo, 
+               status = 1
+        where id_empresa        = _id_empresa 
+	        and id_local        = _id_local 
+			and id_inventario   = _id_inventario
+			and id_realocado    = tempo.id_realocado
+			and id_transferido  = tempo.id_transferido;       
+			
+        _status := 2;
+        
+	  end if;
+	  
+	  if ((_status-1) = 1) then 
+  
+        update  imobilizados 
+        set     codigo         = tempo.id_realocado
+		where   id_empresa     = _id_empresa 
+	       	and id_filial      = _id_local 
+			and codigo         =  tempo.id_transferido;
+			
+	    update nfes
+        set id_imobilizado = tempo.id_realocado 
+		where  id_empresa      = _id_empresa 
+	        and id_filial      = _id_local 
+			and id_imobilizado = tempo.id_transferido;
+			
+		update valores
+        set id_imobilizado     = tempo.id_realocado 
+		where  id_empresa      = _id_empresa 
+	        and id_filial      = _id_local 
+			and id_imobilizado = tempo.id_transferido;
+			
+	    update  imobilizadosinventarios	
+	    set     id_imobilizado   = tempo.id_realocado 
+		where   id_empresa       = _id_empresa 
+	       	and id_filial        = _id_local 
+	       	and id_inventario    = _id_inventario
+			and id_imobilizado   =  tempo.id_transferido;
+			
+        update lancamentos 
+        set id_imobilizado     = tempo.id_realocado 
+		where  id_empresa      = _id_empresa 
+	        and id_filial      = _id_local 
+			and id_inventario  = _id_inventario
+			and id_imobilizado = tempo.id_transferido;
+			
+		update fotos 
+        set id_imobilizado     = tempo.id_realocado ,
+		    file_name = REPLACE(FILE_NAME,LPAD(tempo.id_transferido::text, 6, '0'),LPAD(tempo.id_realocado::text, 6, '0'))
+		where  id_empresa      = _id_empresa 
+	        and id_local       = _id_local 
+			and id_inventario  = _id_inventario
+			and id_imobilizado = tempo.id_transferido;
+
+        update realoc_transf
+        set   status = 2
+        where id_empresa        = _id_empresa 
+	        and id_local        = _id_local 
+			and id_inventario   = _id_inventario
+			and id_realocado    = tempo.id_realocado;
+			
+        _qtd := _qtd + 1;
+        
+        _status := 2;
+
+	  end if;
+
+	  	  
+ END LOOP;
+
+
+END;
+$function$
+;
+go
+
+--select * from realocar(1,14,10,1);
+--go
+
+
+--2697 - Vai para o final
+
+--5853 - Vai para o 2697
+
+--select * from realoc_transf
+--delete from realoc_transf
+--insert into realoc_transf values(1,14,10,2697,5853,0,0,016,0);
+
+
+--select * from fotos where id_empresa = 1 and id_local = 14 and id_inventario = 10 and id_imobilizado = 2697

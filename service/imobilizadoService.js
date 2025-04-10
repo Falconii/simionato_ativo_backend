@@ -17,6 +17,7 @@ exports.getImobilizados = async function(params){
  exports.insertImobilizado = async function(imobilizado){
 try 
 {
+	console.log(imobilizado);
 	await regras.imobilizado_Inclusao(imobilizado);
 	validacao.Validacao(TABELA,imobilizado, parametros.imobilizados());
 	return imobilizadoData.insertImobilizado(imobilizado);
@@ -27,7 +28,8 @@ catch (err)
 }
  };
 //* CRUD - UPDATE - SERVICE */
- exports.updateImobilizado = async function(imobilizado){try 
+ exports.updateImobilizado = async function(imobilizado){
+try 
 {
 	await regras.imobilizado_Alteracao(imobilizado);
 	validacao.Validacao(TABELA,imobilizado, parametros.imobilizados());
@@ -39,7 +41,8 @@ catch (err)
 }
  };
 //* CRUD - DELETE - SERVICE */
- exports.deleteImobilizado = async function(id_empresa,id_filial,codigo){try 
+ exports.deleteImobilizado = async function(id_empresa,id_filial,codigo){
+try 
 {
 	await  regras.imobilizado_Exclusao(id_empresa,id_filial,codigo);
 	return imobilizadoData.deleteImobilizado(id_empresa,id_filial,codigo);

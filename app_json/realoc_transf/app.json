@@ -1,0 +1,163 @@
+{
+    "app": {
+        "backend": {
+            "src": "C://Repositorios//Simionato//ativo web/simionato_ativo_backend",
+            "database": {
+                "type": "POSGRESQL",
+                "name": "nao_usado",
+                "conexao": {
+                    "user": "postgres",
+                    "password": "123456",
+                    "host": "localhost",
+                    "port": 5432
+                },
+                "script_src": "C://Repositorios//Simionato//ativo web/simionato_ativo_backend//script_realoc_transf"
+            },
+            "tables": [{
+                    "name": "realoc_transf",
+                    "fields": [
+                        {
+                            "name": "id_empresa",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id_local",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id_inventario",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id_realocado",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id_transferido",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        
+                        {
+                            "name": "novo_realocado",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "status",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_insert",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_update",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }
+                    ],
+                    "inner_join": [],
+                    "left_join": [],
+                    "primaryKey": [
+                            {
+                            "key": "id_empresa"
+                            },
+                            {
+                            "key": "id_local"
+                            },
+                            {
+                            "key": "id_inventario"
+                            },
+                            {
+                            "key": "id_realocado"
+                            },
+                            {
+                            "key": "id_transferido"
+                            }
+                    ],
+                    "variables": {
+                        "getone": "realocado",
+                        "getall": "realocados",
+                        "alias": "param"
+                    },
+                    "where": {
+                        "parametro_01": [
+                            { "name": "id_empresa"     , "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id_local"       , "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id_inventario"  , "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id_realocado"   , "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id_transferido" , "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 }
+                        ]
+                    },
+                    "orderby": [
+                        { "label": "", "comparativo": " != '' ", "key": "param.id_empresa,id_local,id_inventario,id_realocado" },
+                        { "label": "ID_REALOCADO"   , "comparativo": " != '' ", "key": "param.id_empresa,id_local,id_inventario,id_realocado" },
+                        { "label": "ID_TRANSFERIDO" , "comparativo": " != 0 " , "key": "param.id_empresa,id_local,id_inventario,id_transferido" }
+                    ],
+                    "tablespace": "Producao"
+                }
+            ],
+            "parametros": []
+        },
+        "frontend": {
+            "src": "C://Repositorios//Simionato//ativo web//simionato_ativo_frontend//src//app",
+            "server": {
+                "includes": [{
+                        "variable": "express",
+                        "from": "express"
+                    },
+                    {
+                        "variable": "cors",
+                        "from": "cors"
+                    }
+                ],
+                "app": "app",
+                "porta": 3000,
+                "rotas": [{ "path": "/", "require": ".//route//tarefaRoute.js" }]
+            }
+        }
+    }
+}

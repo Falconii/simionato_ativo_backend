@@ -10,6 +10,7 @@
 /* fontes gerado automaticamente */
 const pgp = require("pg-promise")();
 
+
 /*
 const db = pgp({
   user: "postgres",
@@ -18,7 +19,8 @@ const db = pgp({
   port: 5433,
   database: "db_simionato_ativo_homolog",
 });  
-  */
+*/
+
 
 const db = pgp({
      user: "postgres",
@@ -27,5 +29,6 @@ const db = pgp({
      port: 59437,
      database: "railway",
  });   
+ 
  
 module.exports = db;

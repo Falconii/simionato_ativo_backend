@@ -1,5 +1,6 @@
 const deparaSrv = require ("../service/deparaService");
 const fotoSrv   = require("../service/fotoService");
+const realocadoSrv = require('../service/realocadoService');
 const funcoes   = require("../util/googleFuncoes");
 const { google } = require("googleapis");
 
@@ -167,6 +168,95 @@ exports.SubstituirAtivo = async function(id_empresa,id_local,id_inventario){
         throw error;
     }
 }
+
+exports.RealocarAtivo = async function(id_empresa,id_local,id_inventario){
+
+    var params = {
+        id_empresa : id_empresa,
+        id_local: id_local,
+        id_inventario: id_inventario,
+        status: 1
+    }
+
+    try {
+        //status 1
+        const _status1 = await realocadoSrv.processarRealocar(id_empresa, id_local, id_inventario,1);
+
+        //status 2
+        params.status = 2;
+        const _status2 = await realocadoSrv.processarRealocar(id_empresa, id_local, id_inventario,2);
+
+        const params2 = {
+            id_empresa : id_empresa,
+            id_local: id_local,
+            id_inventario: id_inventario,
+    		id_realocado:0, 
+	    	id_transferido:0, 
+            status: 2,
+            de : 0,
+            para: 0
+        }
+
+        lsRealocados = await realocadoSrv.getRealocados(params2);
+
+        if (lsRealocados != null){
+
+            for (const realocado of lsRealocados) {
+
+                console.log("realocado =>",realocado);
+
+                const param = 	{
+                    "id_empresa":id_empresa, 
+                    "id_local":id_local, 
+                    "id_inventario":id_inventario, 
+                    "id_imobilizado":realocado.id_realocado, 
+                    "id_pasta":"", 
+                    "id_file":"", 
+                    "file_name":"", 
+                    "destaque":"N", 
+                    "pagina":0, 
+                    "tamPagina":50, 
+                    "contador":"N", 
+                    "orderby":"", 
+                    "sharp":false 
+                };
+
+                let lsFotos =  await fotoSrv.getFotos(param)
+
+                if (lsFotos != null){
+
+                    const message = await atualizaFileName(lsFotos);
+
+                    console.log(message)
+                }
+
+                param.id_imobilizado = realocado.novo_realocado;
+
+                lsFotos =  await fotoSrv.getFotos(param)
+
+                if (lsFotos != null){
+
+                    const message = await atualizaFileName(lsFotos);
+
+                    console.log(message)
+                }
+
+                realocado.status = 3;
+                realocado.user_update = 16;
+
+                const reg = await realocadoSrv.updateRealocado_status(realocado);
+
+            }
+
+        }
+
+        return {"message":"Processamento OK"};
+
+    } catch( error){
+        throw error;
+    }
+}
+
 
 exports.retira_camera_foto = function(fileName){
     return  retira_camera_foto(fileName);

@@ -33,66 +33,129 @@ exports.create = async (req, res, _id_empresa, _id_local, _id_usuario) => {
   var dadosPlanilha = readline.createInterface({
     input: fs.createReadStream(file.path),
   });
-  for await (let linha of dadosPlanilha) {
+  for await (let linha of dadosPlanilha) {  
     nro_linha++;
     if (nro_linha > 1) {
       const campos = parse.ParseCVS("", linha, ";");
+     
       if (campos.length != 36) {
         result = {
-          message: `Quantidade De Colunas Deferente Do Padrão (35)! ${campos.length}}`,
+          message: `Quantidade De Colunas Deferente Do Padrão (36)! ${campos.length}}`,
         };
         console.log(
-          `Quantidade De Colunas Deferente Do Padrão (35)! ${campos.length}}`
+          `Quantidade De Colunas Deferente Do Padrão (36)! ${campos.length}}`
         );
-        break;
+        continue;
       }
+
+      campos[10] = campos[10].replace(/[a-zA-Z]{3}\//, (match) => {
+        const months = {
+          jan: '01-',
+          fev: '02-',
+          mar: '03-',
+          abr: '04-',
+          mai: '05-',
+          jun: '06-',
+          jul: '07-',
+          ago: '08-',
+          set: '09-',
+          out: '10-',
+          nov: '11-',
+          dez: '12-',
+          Jan: '01-',
+          Feb: '02-',
+          Mar: '03-',
+          Apr: '04-',
+          May: '05-',
+          Jun: '06-',
+          Jul: '07-',
+          Aug: '08-',
+          Sep: '09-',
+          Oct: '10-',
+          Nov: '11-',
+          Dec: '12-'
+        };
+        return months[match.slice(0, 3)];
+    });
+    
+
+  
       const retornoModel = _centroCusto(campos);
       if (retornoModel != null) {
-         const registro = await centrocustoSrv.insertCentrocusto(retornoModel);
+          try {
+            const registro = await centrocustoSrv.insertCentrocusto(retornoModel);
+          } catch (err) {
+            console.log(err);
+        }
       }
       const grupoModel = _grupo(campos);
       
       if (grupoModel != null) {
-
-        if (grupoModel.codigo == 6) {
-          console.log(grupoModel);
-      }
-
+    
+        try {
         const registro = await grupoSrv.insertGrupo(grupoModel);
+        }  catch (err) {
+          console.log(err);
+      }
       } 
 
       const produtosModel = _produto(campos);
 
       if (produtosModel != null) {
-        const registro = await produtoSrv.insertProduto(produtosModel);
+        
+        try {
+          const registro = await produtoSrv.insertProduto(produtosModel);
+          }  catch (err) {
+            console.log(err);
+        }
       }
 
       const principalModel = _principal(campos);
 
       if (principalModel != null) {
-        const registro = await principalSrv.insertPrincipal(principalModel);
+        try {
+          const registro = await principalSrv.insertPrincipal(principalModel);
+          }  catch (err) {
+            console.log(err);
+        }
       }
 
       const ImobilizadoModel = _imobilizado(campos);
 
       if (ImobilizadoModel != null) {
-        const registro = await imobilizadoSrv.insertImobilizado(
-          ImobilizadoModel
-        );
+        try {
+          const registro = await imobilizadoSrv.insertImobilizado(
+            ImobilizadoModel
+         );
+          }  catch (err) {
+            console.log(err);
+        }
+      
       }
       const NfesModel = _nfe(campos);
 
       if (NfesModel != null) {
-        const registro = await nfeSrv.insertNfe(NfesModel);
+        try {
+          const registro = await nfeSrv.insertNfe(NfesModel);
+          }  catch (err) {
+            console.log(err);
+        }
+        
       }
 
       const ValorModel = _valores(campos);
 
       if (ValorModel != null) {
-          console.log(ValorModel);
-        const registro = await valorSrv.insertValor(ValorModel);
+         // console.log(ValorModel);
+          try {
+            const registro = await valorSrv.insertValor(ValorModel);
+            }  catch (err) {
+              console.log(err);
+          }
       }
+      
     }
+      
   }
   return result;
 };
@@ -358,8 +421,8 @@ function _nfe(campos) {
       serie: campos[17],
       item: campos[18],
       chavee: campos[19],
-      dtemissao: null, //campos[27],
-      dtlancamento: null, //campos[28],
+      dtemissao: campos[27],
+      dtlancamento: campos[28],
       qtd: shared.excluirVirgulasePontos(campos[20]),
       punit: shared.excluirVirgulasePontos(campos[21]),
       totalitem: shared.excluirVirgulasePontos(campos[22]),
@@ -396,7 +459,7 @@ function _valores(campos) {
       id_empresa: id_empresa,
       id_filial: id_local,
       id_imobilizado: campos[6],
-      dtaquisicao: null, //campos[29],
+      dtaquisicao: campos[29],
       vlraquisicao: shared.excluirVirgulasePontos(campos[30]),
       totaldepreciado: shared.excluirVirgulasePontos(campos[31]),
       vlrresidual: shared.excluirVirgulasePontos(campos[32]),
