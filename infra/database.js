@@ -5,7 +5,7 @@ const fs = require('fs');
 
 let dbConfig;
 
-if (process.env.RAILWAY_ENV) 
+if (process.env.DATABASE_URL) 
     {
        dbConfig = process.env.DATABASE_URL;
        console.log("Conexão Configurada Para Nuvem");
