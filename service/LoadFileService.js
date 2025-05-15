@@ -83,7 +83,7 @@ exports.create = async (req, res, _id_empresa, _id_local, _id_usuario) => {
       const retornoModel = _centroCusto(campos);
       if (retornoModel != null) {
           try {
-            const registro = await centrocustoSrv.insertCentrocusto(retornoModel);
+           // const registro = await centrocustoSrv.insertCentrocusto(retornoModel);
           } catch (err) {
             console.log(err);
         }
@@ -93,7 +93,7 @@ exports.create = async (req, res, _id_empresa, _id_local, _id_usuario) => {
       if (grupoModel != null) {
     
         try {
-        const registro = await grupoSrv.insertGrupo(grupoModel);
+        //const registro = await grupoSrv.insertGrupo(grupoModel);
         }  catch (err) {
           console.log(err);
       }
@@ -124,7 +124,7 @@ exports.create = async (req, res, _id_empresa, _id_local, _id_usuario) => {
 
       if (ImobilizadoModel != null) {
         try {
-          const registro = await imobilizadoSrv.insertImobilizado(
+            const registro = await imobilizadoSrv.insertImobilizado(
             ImobilizadoModel
          );
           }  catch (err) {
@@ -136,7 +136,7 @@ exports.create = async (req, res, _id_empresa, _id_local, _id_usuario) => {
 
       if (NfesModel != null) {
         try {
-          const registro = await nfeSrv.insertNfe(NfesModel);
+             const registro = await nfeSrv.insertNfe(NfesModel);
           }  catch (err) {
             console.log(err);
         }
@@ -146,7 +146,7 @@ exports.create = async (req, res, _id_empresa, _id_local, _id_usuario) => {
       const ValorModel = _valores(campos);
 
       if (ValorModel != null) {
-         // console.log(ValorModel);
+            console.log(ValorModel);
           try {
             const registro = await valorSrv.insertValor(ValorModel);
             }  catch (err) {
@@ -373,7 +373,7 @@ function _imobilizado(campos) {
       codigo: campos[6],
       descricao: shared.excluirCaracteres(campos[7]).toUpperCase(),
       cod_grupo: campos[8],
-      cod_cc: campos[10].replace("#","-"),
+      cod_cc: "3#109", //campos[10].replace("#","-"),
       nfe: campos[16],
       serie: campos[17],
       item: campos[18],

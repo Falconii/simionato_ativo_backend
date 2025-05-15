@@ -1,0 +1,1203 @@
+{
+    "app": {
+        "backend": {
+            "src": "C://Repositorios//Simionato//ativo web/simionato_ativo_backend",
+            "database": {
+                "type": "POSGRESQL",
+                "name": "nao_usado",
+                "conexao": {
+                    "user": "postgres",
+                    "password": "123456",
+                    "host": "localhost",
+                    "port": 5432
+                },
+                "script_src": "C://Repositorios//Simionato//ativo web/simionato_ativo_backend/script/script_apelidos"
+            },
+            "tables": [
+                {
+                    "name": "planilhas_cab",
+                    "fields": [
+                    {
+                        "name": "id_empresa",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    }, 
+                    {
+                        "name": "id_local",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "id",
+                        "type": "serial",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "nome_planilha",
+                        "type": "varchar",
+                        "length": 255,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "produtos",
+                        "type": "char",
+                        "length": 1,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "principais",
+                        "type": "char",
+                        "length": 1,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "imobilizado",
+                        "type": "char",
+                        "length": 1,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "nfes",
+                        "type": "char",
+                        "length": 1,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "grupos",
+                        "type": "char",
+                        "length": 1,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "ccs",
+                        "type": "char",
+                        "length": 1,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "valores",
+                        "type": "char",
+                        "length": 1,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "user_insert",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "user_update",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    }
+                    ],
+                    "inner_join": 
+                    [],
+                    "left_join": [],
+                    "primaryKey": [
+                        {
+                         "key": "id_empresa"
+                        },
+                        {
+                         "key": "id_local"
+                        },
+                        {
+                         "key": "id"
+                        }
+                    ],
+                    "variables": {
+                        "getone": "planilha_cab",
+                        "getall": "planilhas_cab",
+                        "alias":  "cab"
+                    },
+                    "where": {
+                        "parametro_01": [
+                            { "name": "id_empresa"      , "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id_local"        , "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id"              , "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "nome_planilha"   , "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
+                            { "name": "pagina"          , "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
+                            { "name": "tamPagina"       , "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
+                            { "name": "contador"        , "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
+                            { "name": "orderby"         , "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
+                            { "name": "sharp"           , "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        ]
+                    },
+                    "orderby": [
+                        { "label": ""       , "comparativo": " != 0 ", "key":  "cab.id_empresa,cab.id_local,cab.id" },
+                        { "label": "001"    , "comparativo": " != 0 ", "key":  "cab.id_empresa,cab.id_local,cab.id" },
+                        { "label": "002"    , "comparativo": " != '' ", "key": "cab.id_empresa,cab.id_local,cab.nome_planilha" }
+                    ],
+                    "tablespace": "Producao"
+                },
+                {
+                    "name": "planilhas_det_produtos",
+                    "fields": [
+                    {
+                        "name": "id_empresa",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    }, 
+                    {
+                        "name": "id_local",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "id_planilha",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "nro_linha",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "codigo",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "estado",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },  
+                    {
+                        "name": "descricao",
+                        "type": "varchar",
+                        "length": 80,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },  
+                    {
+                        "name": "ncm",
+                        "type": "varchar",
+                        "length": 15,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "id_principal",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "user_insert",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "user_update",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    }
+                    ], 
+                    "inner_join": [ {
+                        "name": "planilhas_cab",
+                        "inner_alias": "cab",
+                        "inner_on": "cab.id_empresa = det.id_empresa and cab.id_local = det.id_local and cab.id = det.id_planilha",
+                        "inner_fields": 
+                        [
+                            {
+                            "name": "nome_planilha",
+                            "as_col": "nome_planilha",
+                            "tipo": "char"
+                            }
+                        ]
+                        }],
+                    "left_join": [],
+                    "primaryKey": [
+                        {
+                            "key": "id_empresa"
+                        },
+                        {
+                            "key": "id_local"
+                        },
+                        {
+                            "key": "id_planilha"
+                        },
+                        {
+                            "key": "nro_linha"
+                        }
+                    ],
+                    "variables": {
+                        "getone": "planilha_det_produto",
+                        "getall": "planilhas_det_produtos",
+                        "alias": "det"
+                    },
+                    "where": {
+                        "parametro_01": [
+                            { "name": "id_empresa"    , "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id_local"      , "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id_planilha"   , "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "nro_linha"     , "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "descricao"     , "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": ""},
+                            { "name": "pagina"        , "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
+                            { "name": "tamPagina"     , "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
+                            { "name": "contador"      , "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
+                            { "name": "orderby"       , "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
+                            { "name": "sharp"         , "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        ]
+                    },
+                    "orderby": [
+                        { "label": ""       , "comparativo": " != 0 ", "key":  "det.id_empresa,det.id_local,det.id_planilha,det.nro_linha"  },
+                        { "label": "001"    , "comparativo": " != 0 ", "key":  "det.id_empresa,det.id_local,det.id_planilha,det.nro_linha" },
+                        { "label": "002"    , "comparativo": " != '' ", "key": "det.id_empresa,det.id_local,det.descricao" }
+  
+                    ],
+                    "tablespace": "Producao"
+                },
+                {
+                    "name": "planilhas_det_principais",
+                    "fields": [
+                    {
+                    "name": "id_empresa",
+                    "type": "int4",     
+                    "length": 0,
+                    "precision": 0,
+                    "nulo": "N",
+                    "padrao": ""
+                    },  
+                    {
+                    "name": "id_local",
+                    "type": "int4",     
+                    "length": 0,
+                    "precision": 0,
+                    "padrao":"",
+                    "validacao": []
+                    },                    
+                    {
+                        "name": "id_planilha",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "nro_linha",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "codigo",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "descricao",
+                        "type": "varchar",
+                        "length": 80,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "user_insert",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "user_update",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    }
+                    ],
+                    "inner_join": [ {
+                        "name": "planilhas_cab",
+                        "inner_alias": "cab",
+                        "inner_on": "cab.id_empresa = det.id_empresa and cab.id_local = det.id_local and cab.id = det.id_planilha",
+                        "inner_fields": 
+                        [
+                            {
+                            "name": "nome_planilha",
+                            "as_col": "nome_planilha",
+                            "tipo": "char"
+                            }
+                        ]
+                        }
+                    ],
+                    "left_join": [],
+                    "primaryKey": [
+                        {
+                            "key": "id_empresa"
+                        },
+                        {
+                            "key": "id_local"
+                        },
+                        {
+                            "key": "id_planilha"
+                        },
+                        {
+                            "key": "nro_linha"
+                        },
+                    ],
+                    "variables": {
+                        "getone": "planilhas_det_principais",
+                        "getall": "planilha_det_principal",
+                        "alias":  "det"
+                    },
+                    "where": {
+                        "parametro_01": [
+                            { "name": "id_cab"    , "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id_caract" , "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id"        , "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "descricao" , "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
+                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
+                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
+                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
+                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
+                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        ]
+                    },
+                    "orderby": [
+                        { "label": ""            , "comparativo": " != '' "            , "key": "sug.id_cab,sug.id_caract" },
+                        { "label": "ID"          , "comparativo": " != 0  "            , "key": "sug.id_cab,sug.id_caract,sug.id" },
+                        { "label": "DESCRICAO"   , "comparativo": " != '' "            , "key": "sug.descricao" }
+                    ],
+                    "tablespace": "Producao"
+                },
+                {
+                    "name": "planilhas_det_imobilizados",
+                    "fields": [
+                    {
+                        "name": "id_empresa",
+                        "type": "int4",     
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": ""
+                    },  
+                    {
+                        "name": "id_local",
+                        "type": "int4",     
+                        "length": 0,
+                        "precision": 0,
+                        "padrao":"",
+                        "validacao": []
+                    },                    
+                    {
+                        "name": "id_planilha",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "nro_linha",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "codigo",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "descricao",
+                        "type": "varchar",
+                        "length": 100,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "cod_grupo",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "cod_cc",
+                        "type": "varchar",
+                        "length": 10,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "nfe",
+                        "type": "varchar",
+                        "length": 9,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "serie",
+                        "type": "varchar",
+                        "length": 3,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "item",
+                        "type": "varchar",
+                        "length": 10,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "origem",
+                        "type": "char",
+                        "length": 1,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "condicao",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "apelido",
+                        "type": "varchar",
+                        "length": 30,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "principal",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "user_insert",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "user_update",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    }
+                    ],
+                    "inner_join": [ {
+                        "name": "planilhas_cab",
+                        "inner_alias": "cab",
+                        "inner_on": "cab.id_empresa = det.id_empresa and cab.id_local = det.id_local and cab.id = det.id_planilha",
+                        "inner_fields": 
+                        [
+                            {
+                            "name": "nome_planilha",
+                            "as_col": "nome_planilha",
+                            "tipo": "char"
+                            }
+                        ]
+                        }
+                    ],
+                    "left_join": [],
+                    "primaryKey": [
+                        {
+                            "key": "id_empresa"
+                        },
+                        {
+                            "key": "id_local"
+                        },
+                        {
+                            "key": "id_planilha"
+                        },
+                        {
+                            "key": "nro_linha"
+                        },
+                        {
+                            "key": "codigo"
+                        }
+                    ],
+                    "variables": {
+                        "getone": "planilha_det_imobilizado",
+                        "getall": "planilhas_det_imobilizados",
+                        "alias":  "det"
+                    },
+                    "where": {
+                        "parametro_01": [
+                            { "name": "id_empresa"    , "filtro": "S", "atividador": " !== 0 " , "tipo": "number", "padrao": 0 },
+                            { "name": "id_local"      , "filtro": "S", "atividador": " !== 0 " , "tipo": "number", "padrao": 0 },
+                            { "name": "id_planilha"   , "filtro": "S", "atividador": " !== 0 " , "tipo": "number", "padrao": 0 },
+                            { "name": "nro_linha"     , "filtro": "S", "atividador": " !== 0 " , "tipo": "number", "padrao": 0 },
+                            { "name": "codigo"        , "filtro": "S", "atividador": " !== 0 " , "tipo": "number", "padrao": 0 },
+                            { "name": "descricao"     , "filtro": "S", "atividador": " !== '' ", "tipo": "string", "padrao": ""},
+                            { "name": "principal"     , "filtro": "S", "atividador": " !== 0 " , "tipo": "number", "padrao": 0 },
+                            { "name": "pagina"        , "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
+                            { "name": "tamPagina"     , "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
+                            { "name": "contador"      , "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
+                            { "name": "orderby"       , "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
+                            { "name": "sharp"         , "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        ]
+                    },
+                    "orderby": [
+                        { "label": ""       , "comparativo": " != 0 ", "key":  "det.id_empresa,det.id_local,det.id_planilha,det.nro_linha,det.codigo"  },
+                        { "label": "001"    , "comparativo": " != 0 ", "key":  "det.id_empresa,det.id_local,det.id_planilha,det.nro_linha,det.codigo" },
+                        { "label": "002"    , "comparativo": " != '' ", "key": "det.id_empresa,det.id_local,det.descricao" }
+  
+                    ],
+                    "tablespace": "Producao"
+                },
+                {
+                    "name": "planilhas_det_nfe",
+                    "fields": [
+                    {
+                        "name": "id_empresa",
+                        "type": "int4",     
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": ""
+                    },  
+                    {
+                        "name": "id_local",
+                        "type": "int4",     
+                        "length": 0,
+                        "precision": 0,
+                        "padrao":"",
+                        "validacao": []
+                    },                    
+                    {
+                        "name": "id_planilha",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "nro_linha",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "cnpj_fornecedor",
+                        "type": "varchar",
+                        "length": 14,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "razao_fornecedor",
+                        "type": "varchar",
+                        "length": 65,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "id_imobilizado",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "nfe",
+                        "type": "varchar",
+                        "length": 9,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "serie",
+                        "type": "varchar",
+                        "length": 3,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "item",
+                        "type": "varchar",
+                        "length": 10,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "chavee",
+                        "type": "varchar",
+                        "length": 44,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "dtemissao",
+                        "type": "Date",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "dtlancamento",
+                        "type": "Date",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "qtd",
+                        "type": "numeric",
+                        "length": 12,
+                        "precision": 4,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "punit",
+                        "type": "numeric",
+                        "length": 15,
+                        "precision": 4,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "punit",
+                        "type": "numeric",
+                        "length": 15,
+                        "precision": 4,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "totalitem",
+                        "type": "numeric",
+                        "length": 15,
+                        "precision": 2,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    
+                    {
+                        "name": "vlrcontabil",
+                        "type": "numeric",
+                        "length": 15,
+                        "precision": 2,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "baseicms",
+                        "type": "numeric",
+                        "length": 15,
+                        "precision": 4,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "percicms",
+                        "type": "numeric",
+                        "length": 7,
+                        "precision": 2,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "vlrcicms",
+                        "type": "numeric",
+                        "length": 15,
+                        "precision": 4,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "user_insert",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "user_update",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    }
+                    ],
+                    "inner_join": [ {
+                        "name": "planilhas_cab",
+                        "inner_alias": "cab",
+                        "inner_on": "cab.id_empresa = det.id_empresa and cab.id_local = det.id_local and cab.id = det.id_planilha",
+                        "inner_fields": 
+                        [
+                            {
+                            "name": "nome_planilha",
+                            "as_col": "nome_planilha",
+                            "tipo": "char"
+                            }
+                        ]
+                        }
+                    ],
+                    "left_join": [],
+                    "primaryKey": [
+                        {
+                            "key": "id_empresa"
+                        },
+                        {
+                            "key": "id_local"
+                        },
+                        {
+                            "key": "id_planilha"
+                        },
+                        {
+                            "key": "nro_linha"
+                        },
+                        {
+                            "key": "id_imobilizado"
+                        }
+                    ],
+                    "variables": {
+                        "getone": "planilha_det_imobilizado",
+                        "getall": "planilhas_det_imobilizados",
+                        "alias":  "det"
+                    },
+                    "where": {
+                        "parametro_01": [
+                            { "name": "id_empresa"    , "filtro": "S", "atividador": " !== 0 " , "tipo": "number", "padrao": 0 },
+                            { "name": "id_local"      , "filtro": "S", "atividador": " !== 0 " , "tipo": "number", "padrao": 0 },
+                            { "name": "id_planilha"   , "filtro": "S", "atividador": " !== 0 " , "tipo": "number", "padrao": 0 },
+                            { "name": "nro_linha"     , "filtro": "S", "atividador": " !== 0 " , "tipo": "number", "padrao": 0 },
+                            { "name": "id_imobilizado", "filtro": "S", "atividador": " !== 0 " , "tipo": "number", "padrao": 0 },
+                            { "name": "pagina"        , "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
+                            { "name": "tamPagina"     , "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
+                            { "name": "contador"      , "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
+                            { "name": "orderby"       , "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
+                            { "name": "sharp"         , "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        ]
+                    },
+                    "orderby": [
+                        { "label": ""       , "comparativo": " != 0 ", "key":  "det.id_empresa,det.id_local,det.id_planilha,det.nro_linha,det.id_imobilizado"  },
+                        { "label": "001"    , "comparativo": " != 0 ", "key":  "det.id_empresa,det.id_local,det.id_planilha,det.nro_linha,det.id_imobilizado" }
+ 
+                    ],
+                    "tablespace": "Producao"
+                }, 
+                {
+                    "name": "planilhas_det_grupos",
+                    "fields": [
+                    {
+                        "name": "id_empresa",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    }, 
+                    {
+                        "name": "id_local",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "id_planilha",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "nro_linha",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "codigo",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "descricao",
+                        "type": "varchar",
+                        "length": 80,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "user_insert",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "user_update",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    }
+                    ],
+                    "inner_join": 
+                    [],
+                    "left_join": [],
+                    "primaryKey": [
+                        {
+                         "key": "id_empresa"
+                        },
+                        {
+                         "key": "id_local"
+                        },
+                        {
+                         "key": "codigo"
+                        }
+                    ],
+                    "variables": {
+                        "getone": "planilha_det_grupo",
+                        "getall": "planilhas_det_grupos",
+                        "alias":  "cab"
+                    },
+                    "where": {
+                        "parametro_01": [
+                            { "name": "id_empresa"    , "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id_local"      , "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id_planilha"   , "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "nro_linha"     , "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "codigo"        , "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "descricao"     , "filtro": "S", "atividador": " !== '' ", "tipo": "",       "" },
+                            { "name": "pagina"          , "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
+                            { "name": "tamPagina"       , "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
+                            { "name": "contador"        , "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
+                            { "name": "orderby"         , "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
+                            { "name": "sharp"           , "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        ]
+                    },
+                    "orderby": [
+                        { "label": ""       , "comparativo": " != 0 " , "key": "det.id_empresa,id_local,id_planilha,det.nro_linha,det.codigo" },
+                        { "label": "001"    , "comparativo": " != 0 " , "key": "det.id_empresa,id_local,id_planilha,det.nro_linha,det.codigo" },
+                        { "label": "002"    , "comparativo": " != '' ", "key": "det.id_empresa,det.id_local,det.descricao" }
+                    ],
+                    "tablespace": "Producao"
+                },
+                 
+                {
+                    "name": "planilhas_det_ccs",
+                    "fields": [
+                    {
+                        "name": "id_empresa",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    }, 
+                    {
+                        "name": "id_local",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "id_planilha",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "nro_linha",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "codigo",
+                        "type": "charchar",
+                        "length": 10,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "descricao",
+                        "type": "varchar",
+                        "length": 80,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "user_insert",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    },
+                    {
+                        "name": "user_update",
+                        "type": "int4",
+                        "length": 0,
+                        "precision": 0,
+                        "nulo": "N",
+                        "padrao": "",
+                        "validacao": []
+                    }
+                    ],
+                    "inner_join": 
+                    [],
+                    "left_join": [],
+                    "primaryKey": [
+                        {
+                         "key": "id_empresa"
+                        },
+                        {
+                         "key": "id_local"
+                        },
+                        {
+                         "key": "codigo"
+                        }
+                    ],
+                    "variables": {
+                        "getone": "planilha_det_cc",
+                        "getall": "planilhas_det_ccs",
+                        "alias":  "det"
+                    },
+                    "where": {
+                        "parametro_01": [
+                            { "name": "id_empresa"    , "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id_local"      , "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "id_planilha"   , "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "nro_linha"     , "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
+                            { "name": "codigo"        , "filtro": "S", "atividador": " !== '' ", "tipo": "string", "padrao": 0 },
+                            { "name": "descricao"     , "filtro": "S", "atividador": " !== '' ", "tipo": "string", "padrao": ""},
+                            { "name": "pagina"          , "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
+                            { "name": "tamPagina"       , "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
+                            { "name": "contador"        , "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
+                            { "name": "orderby"         , "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
+                            { "name": "sharp"           , "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        ]
+                    },
+                    "orderby": [
+                        { "label": ""       , "comparativo": " != 0 " , "key": "det.id_empresa,id_local,id_planilha,det.nro_linha,det.codigo" },
+                        { "label": "001"    , "comparativo": " != 0 " , "key": "det.id_empresa,id_local,id_planilha,det.nro_linha,det.codigo" },
+                        { "label": "002"    , "comparativo": " != '' ", "key": "det.id_empresa,det.id_local,det.descricao" }
+                    ],
+                    "tablespace": "Producao"
+                }
+            ],
+            "parametros": []
+        },
+        "frontend": {
+            "src": "C://Repositorios//Simionato//ativo web//simionato_ativo_frontend//src//app",
+            "server": {
+                "includes": [{
+                        "variable": "express",
+                        "from": "express"
+                    },
+                    {
+                        "variable": "cors",
+                        "from": "cors"
+                    }
+                ],
+                "app": "app",
+                "porta": 3000,
+                "rotas": [{ "path": "/", "require": ".//route//lixoRoute.js" }]
+            }
+        }
+    }
+}

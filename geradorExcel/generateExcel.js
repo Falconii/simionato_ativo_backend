@@ -85,9 +85,6 @@ exports.generateExcel = async function(lsRegistros, inventario, complemento) {
     const uniqueIds = {}; // objeto para armazenar IDs únicos e seus dados
 
     for await (const registro of lsRegistros) {
-      if (registro.id_imobilizado >= 6000 && registro.id_imobilizado <= 6008) {
-        continue;
-      }
 
       //Loop assíncrono sobre os registros fornecidos
       if (!uniqueIds[registro.id_imobilizado]) {
@@ -381,9 +378,6 @@ exports.generateExcelv2 = async function(lsRegistros, inventario, complemento,fi
     const uniqueIds = {}; // objeto para armazenar IDs únicos e seus dados
 
     for await (const registro of lsRegistros) {
-      if (registro.id_imobilizado >= 6000 && registro.id_imobilizado <= 6008) {
-        continue;
-      }
 
       //Loop assíncrono sobre os registros fornecidos
       if (!uniqueIds[registro.id_imobilizado]) {

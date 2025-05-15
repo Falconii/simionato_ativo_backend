@@ -7,7 +7,7 @@ router.post("/api/loadfile", upload.single("file"), async function(req, res) {
     console.log("Entrei Na Rota LoadFile!");
 
     const id_empresa = req.body.id_empresa;
-    const id_local = req.body.id_local;
+    const id_local   = req.body.id_local;
     const id_usuario = req.body.id_usuario;
 
     console.log(

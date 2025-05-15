@@ -8,6 +8,9 @@ const parametroSrv = require("./service/parametroService");
 var os = require("os");
 const PORT = process.env.PORT || 3000;
 const app = express();
+
+const WebSocketServer = require('./websocket/websocketServer');
+
 global.appRoot = path.resolve(__dirname);
 
 app.use(express.json());
@@ -69,6 +72,7 @@ app.use("/", require("./route/padrao_caracteristicaRoute.js"));
 app.use("/", require("./route/padrao_sugestaoRoute.js"));
 app.use("/", require("./route/deparaRoute.js"));
 app.use("/", require("./route/realocadoRoute.js"));
+app.use("/", require("./route/websockectRoute.js"));
 
 
 
@@ -164,4 +168,12 @@ async function refresh() {
             `Erro Na Gravação googlekey INTELLI-SIMIONATO, No Servidor ${error}`
         );
     }
+
+// Inicializa apenas o WebSocket
+const wsServer = new WebSocketServer(8080);
+
+console.log("Servidor WebSocket iniciado e pronto para receber conexões.");
+
+
+
 }
