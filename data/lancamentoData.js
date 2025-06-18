@@ -50,6 +50,7 @@ exports.getLancamento = function (
 			,  imo.cod_cc as  imo_cod_cc  
 			,  imo.cod_grupo as  imo_cod_grupo  
 			,  imo.descricao as  imo_descricao  
+			,  imo.apelido   as  imo_apelido
 			,  usu.razao as  usu_razao    
  			FROM lancamentos lanca 	  
 				 inner join imobilizadosinventarios imo_inv on imo_inv.id_empresa = lanca.id_empresa and imo_inv.id_filial = lanca.id_filial and imo_inv.id_inventario = lanca.id_inventario and imo_inv.id_imobilizado = lanca.id_imobilizado
@@ -133,6 +134,7 @@ exports.getLancamentos = function (params) {
 			,  imo.cod_cc as  imo_cod_cc  
 			,  imo.cod_grupo as  imo_cod_grupo  
 			,  imo.descricao as  imo_descricao  
+			,  imo.apelido   as  imo_apelido
 			,  usu.razao as  usu_razao     
 			FROM lancamentos lanca   
 				 inner join imobilizadosinventarios imo_inv on imo_inv.id_empresa = lanca.id_empresa and imo_inv.id_filial = lanca.id_filial and imo_inv.id_inventario = lanca.id_inventario and imo_inv.id_imobilizado = lanca.id_imobilizado

@@ -7,6 +7,7 @@ const parametroSrv = require('../service/parametroService');
 /* ROTA GETONE parametro */
 router.get("/api/parametro/:id_empresa/:modulo/:assinatura/:id_usuario", async function(req, res) {
         try {
+            console.log('parametroRoute - getParametro', req.params);
             const lsLista = await parametroSrv.getParametro(req.params.id_empresa, req.params.modulo, req.params.assinatura, req.params.id_usuario);
             if (lsLista == null) {
                 res.status(409).json({ message: 'Parametro Não Encontrado.' });

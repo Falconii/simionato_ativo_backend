@@ -47,6 +47,7 @@ exports.getImobilizadoinventario = function (
       ,  imo.item          as imo_item  
       ,  imo.origem        as imo_origem
       ,  imo.principal     as imo_principal
+      ,  imo.apelido       as imo_apelido
 			,  cc.descricao as  cc_descricao  
 			,  gru.descricao as  grupo_descricao  
 			,  coalesce(lanca.id_usuario,0) as  lanc_id_usuario  
@@ -132,10 +133,14 @@ exports.getImobilizadosinventarios = function (params) {
       orderby =
         "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,coalesce(lanca.obs,'')";
     //Data
-     //Data
      if (params.orderby == "008")
       orderby =
         "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,lanca.dtlanca";
+    //Apelido   
+     if (params.orderby == "009")
+      orderby =
+        "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo.apelido";
+    
 
     if (orderby != "") orderby = " order by " + orderby;
 
@@ -153,13 +158,20 @@ exports.getImobilizadosinventarios = function (params) {
     }
     if (params.id_imobilizado !== 0) {
       if (where != "") where += " and ";
-      where += `imo_inv.id_imobilizado = ${params.id_imobilizado} `;
+      where += ` imo_inv.id_imobilizado = ${params.id_imobilizado} `;
     }
     if (params.id_cc.trim() !== "") {
-      if (where != "") where += " and ";
-       where += `( imo.cod_cc = '${params.id_cc}' OR imo_inv.new_cc = '${params.id_cc}' )`;
+       const codigos = params.id_cc.split(';');
+       const queryString = `( imo.cod_cc IN ('${codigos.join("','")}') or imo_inv.new_cc IN ('${codigos.join("','")}') )`;
+       if (where != "") where += " and ";
+       if (codigos.length == 1) {
+          where += `( imo.cod_cc = '${params.id_cc}' OR imo_inv.new_cc = '${params.id_cc}' )`;
+       } else {
+           where += queryString;
+       }
     }
 
+    
     if (params.dtinicial !== '') {
       if (where != "") where += " and ";
       where += `( lanca.dtlanca >=  ${shared.formatDateYYYYMMDD(params.dtinicial)} and  lanca.dtlanca <=  ${shared.formatDateYYYYMMDD(params.dtfinal)} ) `;
@@ -185,6 +197,17 @@ exports.getImobilizadosinventarios = function (params) {
           where += `unaccent(lanca.obs)  = '${shared.semAcento(params.observacao)}' `;
         } else {
           where += `unaccent(lanca.obs)  like '%${shared.semAcento(params.observacao.trim())}%' `;
+        }
+      }
+    }
+     console.log("apelido", params.apelido);
+     if (params.apelido) {
+      if (params.apelido !== "") {
+        if (where != "") where += " and ";
+        if (params.sharp) {
+          where += `unaccent(imo.apelido) = '${shared.semAcento(params.apelido)}' `;
+        } else {
+          where += `unaccent(imo.apelido) like '%${shared.semAcento(params.apelido.trim())}%' `;
         }
       }
     }
@@ -271,6 +294,7 @@ exports.getImobilizadosinventarios = function (params) {
       ,  imo.item          as imo_item  
       ,  imo.origem        as imo_origem
       ,  imo.principal     as imo_principal
+      ,  imo.apelido       as imo_apelido
 			,  cc.descricao as  cc_descricao  
 			,  gru.descricao as  grupo_descricao  
 			,  coalesce(lanca.id_usuario,0) as  lanc_id_usuario  
@@ -408,6 +432,17 @@ exports.getImobilizadosinventariosFotos = function (params) {
           }
         }
       }
+      if (params.apelido) {
+        if (params.apelido !== "") {
+          if (where != "") where += " and ";
+          if (params.sharp) {
+            where += `unaccent(imo.apelido) = '${shared.semAcento(params.apelido)}' `;
+          } else {
+            where += `unaccent(imo.apelido) like '%${shared.semAcento(params.apelido.trim())}%' `;
+          }
+        }
+     }
+
       if (params.status !== -1) {
         if (where != "") where += " and ";
         if (params.status == 90) {
@@ -505,6 +540,8 @@ exports.getImobilizadosinventariosFotos = function (params) {
     ,  imo.serie         as imo_serie
     ,  imo.item          as imo_item
     ,  imo.origem        as imo_origem
+    ,  imo.principal     as imo_principal
+    ,  imo.apelido       as imo_apelido
 	  ,  cc.descricao as  cc_descricao
 	  ,  gru.descricao as  grupo_descricao
 	  ,  coalesce(lanca.id_usuario,0) as  lanc_id_usuario

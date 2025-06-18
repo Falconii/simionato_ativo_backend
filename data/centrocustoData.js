@@ -48,11 +48,17 @@ exports.getCentroscustos = function(params) {
                 where += `cc.id_filial = ${params.id_filial} `;
             }
             if (params.codigo.trim() !== '') {
+                const codigos = params.codigo.split(';');
+                const queryString = `( cc.codigo IN ('${codigos.join("','")}') )`;
                 if (where != "") where += " and ";
-                if (params.sharp) {
-                    where += `cc.codigo = '${params.codigo}' `;
-                } else {
-                    where += `cc.codigo like '%${params.codigo.trim()}%' `;
+                if (codigos.length <= 1) {
+                    if (params.sharp) {
+                        where += `cc.codigo = '${params.codigo}' `;
+                    } else {
+                        where += `cc.codigo like '%${params.codigo.trim()}%' `;
+                    }
+                }  else {
+                    where += queryString;
                 }
             }
             if (params.descricao.trim() !== '') {
@@ -69,6 +75,8 @@ exports.getCentroscustos = function(params) {
                 paginacao = `limit ${params.tamPagina} offset ((${params.pagina} - 1) * ${params.tamPagina})`;
             }
 
+            
+            console.log("WHERE =>", where);
 
             if (params.contador == 'S') {
                 sqlStr = `SELECT COALESCE(COUNT(*),0) as total 

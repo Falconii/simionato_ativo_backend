@@ -53,6 +53,32 @@ exports.getImobilizado = function(id_empresa, id_filial, codigo) {
 			 where imo.id_empresa = ${id_empresa} and  imo.id_filial = ${id_filial} and  imo.codigo = ${codigo}  `;
     return db.oneOrNone(strSql);
 };
+exports.getImobilizadoOnly = function(id_empresa, id_filial, codigo) {
+    strSql = ` select   
+			   imo.id_empresa as  id_empresa  
+			,  imo.id_filial as  id_filial  
+			,  imo.codigo as  codigo  
+			,  imo.descricao as  descricao  
+			,  imo.cod_grupo as  cod_grupo  
+			,  imo.cod_cc as  cod_cc  
+			,  imo.nfe as  nfe  
+			,  imo.serie as  serie  
+			,  imo.item as  item  
+			,  imo.origem  as origem
+            ,  imo.principal  as principal
+            ,  imo.condicao  as condicao
+            ,  imo.apelido  as apelido
+			,  imo.user_insert as  user_insert  
+			,  imo.user_update as  user_update  
+			,  '' as  grupo_descricao  
+			,  '' as  cc_descricao  
+			,  '' as  forne_razao    
+            ,  '' as prin_descricao
+ 			FROM imobilizados imo 	  
+			 where imo.id_empresa = ${id_empresa} and  imo.id_filial = ${id_filial} and  imo.codigo = ${codigo}  `;
+    return db.oneOrNone(strSql);
+};
+
 /* CRUD GET ALL*/
 exports.getImobilizados = function(params) {
     if (params) {

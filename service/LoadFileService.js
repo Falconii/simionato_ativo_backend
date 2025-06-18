@@ -34,6 +34,9 @@ exports.create = async (req, res, _id_empresa, _id_local, _id_usuario) => {
     input: fs.createReadStream(file.path),
   });
   for await (let linha of dadosPlanilha) {  
+    
+    let linhaPrincipal = null;
+
     nro_linha++;
     if (nro_linha > 1) {
       const campos = parse.ParseCVS("", linha, ";");
@@ -43,11 +46,12 @@ exports.create = async (req, res, _id_empresa, _id_local, _id_usuario) => {
           message: `Quantidade De Colunas Deferente Do Padrão (36)! ${campos.length}}`,
         };
         console.log(
-          `Quantidade De Colunas Deferente Do Padrão (36)! ${campos.length}}`
+          `Quantidade De Colunas Deferente Do Padrão (36)! ${nro_linha} ${campos.length}}`
         );
         continue;
       }
 
+      /*
       campos[10] = campos[10].replace(/[a-zA-Z]{3}\//, (match) => {
         const months = {
           jan: '01-',
@@ -76,14 +80,25 @@ exports.create = async (req, res, _id_empresa, _id_local, _id_usuario) => {
           Dec: '12-'
         };
         return months[match.slice(0, 3)];
-    });
-    
+      });
+      */
 
-  
+      if (nro_linha % 100 === 0){
+        console.log(
+         `Processando Linha: ${nro_linha} - ${campos[6]} - ${campos[7]} - ${campos[8]}`
+        );
+      }
       const retornoModel = _centroCusto(campos);
       if (retornoModel != null) {
           try {
-           // const registro = await centrocustoSrv.insertCentrocusto(retornoModel);
+              const registro = await centrocustoSrv.getCentrocusto(
+              id_empresa,
+              id_local,
+              retornoModel.codigo
+            );
+            if (registro == null) {
+               await centrocustoSrv.insertCentrocusto(retornoModel);
+            }
           } catch (err) {
             console.log(err);
         }
@@ -93,40 +108,73 @@ exports.create = async (req, res, _id_empresa, _id_local, _id_usuario) => {
       if (grupoModel != null) {
     
         try {
-        //const registro = await grupoSrv.insertGrupo(grupoModel);
+          const registro = await grupoSrv.getGrupo(
+            id_empresa,
+            id_local,
+            grupoModel.codigo
+            );
+        if (registro == null) {
+            await grupoSrv.insertGrupo(grupoModel);
+        }
         }  catch (err) {
-          console.log(err);
+           console.log(err);
       }
       } 
 
-      const produtosModel = _produto(campos);
+      const produtosModel = _produto(campos); 
 
       if (produtosModel != null) {
         
         try {
-          const registro = await produtoSrv.insertProduto(produtosModel);
+          const registro = await produtoSrv.getProduto(
+            id_empresa,
+            id_local,
+            produtosModel.codigo
+          );
+          if (registro == null) {
+             await produtoSrv.insertProduto(produtosModel);
+          }
           }  catch (err) {
             console.log(err);
         }
       }
 
-      const principalModel = _principal(campos);
+      const retorno = _principal(campos);
+
+      const principalModel = retorno.principalModel;
+      linhaPrincipal = retorno.principalModelSemFiltro;
+
+      console.log("principalModel", principalModel);
+
+      console.log("linhaPrincipal", linhaPrincipal);  
 
       if (principalModel != null) {
         try {
-          const registro = await principalSrv.insertPrincipal(principalModel);
-          }  catch (err) {
-            console.log(err);
-        }
+              const result  = await principalSrv.getPrincipal(
+              id_empresa,
+              id_local,
+              principalModel.codigo
+            );
+            if (result == null) {
+                await principalSrv.insertPrincipal(principalModel);
+            }
+          }   catch (err) {
+              console.log(err);
+          }
       }
+      console.log("Vou Gravar este principal: ",linhaPrincipal);
+      
+      const ImobilizadoModel = _imobilizado(campos,linhaPrincipal);
 
-      const ImobilizadoModel = _imobilizado(campos);
-
+      console.log("ImobilizadoModel", ImobilizadoModel);
+      
       if (ImobilizadoModel != null) {
         try {
-            const registro = await imobilizadoSrv.insertImobilizado(
-            ImobilizadoModel
-         );
+            const registro = await imobilizadoSrv.getImobilizadoOnly(id_empresa,id_local,ImobilizadoModel.codigo);
+            if (registro == null) {;
+              await imobilizadoSrv.insertImobilizado(
+              ImobilizadoModel);
+            }
           }  catch (err) {
             console.log(err);
         }
@@ -136,7 +184,10 @@ exports.create = async (req, res, _id_empresa, _id_local, _id_usuario) => {
 
       if (NfesModel != null) {
         try {
-             const registro = await nfeSrv.insertNfe(NfesModel);
+             const registro = await nfeSrv.getNfe(NfesModel);
+              if (registro == null) {
+                await nfeSrv.insertNfe(NfesModel);
+              }
           }  catch (err) {
             console.log(err);
         }
@@ -146,17 +197,24 @@ exports.create = async (req, res, _id_empresa, _id_local, _id_usuario) => {
       const ValorModel = _valores(campos);
 
       if (ValorModel != null) {
-            console.log(ValorModel);
           try {
-            const registro = await valorSrv.insertValor(ValorModel);
-            }  catch (err) {
+              const registro = await valorSrv.getValor(
+              id_empresa,
+              id_local,
+              ValorModel.id_imobilizado
+            );
+            if (registro == null) {
+               await valorSrv.insertValor(ValorModel);
+            }
+          }  catch (err) {
               console.log(err);
           }
       }
       
     }
-      
   }
+  
+  console.log("Acabei. Pode Usar");
   return result;
 };
 
@@ -225,7 +283,6 @@ exports.update = async (req, res, _id_empresa, _id_local, _id_usuario) => {
 };
 
 function _centroCusto(campos) {
-  //console.log(campos);
   let centrocustoModel = null;
   ct = 0;
   const idx_cc = centro_custos.findIndex((cc) => {
@@ -314,6 +371,7 @@ function _produto(campos) {
 
 function _principal(campos) {
   let principalModel = null;
+  let principalModelSemFiltro = null
   let ct = 0;
   const idx_main = principal.findIndex((pr) => {
     return pr.cod_produto.trim() == campos[4].trim();
@@ -323,18 +381,30 @@ function _principal(campos) {
     principal.push({
       idx: ct,
       cod_produto: campos[4],
-      desc_produto: campos[4],
+      desc_produto: campos[5],
     });
     principalModel = {
       id_empresa: id_empresa,
       id_filial: id_local,
-      codigo: campos[4],
+      codigo: campos[4].trim() !== "" ? campos[4] : 0,
       descricao: shared.excluirCaracteres(campos[5]).toUpperCase(),
       user_insert: id_usuario,
       user_update: 0,
     };
   }
-  return principalModel;
+  const retorno = {
+    principalModel: principalModel,
+    principalModelSemFiltro: 
+    {
+        id_empresa: id_empresa,
+        id_filial: id_local,
+        codigo: campos[4].trim() !== "" ? campos[4] : 0,
+        descricao: shared.excluirCaracteres(campos[5]).toUpperCase(),
+        user_insert: id_usuario,
+        user_update: 0
+   }
+  }
+  return retorno;
 }
 
 function _principalSemFiltro(campos) {
@@ -344,7 +414,7 @@ function _principalSemFiltro(campos) {
       principalModel = {
         id_empresa: id_empresa,
         id_filial: id_local,
-        codigo: campos[4],
+        codigo: campos[4].trim() !== "" ? campos[4] : 0,
         descricao: shared.excluirCaracteres(campos[5]).toUpperCase(),
         user_insert: id_usuario,
         user_update: 0,
@@ -353,7 +423,7 @@ function _principalSemFiltro(campos) {
     return principalModel;
   }
 
-function _imobilizado(campos) {
+function _imobilizado(campos,linhaPrincipal) {
   let ImobilizadoModel = null;
   let ct = 0;
   const idx_mob = imobilizados.findIndex((imo) => {
@@ -373,14 +443,14 @@ function _imobilizado(campos) {
       codigo: campos[6],
       descricao: shared.excluirCaracteres(campos[7]).toUpperCase(),
       cod_grupo: campos[8],
-      cod_cc: "3#109", //campos[10].replace("#","-"),
+      cod_cc: campos[10].replace("#","-"),
       nfe: campos[16],
       serie: campos[17],
       item: campos[18],
       condicao: campos[12],
       apelido: campos[13],
       origem: "P",
-      principal: 0,
+      principal: linhaPrincipal == null ? 0 : linhaPrincipal.codigo,
       user_insert: id_usuario,
       user_update: 0,
     };

@@ -7,6 +7,7 @@ const fs = require("fs");
 const parametroSrv = require("./service/parametroService");
 var os = require("os");
 const PORT = process.env.PORT || 3000;
+const WS_PORT = process.env.WS_PORT || 8080;
 const app = express();
 
 const WebSocketServer = require('./websocket/websocketServer');
@@ -73,8 +74,6 @@ app.use("/", require("./route/padrao_sugestaoRoute.js"));
 app.use("/", require("./route/deparaRoute.js"));
 app.use("/", require("./route/realocadoRoute.js"));
 app.use("/", require("./route/websockectRoute.js"));
-
-
 
 app.listen(PORT, () => {
     console.log(`Servidor No Ar. Porta ${PORT}`);
@@ -168,12 +167,9 @@ async function refresh() {
             `Erro Na Gravação googlekey INTELLI-SIMIONATO, No Servidor ${error}`
         );
     }
-
 // Inicializa apenas o WebSocket
-const wsServer = new WebSocketServer(8080);
+//const wsServer = new WebSocketServer(WS_PORT);
 
-console.log("Servidor WebSocket iniciado e pronto para receber conexões.");
-
-
+//console.log("Servidor WebSocket iniciado e pronto para receber conexões.");
 
 }

@@ -9,6 +9,9 @@ const TABELA = 'IMOBILIZADOS';
 exports.getImobilizado = async function(id_empresa,id_filial,codigo){
 	return imobilizadoData.getImobilizado(id_empresa,id_filial,codigo);
 };
+exports.getImobilizadoOnly= async function(id_empresa,id_filial,codigo){
+	return imobilizadoData.getImobilizadoOnly(id_empresa,id_filial,codigo);
+};
 /* CRUD GET ALL SERVICE */
 exports.getImobilizados = async function(params){
 	return imobilizadoData.getImobilizados(params);
@@ -17,7 +20,6 @@ exports.getImobilizados = async function(params){
  exports.insertImobilizado = async function(imobilizado){
 try 
 {
-	console.log(imobilizado);
 	await regras.imobilizado_Inclusao(imobilizado);
 	validacao.Validacao(TABELA,imobilizado, parametros.imobilizados());
 	return imobilizadoData.insertImobilizado(imobilizado);
