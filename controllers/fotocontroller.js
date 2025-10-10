@@ -137,6 +137,140 @@ async function processaUploadFotoDisp(req) {
   return fotoSaved;
 }
 
+async function processaUploadFotoWeb(req) {
+  console.log("📥 [processaUploadFoto] Iniciando processamento...");
+
+  // Extrai dados
+  const {
+    id_empresa, id_local, id_inventario, id_imobilizado, id_pasta,
+    id_file, id_usuario, data, destaque, obs, localizacao, file_name
+  } = req.body;
+  const file_name_foto_upload = req.file.originalname;
+  fotoSaved = null;
+
+
+  // Autenticação Google
+  const params = await funcoes.loadCredencials(id_empresa);
+  const oauth2Client = funcoes.getoauth2Client(params);
+  const driveService = google.drive({ version: "v3", auth: oauth2Client });
+
+  // Inventário
+  const inventario = await inventarioSrv.getInventario(id_empresa, id_local, id_inventario);
+  const folder_id = inventario.folder_id;
+
+  // Monta Objeto Foto
+  let foto = {
+      "id_empresa" 			 	 : id_empresa, 
+      "id_local" 			 		 : id_local,
+      "id_inventario" 		 : id_inventario,
+      "id_imobilizado" 		 : id_imobilizado,
+      "id_pasta" 			 		 : id_pasta, 
+      "id_file" 			 		 : id_file,
+      "file_name" 			 	 : file_name,
+      "file_name_original" : file_name,
+      "id_usuario" 			 	 : id_usuario,
+      "data" 				 		   : data,
+      "destaque" 			 		 : destaque,
+      "obs" 				 		   : obs,
+      "localizacao"		     : localizacao,
+      "user_insert" 		 	 : id_usuario, 
+      "user_update"		 		 : 0
+  }
+
+  // Verifica e exclui arquivo anterior do Drive
+  let existeDrive = false;
+  if (id_file && id_file.trim() !== "") {
+    try {
+      const checkFile = await funcoes.existFile(driveService, id_file);
+      existeDrive = checkFile.result;
+    } catch (err) {
+      existeDrive = false;
+    }
+
+    if (existeDrive) {
+      await funcoes.deleteFile(driveService, id_file);
+      console.log("🗑️ Arquivo antigo do Drive excluído");
+    }
+  }
+  // Upload do novo arquivo
+  const saved = await funcoes.saveFile(driveService,file_name_foto_upload, file_name, folder_id);
+  foto.id_file = saved.fileId;
+  foto.file_name = file_name;
+  foto.id_pasta = folder_id;
+  foto.localizacao = 'N';
+  
+
+  console.log("-->",foto)
+
+  fotoSaved = await fotoSrv.insertFoto(foto);
+
+   try {
+    fs.unlinkSync(`./fotos/${file_name_foto_upload}`);
+  } catch (err) {
+    console.error("⚠️ Erro ao deletar arquivo local:", err);
+  }
+  
+  return fotoSaved;
+}
+/* Esta funcao sincroniza o file_name das fotos do DB com as fotos do Google Drive
+   para que o app mobile consiga baixar as fotos corretamente.
+   */
+
+async function sincronizarFileName(req){
+    try {
+        const { id_empresa, id_local, id_inventario,id_pasta,id_usuario,pagina } = req.body;
+
+        let  params = {
+                        "id_empresa":id_empresa, 
+                        "id_local":id_local , 
+                        "id_inventario":id_inventario, 
+                        "id_imobilizado":0, 
+                        "id_pasta":id_pasta, 
+                        "id_file":"", 
+                        "file_name":"", 
+                        "destaque":"", 
+                        "pagina":0, 
+                        "tamPagina":100, 
+                        "contador":"S", 
+                        "orderby":"", 
+                        "sharp":false
+        }
+        
+        
+       const total_registros = await fotoSrv.getFotos(params);
+
+       let totalPaginas = Math.ceil(total_registros.total / params.tamPagina);
+
+        console.log("Total de Fotos  =>",total_registros.total," em ",totalPaginas," páginas  ");
+
+        params.pagina = pagina;
+        params.tamPagina = 100;
+        params.contador = "N";
+
+        console.log(`Total de Fotos a Processar => ${total_registros.total}`);
+     
+
+         const fotos = await fotoSrv.getFotos(params);
+
+        //const fotos = await fotoSrv.getFotosTempo();
+
+        if (fotos?.length > 0) {
+            for (const foto of fotos) {
+                console.log("foto =>",foto.file_name);  
+              }
+        }
+
+       const message = await atualizaFileNameDB_GD(fotos);
+
+        console.log(message)
+
+        return fotos.length;
+    } 
+    catch (error) {  
+        throw error;
+    }
+  }
+
 
 
 module.exports = {
