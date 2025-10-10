@@ -5,6 +5,7 @@ const funcoes       = require("../util/googleFuncoes");   // autenticação, upl
 const inventarioSrv = require("../service/inventarioService");
 const fotoSrv = require("../service/fotoService");
 
+
 const PORT = process.env.PORT || 3000;
 
 async function atualizaFileNameDB_GD(lsFotos){
@@ -65,7 +66,6 @@ async function atualizaFileNameDB_GD(lsFotos){
     return `Total de Fotos Processadas: ${lsFotos.length}`;
 
 }
-
 
 async function processaUploadFotoDisp(req) {
   console.log("📥 [processaUploadFoto] Iniciando processamento...");
@@ -136,6 +136,7 @@ async function processaUploadFotoDisp(req) {
 
   return fotoSaved;
 }
+
 
 async function processaUploadFotoWeb(req) {
   console.log("📥 [processaUploadFoto] Iniciando processamento...");
@@ -271,8 +272,6 @@ async function sincronizarFileName(req){
     }
   }
 
-
-
 module.exports = {
-  processaUploadFotoDisp
+  processaUploadFotoDisp,processaUploadFotoWeb,sincronizarFileName
 }
