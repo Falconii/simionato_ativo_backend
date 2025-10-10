@@ -137,3 +137,8 @@ async function processaUploadFotoDisp(req) {
   return fotoSaved;
 }
 
+
+
+module.exports = {
+  processaUploadFotoDisp
+}
