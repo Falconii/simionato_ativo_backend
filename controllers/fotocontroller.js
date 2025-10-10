@@ -1,4 +1,6 @@
 const fs = require("fs");
-
-
-const PORT = process.env.PORT || 3000;
+const erroDB = require('../util/userfunctiondb');
+const { google } = require("googleapis");
+const funcoes       = require("../util/googleFuncoes");   // autenticação, upload, etc.
+const inventarioSrv = require("../service/inventarioService");
+const fotoSrv = require("../service/fotoService");
