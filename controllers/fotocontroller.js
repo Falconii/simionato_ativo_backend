@@ -68,7 +68,7 @@ async function atualizaFileNameDB_GD(lsFotos){
     return `Total de Fotos Processadas: ${lsFotos.length}`;
 
 }
-
+/*
 async function processaUploadFotoDisp(req) {
   console.log("📥 [processaUploadFoto] Iniciando processamento...");
 
@@ -218,6 +218,7 @@ async function processaUploadFotoWeb(req) {
 /* Esta funcao sincroniza o file_name das fotos do DB com as fotos do Google Drive
    para que o app mobile consiga baixar as fotos corretamente.
    */
+
 async function sincronizarFileName(req){
     try {
         const { id_empresa, id_local, id_inventario,id_pasta,id_usuario,pagina } = req.body;
@@ -274,5 +275,6 @@ async function sincronizarFileName(req){
   }
 
 module.exports = {
-  processaUploadFotoDisp,processaUploadFotoWeb,sincronizarFileName
+  //processaUploadFotoDisp,processaUploadFotoWeb,sincronizarFileName
+  sincronizarFileName
 }
