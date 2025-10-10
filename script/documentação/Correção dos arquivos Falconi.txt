@@ -1,0 +1,58 @@
+//Tratamento das fotos falconi
+//Todo o procedimento se baseia na pasta  1Oc4S6bEQy_TPPPSsxzl1gYkOs8wvwuWq - falconi
+//Não esqueça de criar a coluna old_file_name, e dar replace nela, só por segurança
+
+//CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+
+//verifica link entre o nome do arquivo com o file name, verfica também id_local,id_inventario,id_imobilizado
+select id_local,id_inventario,id_imobilizado,substring(file_name,18,6)::INTEGER,file_name
+       ,substring(file_name,4,6)::INTEGER AS LOCAL
+       ,substring(file_name,11,6)::INTEGER AS INVENTARIO
+       ,substring(file_name,1,24) as parcial_nome
+       ,file_name as antigo_nome
+       ,substring(file_name,1,24) || gen_random_uuid() AS novo_nome
+from   fotos 
+where  id_pasta = '1Oc4S6bEQy_TPPPSsxzl1gYkOs8wvwuWq' 
+       --AND ((id_imobilizado <> substring(file_name,18,6)::INTEGER)
+       --OR  (id_local <> substring(file_name,4,6)::INTEGER)
+       --OR  (id_inventario <> substring(file_name,11,6)::INTEGER))
+order by id_imobilizado
+
+//Por segurança vou criar uma coluna chama old_name, só para ficar com o nome antigo
+
+//ALTER TABLE fotos ADD COLUMN old_file_name TEXT default '';
+
+//update fotos set old_file_name = file_name;
+
+//corregir o file_name 
+
+update fotos set file_name =  substring(file_name,1,24) || gen_random_uuid()
+where  id_pasta = '1Oc4S6bEQy_TPPPSsxzl1gYkOs8wvwuWq' 
+
+
+//alter table fotos add column localizacao varchar(1) default 'N'
+
+
+select   
+                           foto.id_empresa as  id_empresa
+                        ,  foto.id_local as  id_local
+                        ,  foto.id_inventario as  id_inventario
+                        ,  foto.id_imobilizado as  id_imobilizado
+                        ,  foto.id_pasta as  id_pasta
+                        ,  foto.id_file as  id_file
+                        ,  foto.file_name as  file_name
+                        ,  foto.file_name_original as  file_name_original
+                        ,  foto.id_usuario as  id_usuario
+                        ,  to_char(foto.data, 'DD/MM/YYYY') as data
+                        ,  foto.destaque as  destaque
+                        ,  foto.obs as  obs
+            ,  foto.localizacao as  localizacao
+                        ,  foto.user_insert as  user_insert
+                        ,  foto.user_update as  user_update
+            ,  coalesce(imo.descricao,'') as imo_descricao
+            ,  coalesce(usu.razao,'') as usu_razao
+                        FROM fotos foto
+            INNER JOIN imobilizados imo on imo.id_empresa = foto.id_empresa and imo.id_filial = foto.id_local  and imo.codigo = foto.id_imobilizado
+            INNER JOIN usuarios     usu on usu.id_empresa = usu.id_empresa  and usu.id = foto.id_usuario
+                         where foto.id_empresa = 1  and foto.id_local = 14  and foto.id_inventario = 10 -- and foto.id_pasta like '%1Oc4S6bEQy_TPPPSsxzl1gYkOs8wvwuWq%'           
+                        order by id_empresa,id_empresa,id_local,id_inventario,id_imobilizado,id_pasta,id_file,file_name limit 10 offset ((1 - 1) * 10)

@@ -111,7 +111,7 @@ exports.getNfes = function(params) {
         orderby = "";
         paginacao = "";
 
-        if (params.orderby == "") orderby = "nfe.id_empresa,nfe.id_filial";
+        if (params.orderby == "") orderby = "nf.id_empresa,nf.id_filial";
         if (params.orderby == "Filial") orderby = "nf.id_empresa,nf.id_filial";
         if (params.orderby == "Nfe")
             orderby = "nf.id_empresa,nf.id_filial,nf.nfe,nf.serie";

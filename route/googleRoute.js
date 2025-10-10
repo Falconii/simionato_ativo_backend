@@ -2,11 +2,16 @@ const db = require("../infra/database");
 const express = require("express");
 const router = express.Router();
 const fotoSrv = require("../service/fotoService");
+const localSrv = require("../service/localService");
+const empresaSrv = require("../service/empresaService");
 const credencialSrv = require("../service/credencialService");
 const uploadFotosV2 = require("../config/uploadFotosV2");
 const inventarioSrv = require("../service/inventarioService");
 const fotodriveSrv  = require("../service/fotodriveService");
 const funcoes       = require("../util/googleFuncoes");
+const fotoController = require("../controllers/fotoController");
+const erroDB = require('../util/userfunctiondb');
+const response = require("../util/respostaPadrao");
 const fs = require("fs");
 const PORT = process.env.PORT || 3000;
 const { google } = require("googleapis");
@@ -247,6 +252,7 @@ router.post(
       const {data} 		    	    = req.body;
       const {destaque} 				= req.body;
       const {obs} 					= req.body;
+      const {localizacao}    = req.body;
       const file_name               = `${req.file.originalname}`;
       const old_name                = `${req.body.old_name}`;
       let existeDrive               = false;
@@ -281,6 +287,8 @@ router.post(
           "\nobs",
           obs,
           "\nid_pasta",
+        localizacao,
+          "\nlocalizacao",
           id_pasta,
           "\nid_file",
           id_file,
@@ -321,6 +329,7 @@ router.post(
               data: data,
               destaque: destaque,
               obs: obs,
+              localizacao: localizacao,
               user_insert: id_usuario,
               user_update: 0,
           };
@@ -342,6 +351,7 @@ router.post(
           foto.data              = data;
           foto.destaque          = destaque;
           foto.obs               = obs;
+          foto.localizacao       = localizacao;
           foto.id_usuario        = id_usuario;
           foto.user_update       = id_usuario;
       }
@@ -569,13 +579,13 @@ router.get(
     const id_empresa      = req.params.id_empresa;
     const id_local        = req.params.id_local;
     const id_inventario   = req.params.id_inventario;
-    const folder_id       = req.params.folder_id; //"1eQuwNcfTmpYUWUIvlGBouodico8WrjoD";
+    const folder_id       = req.params.folder_id; //"1eQuwNcfTmpYUWUIvlGBouodico8WrjoD"; //1Oc4S6bEQy_TPPPSsxzl1gYkOs8wvwuWq
 
     let  driveService;  
     
     try {
 
-      console.log("Entrei Na Rota diretorio!");
+      console.log("Entrei Na Rota diretorio! Google Route");
 
       if (folder_id.trim() == '1Oc4S6bEQy_TPPPSsxzl1gYkOs8wvwuWq') { //google falconi
 
@@ -600,24 +610,18 @@ router.get(
 
     } else {
           
-        const params          = await funcoes.loadCredencials(1);
+        const params          = await funcoes.loadCredencials(id_empresa);
 
         const oauth2Client    = funcoes.getoauth2Client(params);
     
         driveService          = google.drive({ version: "v3", auth: oauth2Client });
 
     }
-      
-      /*const params          = await funcoes.loadCredencials(1);
-
-        const oauth2Client    = funcoes.getoauth2Client(params);
-
-        const driveService    = google.drive({ version: "v3", auth: oauth2Client }); 
-      */
+     
            
       const response        = await funcoes.diretorio(driveService,folder_id);
 
-     /*  response.forEach(async (res) => {
+     response.forEach(async (res) => {
         const foto = {
           id_empresa    : id_empresa, 
 		      id_filial     : id_local,
@@ -630,9 +634,9 @@ router.get(
         }
 
         
-       //const newFoto = await fotodriveSrv.insertFotoDrive(foto);
+       const newFoto = await fotodriveSrv.insertFotoDrive(foto);
 
-      }); */
+      }); 
 
       res.status(200).json(response);
 
@@ -655,7 +659,7 @@ router.get(
     try {
       console.log("Entrei Na Rota owner!");
       
-      const params          = await funcoes.loadCredencials(1);
+      const params          = await funcoes.loadCredencials(id_empresa);
 
       const oauth2Client    = funcoes.getoauth2Client(params);
 
@@ -679,6 +683,122 @@ router.get(
   }
 );
 
- 
+/* restrutura de rotas */
+//Somente para fotos no dispositivo
+router.post(
+  "/api/uploadfotov5_2_disp",
+  uploadFotosV2.single("file"),
+  async (req, res) => {
+    console.error("Parametros", req.body);
+    try {
+      const resultado = await fotoController.processaUploadFotoDisp(req);
+      res.status(200).json({
+        code: "200",
+        message: "Foto Registrada",
+        fileName: resultado.file_name
+      });
+    } catch (err) {
+      console.error("[ERRO uploadFotoV5_2]", err);
+      if (err.name === "MyExceptionDB") {
+        res.status(409).json(err);
+      } else {
+        res.status(500).json({
+          erro: "BACK-END",
+          tabela: "fotos",
+          message: err.message
+        });
+      }
+    }
+  }
+);
+
+
+/* restrutura de rotas */
+//Somente para fotos direto na web
+router.post(
+  "/api/uploadfotov5_2_web",
+  uploadFotosV2.single("file"),
+  async (req, res) => {
+    console.error("Parametros", req.body);
+    try {
+      const resultado = await fotoController.processaUploadFotoWeb(req);
+      res.status(200).json({
+        code: "200",
+        message: "Foto Registrada",
+        fileName: resultado.file_name
+      });
+    } catch (err) {
+      console.error("[ERRO uploadFotoV5_2]", err);
+      if (err.name === "MyExceptionDB") {
+        res.status(409).json(err);
+      } else {
+        res.status(500).json({
+          erro: "BACK-END",
+          tabela: "fotos",
+          message: err.message
+        });
+      }
+    }
+  }
+);
+
+
+router.post(
+  "/api/sincronizarfilename",async (req, res) => {
+        const id_empresa    = req.body.id_empresa;
+        const id_local      = req.body.id_local;
+        const id_inventario = req.body.id_inventario;
+        const id_pasta      = req.body.produto;
+        const id_usuario    = req.body.id_usuario;
+        const pagina        = req.body.pagina;
+
+    console.error("Parametros", req.body);
+    
+    // Validação
+    const camposObrigatorios = ["id_empresa", "id_local", "id_inventario","id_pasta","id_usuario","pagina"];
+    const camposAusentes = camposObrigatorios.filter(campo => !req.body[campo]);
+    if (camposAusentes.length > 0) {
+      return response.validationError(res, camposAusentes);
+    }
+
+
+    // Empresa
+    const empresa = await empresaSrv.getEmpresa(id_empresa);
+    if (!empresa) {
+      return response.notFound(res, "Empresa", { id_empresa });
+    }
+
+    const local = await localSrv.getLocal(id_empresa, id_local);
+    if (local == null) {
+      return response.notFound(res, "Local", { id_local });
+      }
+
+    const inventario = await inventarioSrv.getInventario(id_empresa, id_local, id_inventario);
+    if (inventario == null) {
+      return response.notFound(res, "Inventário", { id_inventario });
+    }
+
+    try {
+      const resultado = await fotoController.sincronizarFileName(req);
+      res.status(200).json({
+        code: "200",
+        message: `Fotos Registradas ${resultado} `,
+      });
+    } catch (err) {
+      if (err.name === "MyExceptionDB") {
+        res.status(409).json(err);
+      } else {
+        res.status(500).json({
+          erro: "BACK-END",
+          tabela: "fotos",
+          message: err.message
+        });
+      }
+    }
+  }
+);
+
+
+
 
 module.exports = router;

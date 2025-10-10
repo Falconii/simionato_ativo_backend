@@ -1,0 +1,82 @@
+[
+    {"id_empresa":1,
+    "id_filial"  :14,
+    "produto" : {
+                    "id_empresa": 1,
+                    "id_filial": 15,
+                    "codigo": 1,
+                    "estado": 1,
+                    "descricao": "PRODUTO QUIMICO BAIXA CAMADA            ",
+                    "ncm": ".              ",
+                    "id_principal": 0,
+                    "user_insert": 16,
+                    "user_update": 0,
+                    "princ_descricao": ""
+                },
+    "principal" : 
+                {
+                    "id_empresa": 1,
+	                "id_filial": 15,
+	                "codigo": 162,
+	                "descricao": "ELEVADOR DE CANECAS PARA RESÍDUOS DE FUNDIÇÃO "
+                },        
+    "imobilizado" :
+                {
+                  	"id_empresa": 1,
+                    "id_filial": 15,
+                    "codigo": 162,
+                    "descricao": "ELEVADOR DE CANECAS PARA RESÍDUOS DE FUNDIÇÃO",
+                    "cod_grupo": 6,
+                    "cod_cc": "3-67",
+                    "nfe": "346",
+                    "serie": "22",
+                    "item": "0",
+                    "origem": "P",
+                    "principal": 0,
+                    "condicao": 9,
+                    "apelido": "APELIDO"
+                },
+    "grupo": {  
+                    "id_empresa": 1,
+                    "id_filial": 15,
+                    "codigo": 1,
+                    "descricao": "EQUIP DE INFORMÁTICA - REAVAL"  
+                },
+    "centro_custo":{
+                    "id_empresa": 1,
+                    "id_filial": 14,
+                    "codigo": "3-67",
+                    "descricao": "DEPARTAMENTO ADMINISTRATIVO-TECNOLOGIA DA INFORMAÇÃO - T.I."
+                },
+    "nfe" :     {	"id_empresa": 1,
+                    "id_filial": 14,
+                    "cnpj_fornecedor": "",
+                    "razao_fornecedor": "",
+                    "id_imobilizado": 116,
+                    "nfe": "27996",
+                    "serie": "0",
+                    "item": "0",
+                    "chavee": "",
+                    "dtemissao": "",
+                    "dtlancamento": "",
+                    "qtd": "0.0000",
+                    "punit": "0.0000",
+                    "totalitem": "0.00",
+                    "vlrcontabil": "0.00",
+                    "baseicms": "0.0000",
+                    "percicms": "0.00",
+                    "vlrcicms": "0.0000"
+             },
+    "valor" : {		"id_empresa": 1,
+                    "id_filial": 14,
+                    "id_imobilizado": 5509,
+                    "dtaquisicao": "2023-06-23",
+                    "vlraquisicao": "1.0000",
+                    "totaldepreciado": "335.0400",
+                    "vlrresidual": "3014.9600",
+                    "reavalicao": "0.0000",
+                    "deemed": "0.0000",
+                    "vlrconsolidado": "3014.9600"
+             }
+    }
+]

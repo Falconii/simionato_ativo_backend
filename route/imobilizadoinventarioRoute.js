@@ -194,24 +194,24 @@ router.post("/api/imobilizadosinventarios", async function(req, res) {
 
 router.post("/api/imobilizadosinventariosfotos", async function(req, res) {
     /*
-                                                      	{
-                                                      		"id_empresa":0, 
-                                                      		"id_filial":0, 
-                                                      		"id_inventario":0, 
-                                                      		"id_imobilizado":0, 
-                                                      		"id_cc":"", 
-                                                      		"id_grupo":0, 
-                                                      		"status":0, 
-                                                      		"new_cc":"", 
-                                                      		"new_codigo":0, 
-                                                      		"id_usuario":0, 
-                                                      		"pagina":0, 
-                                                      		"tamPagina":50, 
-                                                      		"contador":"N", 
-                                                      		"orderby":"", 
-                                                      		"sharp":false 
-                                                      	}
-                                                      */
+        {
+            "id_empresa":0, 
+            "id_filial":0, 
+            "id_inventario":0, 
+            "id_imobilizado":0, 
+            "id_cc":"", 
+            "id_grupo":0, 
+            "status":0, 
+            "new_cc":"", 
+            "new_codigo":0, 
+            "id_usuario":0, 
+            "pagina":0, 
+            "tamPagina":50, 
+            "contador":"N", 
+            "orderby":"", 
+            "sharp":false 
+        }
+ */
     try {
         const params = req.body;       
         console.log("params",params);

@@ -99,7 +99,7 @@ router.post("/api/foto", async function(req, res) {
         const foto = req.body;
         const registro = await fotoSrv.insertFoto(foto);
         if (registro == null) {
-            res.status(409).json({ message: "Foto Cadastrado!" });
+            res.status(409).json({ message: "Foto Cadastrada!" });
         } else {
             res.status(200).json(registro);
         }
@@ -260,7 +260,6 @@ router.post(
             file_name
         );
 
-        console.log("foto", foto);
 
         if (foto == null) {
             acao = "inclusao";

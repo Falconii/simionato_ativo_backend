@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken');
+
 function adicionaZero(numero) {
   if (numero <= 9) return "0" + numero;
   else return "" + numero;
@@ -84,3 +86,25 @@ exports.semAcento = function (value) {
   const semAcento = value.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
   return semAcento;
 };
+
+
+
+exports.verifyToken = async function(token, ACCESS_SECRET) {
+  return new Promise((resolve) => {
+    jwt.verify(token, ACCESS_SECRET, (err, payload) => {
+      console.log("Verificando token: ", payload);
+      if (err) {
+        if (err.name === 'TokenExpiredError') {
+          resolve({ status: 401, mensagem: 'Token expirado', id_empresa:0,id_usuario:0})
+        } else if (err.name === 'JsonWebTokenError') {
+          resolve({ status: 403, mensagem: 'Token inválido', id_empresa:0,id_usuario: 0 });
+        } else {    
+           resolve({ status: 403, mensagem: `Token inválido ${err.message}`,id_empresa:0, id_usuario: 0 });
+        }
+      } else {
+        resolve({ status: 200, mensagem: 'Token OK', id_empresa:payload.id_empresa,id_usuario: payload.id_usuario });
+      }
+    });
+  });
+};
+

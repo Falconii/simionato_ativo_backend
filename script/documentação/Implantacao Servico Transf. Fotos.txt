@@ -1,0 +1,2 @@
+//Criacao Campo localizacao
+alter table fotos add column localizacao varchar(1) default 'N' 

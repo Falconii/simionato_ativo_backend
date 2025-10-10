@@ -75,8 +75,6 @@ exports.getCentroscustos = function(params) {
                 paginacao = `limit ${params.tamPagina} offset ((${params.pagina} - 1) * ${params.tamPagina})`;
             }
 
-            
-            console.log("WHERE =>", where);
 
             if (params.contador == 'S') {
                 sqlStr = `SELECT COALESCE(COUNT(*),0) as total 
@@ -93,7 +91,11 @@ exports.getCentroscustos = function(params) {
 			,  cc.user_update as  user_update     
 			FROM centroscustos cc      
 			${where} 			${ orderby} ${ paginacao} `;
-                return db.manyOrNone(strSql);
+
+            
+            
+            console.log("strSql =>", strSql);
+            return db.manyOrNone(strSql);
             }
         } else {
             strSql = `select   

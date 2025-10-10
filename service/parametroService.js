@@ -34,11 +34,11 @@ exports.updateParametro = async function(parametro) {
     }
 };
 //* CRUD - DELETE - SERVICE */
-exports.deleteParametro = async function(id_empresa, modulo, id_usuario) {
+exports.deleteParametro = async function(params) {
     try {
         //await regras.Parametros_Exclusao(id_empresa,modulo,id_usuario);
         //validacao.Validacao(TABELA, parametro, parametros.Parametros());
-        return parametroData.deleteParametro(id_empresa, modulo, assinatura, id_usuario);
+        return parametroData.deleteParametro(params);
     } catch (err) {
         throw new erroDB.UserException(err.erro, err);
     }

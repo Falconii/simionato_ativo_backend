@@ -76,9 +76,11 @@ router.put("/api/parametro", async function(req, res) {
         }
     })
     /* ROTA DELETE parametro */
-router.delete("/api/parametro/:id_empresa/:modulo/:assinatura/:id_usuario", async function(req, res) {
+router.post("/api/deleteparametro", async function(req, res) {
         try {
-            await parametroSrv.deleteParametro(req.params.id_empresa, req.params.modulo, req.params.assinatura, req.params.id_usuario);
+            const params = req.body;
+            console.log('deleteparametro', params);
+            await parametroSrv.deleteParametro(params);
             res.status(200).json({ message: 'Parametro Excluído Com Sucesso!' });
         } catch (err) {
             if (err.name == 'MyExceptionDB') {

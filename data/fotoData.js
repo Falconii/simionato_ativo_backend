@@ -17,6 +17,7 @@ exports.getCampos = function(Foto) {
         Foto.data,
         Foto.destaque,
         Foto.obs,
+        Foto.localizacao,
         Foto.user_insert,
         Foto.user_update,
     ];
@@ -41,9 +42,10 @@ exports.getFoto = function(
 			,  foto.file_name as  file_name  
 			,  foto.file_name_original as  file_name_original  
 			,  foto.id_usuario as  id_usuario  
-			, to_char(foto.data, 'DD/MM/YYYY') as data  
+			,  to_char(foto.data, 'DD/MM/YYYY') as data  
 			,  foto.destaque as  destaque  
 			,  foto.obs as  obs  
+            ,  foto.localizacao as  localizacao
 			,  foto.user_insert as  user_insert  
 			,  foto.user_update as  user_update    
             ,  coalesce(imo.descricao,'') as imo_descricao
@@ -52,6 +54,7 @@ exports.getFoto = function(
              INNER JOIN imobilizados imo on imo.id_empresa = foto.id_empresa and imo.id_filial = foto.id_local and imo.codigo = foto.id_imobilizado
              INNER JOIN usuarios     usu on usu.id_empresa = usu.id_empresa  and usu.id = foto.id_usuario 	     
 			 where foto.id_empresa = ${id_empresa} and  foto.id_local = ${id_local} and  foto.id_inventario = ${id_inventario} and  foto.id_imobilizado = ${id_imobilizado} and  foto.id_pasta = '${id_pasta}' and  foto.id_file = '${id_file}' and  foto.file_name = '${file_name}'  `;
+    console.log("Buscando a foto: ", strSql);
     return db.oneOrNone(strSql);
 };
 /* CRUD GET ALL*/
@@ -130,6 +133,10 @@ exports.getFotos = function(params) {
             where += `foto.destaque = '${params.destaque}' `;
         }
 
+        if (params.pagina != 0) {
+                paginacao = `limit ${params.tamPagina} offset ((${params.pagina} - 1) * ${params.tamPagina})`;
+        }
+
         if (where != "") where = " where " + where;
         if (params.contador == "S") {
             sqlStr = `SELECT COALESCE(COUNT(*),0) as total 
@@ -152,6 +159,7 @@ exports.getFotos = function(params) {
 			,  to_char(foto.data, 'DD/MM/YYYY') as data  
 			,  foto.destaque as  destaque  
 			,  foto.obs as  obs  
+            ,  foto.localizacao as  localizacao
 			,  foto.user_insert as  user_insert  
 			,  foto.user_update as  user_update  
             ,  coalesce(imo.descricao,'') as imo_descricao
@@ -174,9 +182,10 @@ exports.getFotos = function(params) {
 			,  foto.file_name as  file_name  
 			,  foto.file_name_original as  file_name_original  
 			,  foto.id_usuario as  id_usuario  
-			, to_char(foto.data, 'DD/MM/YYYY') as data  
+			,  to_char(foto.data, 'DD/MM/YYYY') as data  
 			,  foto.destaque as  destaque  
 			,  foto.obs as  obs  
+            ,  foto.localizacao as  localizacao
 			,  foto.user_insert as  user_insert  
 			,  foto.user_update as  user_update    
 			FROM fotos foto			     `;
@@ -198,6 +207,7 @@ exports.insertFoto = function(foto) {
 		 ,   data 
 		 ,   destaque 
 		 ,   obs 
+         ,   localizacao
 		 ,   user_insert 
 		 ,   user_update 
 		 ) 
@@ -213,12 +223,12 @@ exports.insertFoto = function(foto) {
 		 ,    ${foto.id_usuario} 
 		 ,    ${shared.formatDateYYYYMMDD(foto.data)}
 		 ,   '${foto.destaque}' 
-		 ,   '${foto.obs}' 
-		 ,   ${foto.user_insert} 
-		 ,   ${foto.user_update} 
+		 ,   '${foto.obs}'
+         ,   '${foto.localizacao}' 
+		 ,    ${foto.user_insert} 
+		 ,    ${foto.user_update} 
 		 ) 
  returning * `;
-    console.log("INSERT FOTO", strSql);
     return db.oneOrNone(strSql);
 };
 /* CRUD - UPDATE */
@@ -229,6 +239,7 @@ exports.updateFoto = function(foto) {
  		 ,   data =  ${shared.formatDateYYYYMMDD(foto.data)} 
  		 ,   destaque = '${foto.destaque}' 
  		 ,   obs = '${foto.obs}' 
+         ,   localizacao = '${foto.localizacao}'
  		 ,   user_insert = ${foto.user_insert} 
  		 ,   user_update = ${foto.user_update} 
  		 where id_empresa = ${foto.id_empresa} and  id_local = ${
@@ -240,6 +251,31 @@ exports.updateFoto = function(foto) {
   }' and  file_name = '${foto.file_name}'  returning * `;
     return db.oneOrNone(strSql);
 };
+
+exports.atualizaFoto = function(foto,old_id_pasta,old_id_file,old_file_name)  {
+    strSql = `update   fotos set  
+		     file_name_original = '${foto.file_name_original}' 
+ 		 ,   id_usuario = ${foto.id_usuario} 
+ 		 ,   data =  ${shared.formatDateYYYYMMDD(foto.data)} 
+ 		 ,   destaque = '${foto.destaque}' 
+ 		 ,   obs = '${foto.obs}' 
+         ,   localizacao = '${foto.localizacao}'
+         ,   id_pasta = '${foto.id_pasta}' 
+         ,   id_file = '${foto.id_file }'
+         ,   file_name = '${foto.file_name}'
+ 		 ,   user_insert = ${foto.user_insert} 
+ 		 ,   user_update = ${foto.user_update} 
+ 		 where id_empresa = ${foto.id_empresa} and  id_local = ${
+    foto.id_local
+  } and  id_inventario = ${foto.id_inventario} and  id_imobilizado = ${
+    foto.id_imobilizado
+  } and  id_pasta = '${old_id_pasta}' and  id_file = '${
+    old_id_file
+  }' and  file_name = '${old_file_name}'  returning * `;
+  console.log("Atualizando a foto: ", strSql);
+    return db.oneOrNone(strSql);
+};
+
 
 exports.updateFotoFileName = function(foto,new_name) {
     strSql = `update   fotos set  
@@ -268,3 +304,36 @@ exports.deleteFoto = function(
 		 where id_empresa = ${id_empresa} and  id_local = ${id_local} and  id_inventario = ${id_inventario} and  id_imobilizado = ${id_imobilizado} and  id_pasta = '${id_pasta}' and  id_file = '${id_file}' and  file_name = '${file_name}'  `;
     return db.oneOrNone(strSql);
 };
+
+
+exports.getFotosTempo = function() {
+            strSql = `select 
+               foto.id_empresa as  id_empresa  
+			,  foto.id_local as  id_local  
+			,  foto.id_inventario as  id_inventario  
+			,  foto.id_imobilizado as  id_imobilizado  
+			,  foto.id_pasta as  id_pasta  
+			,  foto.id_file as  id_file  
+			,  foto.file_name as  file_name  
+			,  foto.file_name_original as  file_name_original  
+			,  foto.id_usuario as  id_usuario  
+			,  to_char(foto.data, 'DD/MM/YYYY') as data  
+			,  foto.destaque as  destaque  
+			,  foto.obs as  obs  
+            ,  foto.localizacao as  localizacao
+			,  foto.user_insert as  user_insert  
+			,  foto.user_update as  user_update  
+            ,  coalesce(imo.descricao,'') as imo_descricao
+            ,  coalesce(usu.razao,'') as usu_razao      
+                from fotos foto
+                INNER JOIN imobilizados imo on imo.id_empresa = foto.id_empresa and imo.id_filial = foto.id_local  and imo.codigo = foto.id_imobilizado
+                INNER JOIN usuarios     usu on usu.id_empresa = usu.id_empresa  and usu.id = foto.id_usuario 
+                inner join fotos_drive ft on ft.id_empresa = foto.id_empresa and ft.id_filial = foto.id_local and foto.id_file = ft.id_file
+                where foto.id_empresa = 1 and foto.id_local = 14 and foto.id_inventario = 10 and foto.id_pasta = '1Oc4S6bEQy_TPPPSsxzl1gYkOs8wvwuWq' and foto.file_name <> ft.name_file
+                order by foto.id_empresa,foto.id_local,foto.id_inventario,foto.id_imobilizado `;
+            console.log("strSql", strSql);
+            return db.manyOrNone(strSql);
+ };
+
+
+

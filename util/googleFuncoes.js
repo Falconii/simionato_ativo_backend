@@ -1,4 +1,5 @@
 const credencialSrv = require ("../service/credencialService");
+const arquivoSrv = require ("../service/arquivodriveService");
 const { google }    = require("googleapis");
 const PORT = process.env.PORT || 3000;
 const path = require("path");
@@ -137,7 +138,7 @@ async function listFiles(driveService,folderId,tamPage,onePage) {
         });
         const files = res.data.files;
         totalFiles += files.length;
-      files.forEach((file) => {
+      await Promise.all(files.map(async (file) => {
             let tam = "Não Definido";
             let size = 0;
             let unid = "";
@@ -149,9 +150,10 @@ async function listFiles(driveService,folderId,tamPage,onePage) {
                 unid = "MB";
             }
             tam =  `${size} ${unid}` ;
-            const dir = {"id_file": file.id , "name_file" : file.name , "size" : tam , "data" : file.modifiedTime};
+            const dir = {"id_file": file.id ,id_pasta: folderId, "name_file" : file.name , "size" : tam , "data" : file.modifiedTime};
+            //const arq = await arquivoSrv.insertArquivo(dir);
             retorno.push(dir);
-          });
+          }));
           pageToken = res.data.nextPageToken;
       }  while (onePage ? false : pageToken);
       console.log(`Total De Arquivos: ${totalFiles}`);
@@ -242,7 +244,7 @@ exports.getoauth2Client = function(params){
 
 }
 
-exports.saveFile = async function(driveService,file_name,folderId){
+exports.saveFile = async function(driveService,file_name_foto_upload, file_name,folderId){
 
     try {
        const response = await driveService.files.create({
@@ -253,7 +255,7 @@ exports.saveFile = async function(driveService,file_name,folderId){
             },
             media: {
                 mimeType: "image/jpeg",
-                body: fs.createReadStream(`./fotos/${file_name}`), 
+                body: fs.createReadStream(`./fotos/${file_name_foto_upload}`), 
             },
         });
 
@@ -374,6 +376,8 @@ exports.renameFile = async function(driveService,fileId,newName){
         fileId: fileId,
         resource: body,
       });
+
+      console.log("Retorno Do Google: ", response);  
 
     return ({"message" : "Nome Alterado Com Sucesso!"});
 

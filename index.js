@@ -35,6 +35,7 @@ const allowCors = (req, res, next) => {
 
 app.use(allowCors);
 
+app.use("/api/login", require('./route/loginRoute'));
 app.use("/", require("./route/helloRoute.js"));
 app.use("/", require("./route/empresaRoute.js"));
 app.use("/", require("./route/localRoute.js"));
@@ -73,8 +74,8 @@ app.use("/", require("./route/padrao_caracteristicaRoute.js"));
 app.use("/", require("./route/padrao_sugestaoRoute.js"));
 app.use("/", require("./route/deparaRoute.js"));
 app.use("/", require("./route/realocadoRoute.js"));
-app.use("/", require("./route/websockectRoute.js"));
-
+//app.use("/", require("./route/websockectRoute.js"));
+app.use("/api/eventos", require("./route/apiEventosRoute.js"));
 app.listen(PORT, () => {
     console.log(`Servidor No Ar. Porta ${PORT}`);
 });

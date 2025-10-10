@@ -128,8 +128,9 @@ exports.updateParametro = function(parametro) {
         return db.oneOrNone(strSql);
     }
     /* CRUD - DELETE */
-exports.deleteParametro = function(id_empresa, modulo, assinatura, id_usuario) {
+exports.deleteParametro = function(params) {
     strSql = `delete from parametros 
-		 where id_empresa = ${id_empresa} and  modulo = '${modulo}' and  assinatura = '${assinatura}' and  id_usuario = ${id_usuario}  `;
+		 where id_empresa = ${params.id_empresa} and  modulo = '${params.modulo}' and  assinatura = '${params.assinatura}' and  id_usuario = ${params.id_usuario}  `;
+    console.log('strSql', strSql);     
     return db.oneOrNone(strSql);
 }

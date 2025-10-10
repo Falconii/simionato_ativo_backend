@@ -111,7 +111,7 @@ exports.getImobilizadosinventarios = function (params) {
     //Ativo-Novo
     if (params.orderby == "002")
       orderby =
-        "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo_inv.new_codigo";
+        "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo_inv.new_codigo,imo_inv.id_imobilizado";
     //CC-Antigo
     if (params.orderby == "003")
       orderby =
@@ -256,6 +256,8 @@ exports.getImobilizadosinventarios = function (params) {
         where += `imo.origem like '%${params.origem.trim()}%' `;
       }
     }
+    //TEMPORARIO
+    //where += ` and ( (imo.cod_cc = '4-21' and  imo_inv.id_imobilizado <= 666)  OR (imo.cod_cc <>  '4-21'))  `; 
     if (where != "") where = " where " + where;
 
     if (params.pagina != 0) {

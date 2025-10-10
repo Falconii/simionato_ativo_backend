@@ -345,3 +345,19 @@ CREATE TABLE public.de_para  (
 	PRIMARY KEY(id_empresa,id_local,id_inventario,de,para)
 )
 GO
+
+
+
+/* TABELA tokens  */
+DROP TABLE IF EXISTS tokens;
+CREATE TABLE Public.tokens (
+		id_empresa int4  NOT NULL  , 
+		id_usuario int4  NOT NULL  , 
+		token varchar(200)  NOT NULL  , 
+		tipo char(1)  NOT NULL  , 
+		validade timestamp  NOT NULL  , 
+		status int4  NOT NULL  , 
+		user_insert int4  NOT NULL  , 
+		user_update int4  NOT NULL  , 
+		PRIMARY KEY(id_empresa,id_usuario,token,tipo) 
+)
