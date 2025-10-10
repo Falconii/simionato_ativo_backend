@@ -4,8 +4,6 @@ const { google } = require("googleapis");
 const funcoes       = require("../util/googleFuncoes");   // autenticação, upload, etc.
 const inventarioSrv = require("../service/inventarioService");
 const fotoSrv = require("../service/fotoService");
-const { file } = require("googleapis/build/src/apis/file");
-const { param } = require("../route/googleRoute");
 
 
 const PORT = process.env.PORT || 3000;
@@ -218,6 +216,7 @@ async function processaUploadFotoWeb(req) {
 /* Esta funcao sincroniza o file_name das fotos do DB com as fotos do Google Drive
    para que o app mobile consiga baixar as fotos corretamente.
    */
+
 async function sincronizarFileName(req){
     try {
         const { id_empresa, id_local, id_inventario,id_pasta,id_usuario,pagina } = req.body;
