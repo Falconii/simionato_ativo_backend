@@ -9,7 +9,7 @@ var os = require("os");
 const PORT = process.env.PORT || 3000;
 const WS_PORT = process.env.WS_PORT || 8080;
 const app = express();
-const fotoController = require("./controllers/celularesData.js");
+const fotoController = require("./controllers/fotocontroller.js");
 
 const WebSocketServer = require('./websocket/websocketServer');
 
