@@ -719,7 +719,7 @@ router.post(
   "/api/uploadfotov5_2_web",
   uploadFotosV2.single("file"),
   async (req, res) => {
-    console.error("Parametros", req.body);
+    console.error("Parametros - uploadfotov5_2_web", req.body);
     try {
       const resultado = await fotoController.processaUploadFotoWeb(req);
       res.status(200).json({
