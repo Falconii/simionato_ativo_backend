@@ -61,6 +61,7 @@ exports.getEmpresa = function (id) {
 			,  emp.user_update as  user_update    
  			FROM empresas emp 	     
 			 where emp.id = ${id}  `;
+  console.log("Pesquisa Empresa " ,strSql);
   return db.oneOrNone(strSql);
 };
 /* CRUD GET ALL*/

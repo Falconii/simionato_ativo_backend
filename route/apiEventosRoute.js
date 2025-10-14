@@ -24,9 +24,9 @@ router.use(autenticarToken);
 async function BaixaAtivo(imobilizado,imobilizadoinventario,lancamento) 
 {
     if (lancamento != null) {
-        lancamento.situacao = 5; //baixado
+        lancamento.estado = 6; //baixado
         try {
-           lancamento = await lancamentoSrv.updateLancamento
+           lancamento = await lancamentoSrv.updateLancamento(lancamento);
         } catch (error) {
             throw new Error("Erro Ao Alterar Situação do Lançamento");
         }
@@ -88,8 +88,8 @@ router.post("/trocarsituacaocc", async function (req, res) {
     validar se o ativo existe
     
   */
- 
-  try {
+ console.log("Iniciando Processamento de Evento de Ativo");
+   try {
 
     const id_empresa = req.body.id_empresa;
     const id_filial = req.body.id_filial;
@@ -104,31 +104,29 @@ router.post("/trocarsituacaocc", async function (req, res) {
     if (camposAusentes.length > 0) {
       return response.validationError(res, camposAusentes);
     }
+    console.log("Parametros Obrigatórios Presentes",id_empresa,id_filial,id_inventario,codigo_ativo,cod_evento);
 
     if (cod_evento == 2 && (!cc_novo || cc_novo.trim() === "")) {
       return response.validationError(res, ["cc_novo"]);
     }
-
     // Empresa
     const empresa = await empresaSrv.getEmpresa(id_empresa);
     if (!empresa) {
       return response.notFound(res, "Empresa", { id_empresa });
     }
-
     const local = await localSrv.getLocal(id_empresa, id_filial);
     if (local == null) {
-      return response.notFound(res, "Local", { id_local });
+      return response.notFound(res, "Local", { id_filial });
       }
-    
     const imobilizado = await imobilizadoSrv.getImobilizado(
       id_empresa,
       id_filial,
       codigo_ativo,
     );
-
     if (imobilizado == null) {
-         return response.notFound(res, "Ativo", { id_ativo });
+         return response.notFound(res, "Ativo", { codigo_ativo });
     };
+
 
     let imoiventario = await imobilizadoinventarioSrv.getImobilizadoinventario(
       id_empresa,
@@ -138,18 +136,19 @@ router.post("/trocarsituacaocc", async function (req, res) {
     );
 
     let lancamento = await lancamentoSrv.getLancamento(id_empresa, id_filial, id_inventario, codigo_ativo);
-    console.log("lancamento",lancamento);
 
     if (cod_evento == 1)
     {
         if (imoiventario !==null) {
            try {
             await BaixaAtivo(imobilizado,imoiventario,lancamento);
+            console.log("Ativo Baixado Com Sucesso");
            } catch (error) {
             return response.error(res,error.message, { imobilizado });
            }
         } else {
-            return response.error(res,"Ativo Não Esta AssociadO Ao Inventário", { imobilizado });
+            console.log("Ativo Não Esta Associado Ao Inventário");
+            return response.error(res,"Ativo Não Esta Associado Ao Inventário", { imobilizado });
         }
     }
 
@@ -157,7 +156,7 @@ router.post("/trocarsituacaocc", async function (req, res) {
     {
        if (imoiventario !==null) {
         try{
-            const novocc = await centrocustoSrv.getCentrocusto(id_empresa, cc_novo);
+            const novocc = await centrocustoSrv.getCentrocusto(id_empresa,id_filial, cc_novo);
             if (novocc == null) {
                 return response.notFound(res, "Centro de Custo Novo Não Cadastrado", { cc_novo });
             }
@@ -171,13 +170,23 @@ router.post("/trocarsituacaocc", async function (req, res) {
         }
        }
     }
-       
-     return response.success(res,"Processamento Executado Com Sucesso", { imobilizado });
+     if (cod_evento == 1 && lancamento == null) {
+        return response.success(res,"Ativo Baixado Com Sucesso - Como Não Foi Inventariado. Foi Excluido Da Base", { imobilizado });
+     } 
+     if (cod_evento == 1 && lancamento!== null) {
+         return response.success(res,"Ativo Baixado Com Sucesso - Como Foi Inventariado. Foi Alterado O Lançamento", { lancamento });
+      }
+    if (cod_evento == 2) {
+      console.log("Ativo Alterado Com Sucesso - Troca de Centro de Custo");
+        return response.success(res,"Processamento Executado Com Sucesso. Alterado O Lançamento.", { lancamento });
+    }   
+      return response.error(res,"Processamento Não Efetuado"); 
   } catch (err) {
+    console.log("Erro no processamento do evento", err);
     if (err.name == "MyExceptionDB") {
-       return response.error(res,message, { imobilizado });
+       return response.error(res,message);
     } else {
-      return response.backenderror(res,"err.message", { imobilizado });
+      return response.backenderror(res,"err.message");
     }
   };
 });
