@@ -126,7 +126,9 @@ router.post("/trocarsituacaocc", async function (req, res) {
     if (imobilizado == null) {
          return response.notFound(res, "Ativo", { codigo_ativo });
     };
-
+    if (id_filial != 999) {
+         return response.Error(res, "API Em Teste Usar Somente Local 999", { id_filial });
+    };
 
     let imoiventario = await imobilizadoinventarioSrv.getImobilizadoinventario(
       id_empresa,
