@@ -144,7 +144,7 @@ async function processaUploadFotoWeb(req) {
   // Extrai dados
   const {
     id_empresa, id_local, id_inventario, id_imobilizado, id_pasta,
-    id_file, id_usuario, data, destaque, obs, localizacao, file_name
+    id_file, file_name,id_usuario, data, destaque, obs, localizacao
   } = req.body;
   const file_name_foto_upload = req.file.originalname;
   fotoSaved = null;

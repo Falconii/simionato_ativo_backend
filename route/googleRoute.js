@@ -744,6 +744,41 @@ router.post(
 
 
 router.post(
+  "/api/uploadfotov5_2_web_tempo",
+  async (req, res) => {
+    //console.error("Parametros - uploadfotov5_2_web", req.body);
+    /*
+    try {
+      const resultado = await fotoController.processaUploadFotoWeb(req);
+      res.status(200).json({
+        code: "200",
+        message: "Foto Registrada",
+        fileName: resultado.file_name
+      });
+    } catch (err) {
+      console.error("[ERRO uploadFotoV5_2]", err);
+      if (err.name === "MyExceptionDB") {
+        res.status(409).json(err);
+      } else {
+        res.status(500).json({
+          erro: "BACK-END",
+          tabela: "fotos",
+          message: err.message
+        });
+      }
+    }
+      */
+     res.status(200).json({
+        code: "200",
+        message: "Foto Registrada - Rota Desativada",
+        fileName: ""
+      });
+  }
+);
+
+
+
+router.post(
   "/api/sincronizarfilename",async (req, res) => {
         const id_empresa    = req.body.id_empresa;
         const id_local      = req.body.id_local;
