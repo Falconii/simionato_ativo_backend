@@ -2,11 +2,9 @@
 const db = require("../infra/database");
 const express = require("express");
 const router = express.Router();
-const imobilizadoSrv = require("../service/imobilizadoService");
-const imobilizadoinventarioSrv = require("../service/imobilizadoinventarioService");
 const lancamentoSrv = require("../service/lancamentoService");
+const fotoSrv = require("../service/fotoService");
 const empresaSrv = require("../service/empresaService");
-const localSrv = require("../service/localService");
 const centrocustoSrv = require("../service/centrocustoService");
 const gruposrv = require("../service/grupoService");
 const produtoSrv = require("../service/produtoService");
@@ -25,37 +23,37 @@ const response = require("../util/respostaPadrao");
 
 
 router.post("/transfere_ativo_intercompany", async function (req, res) {
-  /*
-   {
-      "lanc_origem"  :1,
-      "lanc_destino" :14
-    }
-    
-  */
+
  console.log("Iniciando Processamento de Evento de Ativo");
 
-    const lanc_origem  = req.body.lanc_origem;
-    const lanc_destino = req.body.lanc_destino;
+    const id_empresa              = req.body.id_empresa;
+    const id_filial_origem        = req.body.id_filial_origem;
+    const id_inventario_origem     = req.body.id_inventario_origem;
+    const id_filial_destino       = req.body.id_filial_destino;
+    const id_inventario_destino   = req.body.id_inventario_destino;
+    const id_imobilizado          = req.body.id_imobilizado;
+
+
 
 
     // Validação
-    const camposObrigatorios = ["lanc_origem", "lanc_destino"];
+    const camposObrigatorios = ["id_empresa","id_filial_origem","id_inventario_origem","id_filial_destino","id_inventario_destino","id_imobilizado"];
     const camposAusentes = camposObrigatorios.filter(campo => !req.body[campo]);
     if (camposAusentes.length > 0) {
       return response.validationError(res, camposAusentes);
     }
 
     
-    console.log("Parametros Obrigatórios Presentes",lanc_origem,lanc_destino);
+    console.log("Parametros Obrigatórios Presentes",id_empresa,id_filial_origem,id_inventario_origem,id_filial_destino,id_inventario_destino,id_imobilizado);
 
-    const lancamento_origem = await lancamentoSrv.getLancamento(lanc_origem.id_empresa, lanc_origem.id_filial, lanc_origem.id_inventario,lanc_origem.id_imobilizado);
+    const lancamento_origem = await lancamentoSrv.getLancamento(id_empresa, id_filial_origem, id_inventario_origem,id_imobilizado);
 
     if (lancamento_origem == null) {
       return response.notFound(res, `Lançamento de origem não encontrado.`);
     }
 
 
-    const lancamento_destino = await lancamentoSrv.getLancamento(lanc_destino.id_empresa, lanc_destino.id_filial, lanc_destino.id_inventario,lanc_destino.id_imobilizado);
+    const lancamento_destino = await lancamentoSrv.getLancamento(id_empresa, id_filial_destino, id_inventario_destino,id_imobilizado);
 
     if (lancamento_destino == null) {
       return response.notFound(res, `Lançamento de destino não encontrado.`);
@@ -66,13 +64,57 @@ router.post("/transfere_ativo_intercompany", async function (req, res) {
       return response.validationError(res, [`Os lançamentos devem pertencer ao mesmo ativo.`]);
     }
     
-    lancamento_destino.id_centro_custo = lancamento_origem.id_centro_custo;
-    lancamento_destino.data_inventario = lancamento_origem.data_inventario;;
-    lancamento_destino.observacao = lancamento_origem.observacao;
-    lancamento_destino.foto1 = lancamento_origem.foto1; 
     
+    //Atualiza lançamento destino
+    lancamento_destino.id_imobilizado	=	lancamento_origem.id_imobilizado;
+    lancamento_destino.id_usuario		=	lancamento_origem.id_usuario	;
+    lancamento_destino.id_lanca			=	0		                        ;
+    lancamento_destino.obs				  =	lancamento_origem.obs			;
+    lancamento_destino.dtlanca			=	lancamento_origem.dtlanca		;
+    lancamento_destino.estado			  =	lancamento_origem.estado		;
+    lancamento_destino.new_codigo		=	lancamento_origem.new_codigo	;
+    lancamento_destino.new_cc			  =	lancamento_origem.new_cc.replace("-","#");
+    lancamento_destino.condicao			=	lancamento_origem.condicao		;
+    lancamento_destino.book				  =	lancamento_origem.book			;
+    lancamento_destino.user_insert		=	lancamento_origem.user_insert	;
+    lancamento_destino.user_update		=	lancamento_origem.user_update	;
+
+    /* pesquisar fotos na origem e transferir para o destino */
+    params = {
+              "id_empresa"    : lancamento_origem.id_empresa,
+              "id_local"      : lancamento_origem.id_filial,
+              "id_inventario" : lancamento_origem.id_inventario, 
+              "id_imobilizado": lancamento_origem.id_imobilizado,
+              "id_pasta"      : "",
+              "id_file"       : "", 
+              "file_name"     : "", 
+              "destaque"      : "", 
+              "pagina"        : 0, 
+              "tamPagina"     : 50, 
+              "contador"      :"N", 
+              "orderby"       :"", 
+              "sharp"         :false 
+            }
+
+    const fotos = await fotoSrv.getFotos(params);
+
+    fotos.forEach(foto => {
+      foto.id_empresa     = lancamento_destino.id_empresa;
+      foto.id_local       = lancamento_destino.id_filial;
+      foto.id_inventario  = lancamento_destino.id_inventario;
+      foto.file_name      = foto.file_name.replace(`${lancamento_origem.id_empresa.toString().padStart(2,'0')}_${lancamento_origem.id_filial.toString().padStart(6,'0')}_${lancamento_origem.id_inventario.toString().padStart(6,'0')}_${lancamento_origem.id_imobilizado.toString().padStart(6,'0')}_`,`${lancamento_destino.id_empresa.toString().padStart(2,'0')}_${lancamento_destino.id_filial.toString().padStart(6,'0')}_${lancamento_destino.id_inventario.toString().padStart(6,'0')}_${lancamento_destino.id_imobilizado.toString().padStart(6,'0')}_`);
+      foto.file_original  = foto.fiel_name;
+    });
     
-  return response.success(res,"OK", { lanc_origem,lanc_destino });
+    //Deleta fotos do lancamento destino
+    //await lancamentoSrv.deleteLancamento(lancamento_destino.id_empresa, lancamento_destino.id_filial, lancamento_destino.id_inventario,lancamento_destino.id_imobilizado);
+    //Insere fotos do lancamento origem no destino
+    //await lancamentoSrv.insertLancamento(lancamento_destino);
+    //Deleta lançamento origem
+    //await lancamentoSrv.deleteLancamento(lancamento_origem.id_empresa, lancamento_origem.id_filial, lancamento_origem.id_inventario,lancamento_origem.id_imobilizado);
+
+    
+  return response.success(res,"OK", { lancamento_origem,lancamento_destino,fotos });
  
 });
 

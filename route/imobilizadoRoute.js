@@ -216,9 +216,5 @@ router.post("/api/imobilizados", async function (req, res) {
   }
 });
 
-/*
-isto foi alterado
-ok
-*/
 
 module.exports = router;

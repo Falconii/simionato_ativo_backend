@@ -106,8 +106,8 @@ router.post("/trocarsituacaocc", async function (req, res) {
     }
     console.log("Parametros Obrigatórios Presentes",id_empresa,id_filial,id_inventario,codigo_ativo,cod_evento);
     
-    if (id_filial != 999) {
-       return response.error(res, "API Em Teste Usar Somente Local 999");
+    if (id_filial != 15) {
+       return response.error(res, "API Somente Para Local INTELLI - Filial 15");
     };
 
     if (cod_evento == 2 && (!cc_novo || cc_novo.trim() === "")) {
