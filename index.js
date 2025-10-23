@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3000;
 const WS_PORT = process.env.WS_PORT || 8080;
 const app = express();
 
-const fotoController = require("./controllers/fotoController");
+const fotoController = require("./controllers/fotocontroller");
 
 const WebSocketServer = require('./websocket/websocketServer');
 
