@@ -25,6 +25,8 @@ exports.autenticarToken = async function (req, res, next) {
     else {  
         req.id_empresa = tokenVerificado.id_empresa;
         req.id_usuario = tokenVerificado.id_usuario;
+
+        console.log('Token verificado com sucesso para o usuário:', tokenVerificado.id_usuario);
       
         const usuario = await usuarioService.getUsuario(req.id_empresa, req.id_usuario);
 

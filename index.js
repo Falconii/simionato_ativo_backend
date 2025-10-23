@@ -10,6 +10,8 @@ const PORT = process.env.PORT || 3000;
 const WS_PORT = process.env.WS_PORT || 8080;
 const app = express();
 
+const fotoController = require("./controllers/fotoController");
+
 const WebSocketServer = require('./websocket/websocketServer');
 
 global.appRoot = path.resolve(__dirname);
@@ -77,6 +79,7 @@ app.use("/", require("./route/realocadoRoute.js"));
 //app.use("/", require("./route/websockectRoute.js"));
 app.use("/api/eventos", require("./route/apiEventosRoute.js"));
 app.use("/api/intercompany", require("./route/intercompanyRoute.js"));
+
 app.listen(PORT, () => {
     console.log(`Servidor No Ar. Porta Legal ${PORT}`);
 });
@@ -174,4 +177,6 @@ async function refresh() {
 
 //console.log("Servidor WebSocket iniciado e pronto para receber conexões.");
 
+//Função usada apenas uma vez para ajustar fotos 421
+ //await  fotoController.funcaoAjusta421();
 }

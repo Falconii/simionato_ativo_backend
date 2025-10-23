@@ -97,17 +97,26 @@ router.post("/trocarsituacaocc", async function (req, res) {
     const codigo_ativo = req.body.codigo_ativo;
     const cod_evento = req.body.cod_evento;
     const cc_novo = req.body.cc_novo;
+    const id_usuario = req.id_usuario;
 
     // Validação
     const camposObrigatorios = ["id_empresa", "id_filial", "id_inventario", "codigo_ativo", "cod_evento"];
     const camposAusentes = camposObrigatorios.filter(campo => !req.body[campo]);
+
+    if (!req.id_usuario) {
+      camposAusentes.push("id_usuario");
+    }
+
     if (camposAusentes.length > 0) {
       return response.validationError(res, camposAusentes);
     }
-    console.log("Parametros Obrigatórios Presentes",id_empresa,id_filial,id_inventario,codigo_ativo,cod_evento);
     
     if (id_filial != 15) {
        return response.error(res, "API Somente Para Local INTELLI - Filial 15");
+    };
+
+    if (cod_evento < 1 || cod_evento > 2) {
+       return response.error(res, "Parametro cod_evento Inválido");
     };
 
     if (cod_evento == 2 && (!cc_novo || cc_novo.trim() === "")) {
@@ -139,6 +148,12 @@ router.post("/trocarsituacaocc", async function (req, res) {
     );
 
     let lancamento = await lancamentoSrv.getLancamento(id_empresa, id_filial, id_inventario, codigo_ativo);
+
+    if (lancamento != null) {
+        lancamento.id_usuario  = id_usuario;
+        lancamento.user_insert = id_usuario;
+        lancamento.user_update = id_usuario;
+    }
 
     if (cod_evento == 1)
     {
@@ -180,8 +195,11 @@ router.post("/trocarsituacaocc", async function (req, res) {
          return response.success(res,"Ativo Baixado Com Sucesso - Como Foi Inventariado. Foi Alterado O Lançamento", { lancamento });
       }
     if (cod_evento == 2) {
-      console.log("Ativo Alterado Com Sucesso - Troca de Centro de Custo");
-        return response.success(res,"Processamento Executado Com Sucesso. Alterado O Lançamento.", { lancamento });
+        if (lancamento == null) {
+              return response.success(res,"Processamento Executado Com Sucesso. Alterado O No Cadastro.", { imobilizado });
+        } else {
+              return response.success(res,"Processamento Executado Com Sucesso. Alterado O Lançamento.", { lancamento });
+        }
     }   
       return response.error(res,"Processamento Não Efetuado"); 
   } catch (err) {

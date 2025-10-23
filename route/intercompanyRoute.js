@@ -4,15 +4,12 @@ const express = require("express");
 const router = express.Router();
 const lancamentoSrv = require("../service/lancamentoService");
 const fotoSrv = require("../service/fotoService");
+const imobilizadoSrv = require("../service/imobilizadoService");
+const imobilizadoinventarioSrv = require("../service/imobilizadoinventarioService");
 const empresaSrv = require("../service/empresaService");
-const centrocustoSrv = require("../service/centrocustoService");
-const gruposrv = require("../service/grupoService");
-const produtoSrv = require("../service/produtoService");
-const principalSrv = require("../service/principalService");  
-const nfeSrv = require("../service/nfeService");
-const valorSrv = require("../service/valorService");
 const erroDB = require('../util/userfunctiondb');
 const response = require("../util/respostaPadrao");
+const fotoController = require("../controllers/fotoController");
 
 /*
   Pegar movimentação de inventário de ativo de um local "origem" e transferir para outro local "destino"
@@ -98,20 +95,73 @@ router.post("/transfere_ativo_intercompany", async function (req, res) {
 
     const fotos = await fotoSrv.getFotos(params);
 
-    fotos.forEach(foto => {
-      foto.id_empresa     = lancamento_destino.id_empresa;
-      foto.id_local       = lancamento_destino.id_filial;
-      foto.id_inventario  = lancamento_destino.id_inventario;
-      foto.file_name      = foto.file_name.replace(`${lancamento_origem.id_empresa.toString().padStart(2,'0')}_${lancamento_origem.id_filial.toString().padStart(6,'0')}_${lancamento_origem.id_inventario.toString().padStart(6,'0')}_${lancamento_origem.id_imobilizado.toString().padStart(6,'0')}_`,`${lancamento_destino.id_empresa.toString().padStart(2,'0')}_${lancamento_destino.id_filial.toString().padStart(6,'0')}_${lancamento_destino.id_inventario.toString().padStart(6,'0')}_${lancamento_destino.id_imobilizado.toString().padStart(6,'0')}_`);
-      foto.file_original  = foto.fiel_name;
-    });
-    
+   for (const foto of fotos) {
+        // Atualiza os dados da foto
+        foto.id_empresa    = lancamento_destino.id_empresa;
+        foto.id_local      = lancamento_destino.id_filial;
+        foto.id_inventario = lancamento_destino.id_inventario;
+
+        const prefixoOrigem = `${lancamento_origem.id_empresa.toString().padStart(2,'0')}_${lancamento_origem.id_filial.toString().padStart(6,'0')}_${lancamento_origem.id_inventario.toString().padStart(6,'0')}_${lancamento_origem.id_imobilizado.toString().padStart(6,'0')}_`;
+        const prefixoDestino = `${lancamento_destino.id_empresa.toString().padStart(2,'0')}_${lancamento_destino.id_filial.toString().padStart(6,'0')}_${lancamento_destino.id_inventario.toString().padStart(6,'0')}_${lancamento_destino.id_imobilizado.toString().padStart(6,'0')}_`;
+
+        foto.file_name = foto.file_name.replace(prefixoOrigem, prefixoDestino);
+        foto.file_original = foto.file_name;
+
+        console.log("Transferindo Foto =>",foto.file_name);
+        // Copia o arquivo com verificação
+        await fotoController.copiarArquivo(
+          foto.id_empresa,
+          foto.id_file,
+          foto.id_pasta,
+          foto.file_name
+        );  
+
+        //Insert foto no destino
+        try {
+              const nova_foto = await fotoSrv.insertFoto(foto);
+              console.log("Foto Transferida =>",nova_foto);
+        } catch (error) {
+              console.error("Ignorada a inclusao");
+        }
+
+        //Deleta foto da origem
+        try {
+              await fotoSrv.deleteFoto(foto.id_empresa, foto.id_local, foto.id_inventario, foto.id_imobilizado, foto.id_pasta, foto.id_file,foto.file_name);
+        } catch (error) {
+              console.error("Ignorada a deleção");
+        }
+   }
+    //deleta ativo do invetario origem
+    try {
+      await imobilizadoinventarioSrv.deleteImobilizadoinventario(lancamento_origem.id_empresa, lancamento_origem.id_filial, lancamento_origem.id_inventario,lancamento_origem.id_imobilizado);
+    } catch (error) {
+      console.error("Erro ao deletar imobilizado inventario de origem, ignorado");
+    }
+    //deleta ativo origem
+    try {
+      await imobilizadoSrv.deleteImobilizado(lancamento_origem.id_empresa, lancamento_origem.id_filial,lancamento_origem.id_imobilizado);
+    } catch (error) {
+      console.error("Erro ao deletar imobilizado de origem, ignorado");
+    }
     //Deleta fotos do lancamento destino
-    //await lancamentoSrv.deleteLancamento(lancamento_destino.id_empresa, lancamento_destino.id_filial, lancamento_destino.id_inventario,lancamento_destino.id_imobilizado);
+    try {
+    await lancamentoSrv.deleteLancamento(lancamento_destino.id_empresa, lancamento_destino.id_filial, lancamento_destino.id_inventario,lancamento_destino.id_imobilizado);
+    } catch (error) {
+      console.error("Erro ao deletar fotos do lancamento destino, ignorado");
+    }
     //Insere fotos do lancamento origem no destino
-    //await lancamentoSrv.insertLancamento(lancamento_destino);
+    try{
+    await lancamentoSrv.insertLancamento(lancamento_destino);
+    } catch (error) {
+      console.error("Erro ao inserir lancamento destino, ignorado");
+    }
+    
     //Deleta lançamento origem
-    //await lancamentoSrv.deleteLancamento(lancamento_origem.id_empresa, lancamento_origem.id_filial, lancamento_origem.id_inventario,lancamento_origem.id_imobilizado);
+    try { 
+       await lancamentoSrv.deleteLancamento(lancamento_origem.id_empresa, lancamento_origem.id_filial, lancamento_origem.id_inventario,lancamento_origem.id_imobilizado);
+    } catch (error) {
+       console.error("Erro ao deletar lancamento de origem, ignorado");
+    }
 
     
   return response.success(res,"OK", { lancamento_origem,lancamento_destino,fotos });
