@@ -9,7 +9,7 @@ const imobilizadoinventarioSrv = require("../service/imobilizadoinventarioServic
 const empresaSrv = require("../service/empresaService");
 const erroDB = require('../util/userfunctiondb');
 const response = require("../util/respostaPadrao");
-const fotoController = require("../controllers/fotoController");
+const fotoController = require("../controllers/fotocontroller");
 
 /*
   Pegar movimentação de inventário de ativo de um local "origem" e transferir para outro local "destino"
