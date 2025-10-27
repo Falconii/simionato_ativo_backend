@@ -63,6 +63,10 @@ if (params) {
 		if (where != "") where += " and "; 
 		where += `param.id_transferido = ${params.id_transferido} `;
 	}
+	if(params.status  !== 0 ){
+		if (where != "") where += " and "; 
+		where += `param.status = ${params.status} `;
+	}
 	if (where != "") where = " where " + where;
 	if (params.contador == 'S') {
 		sqlStr = `SELECT COALESCE(COUNT(*),0) as total 

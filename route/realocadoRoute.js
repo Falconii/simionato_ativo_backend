@@ -193,7 +193,7 @@ router.get("/api/trocarativo/:id_empresa/:id_local/:id_inventario",async functio
 			}
 			else
 			{
-				res.status(500).json({ erro: 'BAK-END', tabela: 'DePara', message: err.message });
+				res.status(500).json({ erro: 'BAK-END', tabela: 'Realocar', message: err.message });
 			}
 		}
 	})

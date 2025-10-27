@@ -199,11 +199,12 @@ exports.RealocarAtivo = async function(id_empresa,id_local,id_inventario){
 
         lsRealocados = await realocadoSrv.getRealocados(params2);
 
+       console.log("lsRealocados =>",lsRealocados);
+
         if (lsRealocados != null){
 
             for (const realocado of lsRealocados) {
 
-                console.log("realocado =>",realocado);
 
                 const param = 	{
                     "id_empresa":id_empresa, 
@@ -221,7 +222,11 @@ exports.RealocarAtivo = async function(id_empresa,id_local,id_inventario){
                     "sharp":false 
                 };
 
+
                 let lsFotos =  await fotoSrv.getFotos(param)
+
+
+                console.log("lsFotos =>",lsFotos);
 
                 if (lsFotos != null){
 
@@ -243,6 +248,7 @@ exports.RealocarAtivo = async function(id_empresa,id_local,id_inventario){
 
                 realocado.status = 3;
                 realocado.user_update = 16;
+
 
                 const reg = await realocadoSrv.updateRealocado_status(realocado);
 
