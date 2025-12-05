@@ -13,7 +13,8 @@
                 },
                 "script_src": "C://Repositorios Git//Simionato//controle de ativo/backend//script"
             },
-            "tables": [{
+            "tables": [
+                {
                     "name": "parametros",
                     "fields": [{
                             "name": "id_empresa",

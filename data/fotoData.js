@@ -64,7 +64,7 @@ exports.getFotos = function(params) {
         orderby = "";
         paginacao = "";
 
-        console.log("params", params);
+        // console.log("params", params);
 
         if (params.orderby == "")
             orderby =
@@ -90,16 +90,14 @@ exports.getFotos = function(params) {
             if (where != "") where += " and ";
             where += `foto.id_imobilizado = ${params.id_imobilizado} `;
         }
-        if (params.imobilizados){
-
+        if (params.imobilizados) {
             if (params.imobilizados.length > 0) {
-    
                 const imobilizados = params.imobilizados;
-    
+
                 let filtro = imobilizados.toString();
-    
+
                 if (where != "") where += " and ";
-    
+
                 where += `foto.id_imobilizado in ( ${filtro} )`;
             }
         }
@@ -134,7 +132,7 @@ exports.getFotos = function(params) {
         }
 
         if (params.pagina != 0) {
-                paginacao = `limit ${params.tamPagina} offset ((${params.pagina} - 1) * ${params.tamPagina})`;
+            paginacao = `limit ${params.tamPagina} offset ((${params.pagina} - 1) * ${params.tamPagina})`;
         }
 
         if (where != "") where = " where " + where;
@@ -168,7 +166,6 @@ exports.getFotos = function(params) {
             INNER JOIN imobilizados imo on imo.id_empresa = foto.id_empresa and imo.id_filial = foto.id_local  and imo.codigo = foto.id_imobilizado
             INNER JOIN usuarios     usu on usu.id_empresa = usu.id_empresa  and usu.id = foto.id_usuario 
 			${where} 			${orderby} ${paginacao} `;
-            console.log("strSql", strSql);
             return db.manyOrNone(strSql);
         }
     } else {
@@ -249,10 +246,16 @@ exports.updateFoto = function(foto) {
   } and  id_pasta = '${foto.id_pasta}' and  id_file = '${
     foto.id_file
   }' and  file_name = '${foto.file_name}'  returning * `;
+
     return db.oneOrNone(strSql);
 };
 
-exports.atualizaFoto = function(foto,old_id_pasta,old_id_file,old_file_name)  {
+exports.atualizaFoto = function(
+    foto,
+    old_id_pasta,
+    old_id_file,
+    old_file_name
+) {
     strSql = `update   fotos set  
 		     file_name_original = '${foto.file_name_original}' 
  		 ,   id_usuario = ${foto.id_usuario} 
@@ -261,7 +264,7 @@ exports.atualizaFoto = function(foto,old_id_pasta,old_id_file,old_file_name)  {
  		 ,   obs = '${foto.obs}' 
          ,   localizacao = '${foto.localizacao}'
          ,   id_pasta = '${foto.id_pasta}' 
-         ,   id_file = '${foto.id_file }'
+         ,   id_file = '${foto.id_file}'
          ,   file_name = '${foto.file_name}'
  		 ,   user_insert = ${foto.user_insert} 
  		 ,   user_update = ${foto.user_update} 
@@ -269,24 +272,16 @@ exports.atualizaFoto = function(foto,old_id_pasta,old_id_file,old_file_name)  {
     foto.id_local
   } and  id_inventario = ${foto.id_inventario} and  id_imobilizado = ${
     foto.id_imobilizado
-  } and  id_pasta = '${old_id_pasta}' and  id_file = '${
-    old_id_file
-  }' and  file_name = '${old_file_name}'  returning * `;
-  console.log("Atualizando a foto: ", strSql);
+  } and  id_pasta = '${old_id_pasta}' and  id_file = '${old_id_file}' and  file_name = '${old_file_name}'  returning * `;
+    console.log("Atualizando a foto: ", strSql);
     return db.oneOrNone(strSql);
 };
 
-
-exports.updateFotoFileName = function(foto,new_name) {
+exports.updateFotoFileName = function(foto, new_name) {
     strSql = `update   fotos set  
 		     file_name = '${new_name}'  
- 		 where id_empresa = ${foto.id_empresa} and  id_local = ${
-    foto.id_local
-  } and  id_inventario = ${foto.id_inventario} and  id_imobilizado = ${
-    foto.id_imobilizado
-  } and  id_pasta = '${foto.id_pasta}' and  id_file = '${
-    foto.id_file
-  }' and  file_name = '${foto.file_name}'  returning * `;
+ 		 where id_empresa = ${foto.id_empresa} and  id_local = ${foto.id_local} and  id_inventario = ${foto.id_inventario} and  id_imobilizado = ${foto.id_imobilizado} and  id_pasta = '${foto.id_pasta}' and  id_file = '${foto.id_file}' and  file_name = '${foto.file_name}'  returning * `;
+    console.log("updateFotoFileName", strSql);
     return db.oneOrNone(strSql);
 };
 
@@ -305,9 +300,8 @@ exports.deleteFoto = function(
     return db.oneOrNone(strSql);
 };
 
-
 exports.getFotosTempo = function() {
-            strSql = `select 
+    strSql = `select 
                foto.id_empresa as  id_empresa  
 			,  foto.id_local as  id_local  
 			,  foto.id_inventario as  id_inventario  
@@ -331,9 +325,6 @@ exports.getFotosTempo = function() {
                 inner join fotos_drive ft on ft.id_empresa = foto.id_empresa and ft.id_filial = foto.id_local and foto.id_file = ft.id_file
                 where foto.id_empresa = 1 and foto.id_local = 14 and foto.id_inventario = 10 and foto.id_pasta = '1Oc4S6bEQy_TPPPSsxzl1gYkOs8wvwuWq' and foto.file_name <> ft.name_file
                 order by foto.id_empresa,foto.id_local,foto.id_inventario,foto.id_imobilizado `;
-            console.log("strSql", strSql);
-            return db.manyOrNone(strSql);
- };
-
-
-
+    console.log("strSql", strSql);
+    return db.manyOrNone(strSql);
+};

@@ -33,14 +33,13 @@ exports.create = async (req, res, _id_empresa, _id_local, _id_usuario) => {
   var dadosPlanilha = readline.createInterface({
     input: fs.createReadStream(file.path),
   });
-  for await (let linha of dadosPlanilha) {  
-    
+  for await (let linha of dadosPlanilha) {
     let linhaPrincipal = null;
 
     nro_linha++;
     if (nro_linha > 1) {
       const campos = parse.ParseCVS("", linha, ";");
-     
+
       if (campos.length != 36) {
         result = {
           message: `Quantidade De Colunas Deferente Do Padrão (36)! ${campos.length}}`,
@@ -52,79 +51,77 @@ exports.create = async (req, res, _id_empresa, _id_local, _id_usuario) => {
       }
 
       /*
-      campos[10] = campos[10].replace(/[a-zA-Z]{3}\//, (match) => {
-        const months = {
-          jan: '01-',
-          fev: '02-',
-          mar: '03-',
-          abr: '04-',
-          mai: '05-',
-          jun: '06-',
-          jul: '07-',
-          ago: '08-',
-          set: '09-',
-          out: '10-',
-          nov: '11-',
-          dez: '12-',
-          Jan: '01-',
-          Feb: '02-',
-          Mar: '03-',
-          Apr: '04-',
-          May: '05-',
-          Jun: '06-',
-          Jul: '07-',
-          Aug: '08-',
-          Sep: '09-',
-          Oct: '10-',
-          Nov: '11-',
-          Dec: '12-'
-        };
-        return months[match.slice(0, 3)];
-      });
-      */
+                  campos[10] = campos[10].replace(/[a-zA-Z]{3}\//, (match) => {
+                    const months = {
+                      jan: '01-',
+                      fev: '02-',
+                      mar: '03-',
+                      abr: '04-',
+                      mai: '05-',
+                      jun: '06-',
+                      jul: '07-',
+                      ago: '08-',
+                      set: '09-',
+                      out: '10-',
+                      nov: '11-',
+                      dez: '12-',
+                      Jan: '01-',
+                      Feb: '02-',
+                      Mar: '03-',
+                      Apr: '04-',
+                      May: '05-',
+                      Jun: '06-',
+                      Jul: '07-',
+                      Aug: '08-',
+                      Sep: '09-',
+                      Oct: '10-',
+                      Nov: '11-',
+                      Dec: '12-'
+                    };
+                    return months[match.slice(0, 3)];
+                  });
+                  */
 
-      if (nro_linha % 100 === 0){
+      if (nro_linha % 100 === 0) {
         console.log(
-         `Processando Linha: ${nro_linha} - ${campos[6]} - ${campos[7]} - ${campos[8]}`
+          `Processando Linha: ${nro_linha} - ${campos[6]} - ${campos[7]} - ${campos[8]}`
         );
       }
       const retornoModel = _centroCusto(campos);
       if (retornoModel != null) {
-          try {
-              const registro = await centrocustoSrv.getCentrocusto(
-              id_empresa,
-              id_local,
-              retornoModel.codigo
-            );
-            if (registro == null) {
-               await centrocustoSrv.insertCentrocusto(retornoModel);
-            }
-          } catch (err) {
-            console.log(err);
+        try {
+          const registro = await centrocustoSrv.getCentrocusto(
+            id_empresa,
+            id_local,
+            retornoModel.codigo
+          );
+          if (registro == null) {
+            await centrocustoSrv.insertCentrocusto(retornoModel);
+          }
+        } catch (err) {
+          console.log(err);
         }
       }
       const grupoModel = _grupo(campos);
-      
+
       if (grupoModel != null) {
-    
         try {
           const registro = await grupoSrv.getGrupo(
             id_empresa,
             id_local,
             grupoModel.codigo
-            );
-        if (registro == null) {
+          );
+          if (registro == null) {
             await grupoSrv.insertGrupo(grupoModel);
+          }
+        } catch (err) {
+          console.log(err);
         }
-        }  catch (err) {
-           console.log(err);
       }
-      } 
 
-      const produtosModel = _produto(campos); 
+      const produtosModel = _produto(campos);
 
       if (produtosModel != null) {
-        
         try {
           const registro = await produtoSrv.getProduto(
             id_empresa,
@@ -132,10 +129,10 @@ exports.create = async (req, res, _id_empresa, _id_local, _id_usuario) => {
             produtosModel.codigo
           );
           if (registro == null) {
-             await produtoSrv.insertProduto(produtosModel);
+            await produtoSrv.insertProduto(produtosModel);
           }
-          }  catch (err) {
-            console.log(err);
+        } catch (err) {
+          console.log(err);
         }
       }
 
@@ -146,74 +143,74 @@ exports.create = async (req, res, _id_empresa, _id_local, _id_usuario) => {
 
       console.log("principalModel", principalModel);
 
-      console.log("linhaPrincipal", linhaPrincipal);  
+      console.log("linhaPrincipal", linhaPrincipal);
 
       if (principalModel != null) {
         try {
-              const result  = await principalSrv.getPrincipal(
-              id_empresa,
-              id_local,
-              principalModel.codigo
-            );
-            if (result == null) {
-                await principalSrv.insertPrincipal(principalModel);
-            }
-          }   catch (err) {
-              console.log(err);
+          const result = await principalSrv.getPrincipal(
+            id_empresa,
+            id_local,
+            principalModel.codigo
+          );
+          if (result == null) {
+            await principalSrv.insertPrincipal(principalModel);
           }
+        } catch (err) {
+          console.log(err);
+        }
       }
-      console.log("Vou Gravar este principal: ",linhaPrincipal);
-      
-      const ImobilizadoModel = _imobilizado(campos,linhaPrincipal);
+      console.log("Vou Gravar este principal: ", linhaPrincipal);
+
+      const ImobilizadoModel = _imobilizado(campos, linhaPrincipal);
 
       console.log("ImobilizadoModel", ImobilizadoModel);
-      
+
       if (ImobilizadoModel != null) {
         try {
-            const registro = await imobilizadoSrv.getImobilizadoOnly(id_empresa,id_local,ImobilizadoModel.codigo);
-            if (registro == null) {;
-              await imobilizadoSrv.insertImobilizado(
-              ImobilizadoModel);
-            }
-          }  catch (err) {
-            console.log(err);
+          const registro = await imobilizadoSrv.getImobilizadoOnly(
+            id_empresa,
+            id_local,
+            ImobilizadoModel.codigo
+          );
+          if (registro == null) {
+            await imobilizadoSrv.insertImobilizado(ImobilizadoModel);
+          }
+        } catch (err) {
+          console.log(err);
         }
-      
       }
       const NfesModel = _nfe(campos);
 
       if (NfesModel != null) {
         try {
-             const registro = await nfeSrv.getNfe(NfesModel);
-              if (registro == null) {
-                await nfeSrv.insertNfe(NfesModel);
-              }
-          }  catch (err) {
-            console.log(err);
+          const registro = await nfeSrv.getNfe(NfesModel);
+          if (registro == null) {
+            await nfeSrv.insertNfe(NfesModel);
+          }
+        } catch (err) {
+          console.log(err);
         }
-        
       }
 
       const ValorModel = _valores(campos);
 
       if (ValorModel != null) {
-          try {
-              const registro = await valorSrv.getValor(
-              id_empresa,
-              id_local,
-              ValorModel.id_imobilizado
-            );
-            if (registro == null) {
-               await valorSrv.insertValor(ValorModel);
-            }
-          }  catch (err) {
-              console.log(err);
+        try {
+          const registro = await valorSrv.getValor(
+            id_empresa,
+            id_local,
+            ValorModel.id_imobilizado
+          );
+          if (registro == null) {
+            await valorSrv.insertValor(ValorModel);
           }
+        } catch (err) {
+          console.log(err);
+        }
       }
-      
     }
   }
-  
+
   console.log("Acabei. Pode Usar");
   return result;
 };
@@ -233,7 +230,7 @@ exports.update = async (req, res, _id_empresa, _id_local, _id_usuario) => {
   for await (let linha of dadosPlanilha) {
     nro_linha++;
     if (nro_linha > 1) {
-      const campos = parse.ParseCVS("", linha, ";");  
+      const campos = parse.ParseCVS("", linha, ";");
       if (campos.length != 36) {
         result = {
           message: `Quantidade De Colunas Deferente Do Padrão (35)! ${campos.length}}`,
@@ -243,40 +240,51 @@ exports.update = async (req, res, _id_empresa, _id_local, _id_usuario) => {
         );
         break;
       }
-      
+
       const principalModel = _principalSemFiltro(campos);
 
-        if (principalModel != null) {
+      if (principalModel != null) {
+        const princImobilizadoModel = await imobilizadoSrv.getImobilizado(
+          id_empresa,
+          id_local,
+          principalModel.codigo
+        );
 
-          const princImobilizadoModel = await imobilizadoSrv.getImobilizado(id_empresa,id_local,principalModel.codigo);
+        if (princImobilizadoModel != null) {
+          princImobilizadoModel.principal = principalModel.codigo;
 
-          if (princImobilizadoModel != null)  {
+          const alterado = await imobilizadoSrv.updateImobilizado(
+            princImobilizadoModel
+          );
+        }
 
-            princImobilizadoModel.principal = principalModel.codigo;
+        const ImobilizadoModel = _imobilizado(campos);
 
-            const alterado = await imobilizadoSrv.updateImobilizado(princImobilizadoModel);
+        if (ImobilizadoModel != null) {
+          const imobilizado = await imobilizadoSrv.getImobilizado(
+            id_empresa,
+            id_local,
+            ImobilizadoModel.codigo
+          );
 
-            }
-     
+          if (imobilizado != null) {
+            console.log(
+              `Principal ${principalModel.codigo} Imobilizado ${imobilizado.codigo}`
+            );
 
-         const ImobilizadoModel = _imobilizado(campos);
+            imobilizado.principal = principalModel.codigo;
 
-          if (ImobilizadoModel != null) {
-
-            const imobilizado = await imobilizadoSrv.getImobilizado(id_empresa,id_local,ImobilizadoModel.codigo);
-        
-            if (imobilizado != null){
-                  console.log(`Principal ${principalModel.codigo} Imobilizado ${imobilizado.codigo}`);
-
-                  imobilizado.principal =  principalModel.codigo;
-
-                  const alterado = await imobilizadoSrv.updateImobilizado(imobilizado);
-            } else {
-                  console.log("Não Encontrado No Imobilizado: ",ImobilizadoModel.codigo);
-            }
-          } 
+            const alterado = await imobilizadoSrv.updateImobilizado(
+              imobilizado
+            );
+          } else {
+            console.log(
+              "Não Encontrado No Imobilizado: ",
+              ImobilizadoModel.codigo
+            );
+          }
+        }
       }
-        
     }
   }
   return result;
@@ -286,19 +294,21 @@ function _centroCusto(campos) {
   let centrocustoModel = null;
   ct = 0;
   const idx_cc = centro_custos.findIndex((cc) => {
-    return cc.cod_cc.trim().replace("#","-") == campos[10].trim().replace("#","-");
+    return (
+      cc.cod_cc.trim().replace("#", "-") == campos[10].trim().replace("#", "-")
+    );
   });
   if (campos[10].trim() !== "" && idx_cc == -1) {
     ct++;
     centro_custos.push({
       idx: ct,
-      cod_cc: campos[10].replace("#","-"),
+      cod_cc: campos[10].replace("#", "-"),
       desc_cc: campos[11],
     });
     centrocustoModel = {
       id_empresa: id_empresa,
       id_filial: id_local,
-      codigo: campos[10].replace("#","-"),
+      codigo: campos[10].replace("#", "-"),
       descricao: campos[11],
       user_insert: id_usuario,
       user_update: 0,
@@ -371,7 +381,7 @@ function _produto(campos) {
 
 function _principal(campos) {
   let principalModel = null;
-  let principalModelSemFiltro = null
+  let principalModelSemFiltro = null;
   let ct = 0;
   const idx_main = principal.findIndex((pr) => {
     return pr.cod_produto.trim() == campos[4].trim();
@@ -394,36 +404,35 @@ function _principal(campos) {
   }
   const retorno = {
     principalModel: principalModel,
-    principalModelSemFiltro: 
-    {
-        id_empresa: id_empresa,
-        id_filial: id_local,
-        codigo: campos[4].trim() !== "" ? campos[4] : 0,
-        descricao: shared.excluirCaracteres(campos[5]).toUpperCase(),
-        user_insert: id_usuario,
-        user_update: 0
-   }
-  }
+    principalModelSemFiltro: {
+      id_empresa: id_empresa,
+      id_filial: id_local,
+      codigo: campos[4].trim() !== "" ? campos[4] : 0,
+      descricao: shared.excluirCaracteres(campos[5]).toUpperCase(),
+      user_insert: id_usuario,
+      user_update: 0,
+    },
+  };
   return retorno;
 }
 
 function _principalSemFiltro(campos) {
-    let principalModel = null;
-   
-    if (campos[4].trim() !== "") {
-      principalModel = {
-        id_empresa: id_empresa,
-        id_filial: id_local,
-        codigo: campos[4].trim() !== "" ? campos[4] : 0,
-        descricao: shared.excluirCaracteres(campos[5]).toUpperCase(),
-        user_insert: id_usuario,
-        user_update: 0,
-      };
-    }
-    return principalModel;
-  }
+  let principalModel = null;
 
-function _imobilizado(campos,linhaPrincipal) {
+  if (campos[4].trim() !== "") {
+    principalModel = {
+      id_empresa: id_empresa,
+      id_filial: id_local,
+      codigo: campos[4].trim() !== "" ? campos[4] : 0,
+      descricao: shared.excluirCaracteres(campos[5]).toUpperCase(),
+      user_insert: id_usuario,
+      user_update: 0,
+    };
+  }
+  return principalModel;
+}
+
+function _imobilizado(campos, linhaPrincipal) {
   let ImobilizadoModel = null;
   let ct = 0;
   const idx_mob = imobilizados.findIndex((imo) => {
@@ -443,7 +452,7 @@ function _imobilizado(campos,linhaPrincipal) {
       codigo: campos[6],
       descricao: shared.excluirCaracteres(campos[7]).toUpperCase(),
       cod_grupo: campos[8],
-      cod_cc: campos[10].replace("#","-"),
+      cod_cc: campos[10].replace("#", "-"),
       nfe: campos[16],
       serie: campos[17],
       item: campos[18],
@@ -493,13 +502,13 @@ function _nfe(campos) {
       chavee: campos[19],
       dtemissao: campos[27],
       dtlancamento: campos[28],
-      qtd: shared.excluirVirgulasePontos(campos[20]),
-      punit: shared.excluirVirgulasePontos(campos[21]),
-      totalitem: shared.excluirVirgulasePontos(campos[22]),
-      vlrcontabil: shared.excluirVirgulasePontos(campos[23]),
-      baseicms: shared.excluirVirgulasePontos(campos[24]),
-      percicms: shared.excluirVirgulasePontos(campos[25]),
-      vlrcicms: shared.excluirVirgulasePontos(campos[26]),
+      qtd: shared.trocavirgulaporponto(campos[20]),
+      punit: shared.trocavirgulaporponto(campos[21]),
+      totalitem: shared.trocavirgulaporponto(campos[22]),
+      vlrcontabil: shared.trocavirgulaporponto(campos[23]),
+      baseicms: shared.trocavirgulaporponto(campos[24]),
+      percicms: shared.trocavirgulaporponto(campos[25]),
+      vlrcicms: shared.trocavirgulaporponto(campos[26]),
       user_insert: id_usuario,
       user_update: 0,
     };
@@ -530,12 +539,12 @@ function _valores(campos) {
       id_filial: id_local,
       id_imobilizado: campos[6],
       dtaquisicao: campos[29],
-      vlraquisicao: shared.excluirVirgulasePontos(campos[30]),
-      totaldepreciado: shared.excluirVirgulasePontos(campos[31]),
-      vlrresidual: shared.excluirVirgulasePontos(campos[32]),
-      reavalicao: shared.excluirVirgulasePontos(campos[33]),
-      deemed: shared.excluirVirgulasePontos(campos[34]),
-      vlrconsolidado: shared.excluirVirgulasePontos(campos[35]),
+      vlraquisicao: shared.trocavirgulaporponto(campos[30]),
+      totaldepreciado: shared.trocavirgulaporponto(campos[31]),
+      vlrresidual: shared.trocavirgulaporponto(campos[32]),
+      reavalicao: shared.trocavirgulaporponto(campos[33]),
+      deemed: shared.trocavirgulaporponto(campos[34]),
+      vlrconsolidado: shared.trocavirgulaporponto(campos[35]),
       user_insert: id_usuario,
       user_update: 0,
     };

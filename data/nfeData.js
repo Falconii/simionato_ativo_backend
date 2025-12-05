@@ -277,13 +277,13 @@ exports.insertNfe = function(nfe) {
 		 ,   '${nfe.chavee}'  
 		 ,    ${shared.formatDateYYYYMMDD(nfe.dtemissao)}
 		 ,   ${shared.formatDateYYYYMMDD(nfe.dtlancamento)} 
-		 ,   ${shared.excluirVirgulasePontos(nfe.qtd)} 
-		 ,   ${shared.excluirVirgulasePontos(nfe.punit)} 
-		 ,   ${shared.excluirVirgulasePontos(nfe.totalitem)} 
-		 ,   ${shared.excluirVirgulasePontos(nfe.vlrcontabil)} 
-		 ,   ${shared.excluirVirgulasePontos(nfe.baseicms)} 
-		 ,   ${shared.excluirVirgulasePontos(nfe.percicms)} 
-		 ,   ${shared.excluirVirgulasePontos(nfe.vlrcicms)} 
+		 ,   ${nfe.qtd} 
+		 ,   ${nfe.punit} 
+		 ,   ${nfe.totalitem} 
+		 ,   ${nfe.vlrcontabil} 
+		 ,   ${nfe.baseicms} 
+		 ,   ${nfe.percicms} 
+		 ,   ${nfe.vlrcicms} 
 		 ,   ${nfe.user_insert} 
 		 ,   ${nfe.user_update} 
 		 ) 

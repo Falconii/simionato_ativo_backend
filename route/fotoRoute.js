@@ -11,8 +11,31 @@ const GOOGLE_API_FOLDER_ID = "1Oc4S6bEQy_TPPPSsxzl1gYkOs8wvwuWq";
 const GOOGLE_API_FOLDER_ID_SIMIONATO = "1eQuwNcfTmpYUWUIvlGBouodico8WrjoD";
 const PORT = process.env.PORT || 3000;
 const URL_GOOGLE_DRIVE = "https://drive.google.com/uc?export=view&id=";
-
+const shared = require("../util/shared.js");
+const funcoes = require("../util/deparaFuncoes");
+const crypto = require("crypto");
 const path = require("path");
+
+function corrige_nome_foto(
+    id_empresa,
+    id_local,
+    id_inventario,
+    id_imobilizado,
+    fileName
+) {
+    const uuid = crypto.randomUUID();
+    const extensao = path.extname(fileName);
+
+    let novo_file_name = `${id_empresa.toString().padStart(2, "0")}_${id_local
+    .toString()
+    .padStart(6, "0")}_${id_inventario
+    .toString()
+    .padStart(6, "0")}_${id_imobilizado
+    .toString()
+    .padStart(6, "0")}_${uuid}${extensao}`;
+
+    return novo_file_name;
+}
 
 /*
 When you upload any file in Google Drive and share it, the shared link looks like this:
@@ -27,6 +50,7 @@ https://drive.google.com/uc?export=download&id=DRIVE_FILE_ID
 /* ROTA GETONE foto */
 
 // Verifica o espaço de armazenamento disponível no Google Drive
+
 async function checkStorageQuota(driveService) {
     try {
         const about = await driveService.about.get({
@@ -162,22 +186,22 @@ router.delete(
 /* ROTA CONSULTA POST fotos */
 router.post("/api/fotos", async function(req, res) {
     /*
-                                          	{
-                                          		"id_empresa":0, 
-                                          		"id_local":0, 
-                                          		"id_inventario":0, 
-                                          		"id_imobilizado":0, 
-                                          		"id_pasta":"", 
-                                          		"id_file":"", 
-                                          		"file_name":"", 
-                                          		"destaque":"N", 
-                                          		"pagina":0, 
-                                          		"tamPagina":50, 
-                                          		"contador":"N", 
-                                          		"orderby":"", 
-                                          		"sharp":false 
-                                          	}
-                                          */
+                                                                                                                                	{
+                                                                                                                                		"id_empresa":0, 
+                                                                                                                                		"id_local":0, 
+                                                                                                                                		"id_inventario":0, 
+                                                                                                                                		"id_imobilizado":0, 
+                                                                                                                                		"id_pasta":"", 
+                                                                                                                                		"id_file":"", 
+                                                                                                                                		"file_name":"", 
+                                                                                                                                		"destaque":"N", 
+                                                                                                                                		"pagina":0, 
+                                                                                                                                		"tamPagina":50, 
+                                                                                                                                		"contador":"N", 
+                                                                                                                                		"orderby":"", 
+                                                                                                                                		"sharp":false 
+                                                                                                                                	}
+                                                                                                                                */
     try {
         const params = req.body;
         const lsRegistros = await fotoSrv.getFotos(params);
@@ -259,7 +283,6 @@ router.post(
             id_file,
             file_name
         );
-
 
         if (foto == null) {
             acao = "inclusao";
@@ -684,16 +707,16 @@ router.post(
             let existeDrive = foto.id_file == "" ? false : true;
 
             /*  try {
-                                                   // Verifincando se existe ok
-                                                   const responseGet = await driveService.files.get({
-                                                     fileId: foto.id_file,
-                                                   });
-                                                   existeDrive = true;
-                                                   console.log("Arquivo Existe No GoogleDrive", existeDrive);
-                                                   console.log("GET", responseGet.data.length());
-                                                 } catch (error) {
-                                                   existeDrive = false;
-                                                 } */
+                                                                                                                                                                                                                                                                                                                     // Verifincando se existe ok
+                                                                                                                                                                                                                                                                                                                     const responseGet = await driveService.files.get({
+                                                                                                                                                                                                                                                                                                                       fileId: foto.id_file,
+                                                                                                                                                                                                                                                                                                                     });
+                                                                                                                                                                                                                                                                                                                     existeDrive = true;
+                                                                                                                                                                                                                                                                                                                     console.log("Arquivo Existe No GoogleDrive", existeDrive);
+                                                                                                                                                                                                                                                                                                                     console.log("GET", responseGet.data.length());
+                                                                                                                                                                                                                                                                                                                   } catch (error) {
+                                                                                                                                                                                                                                                                                                                     existeDrive = false;
+                                                                                                                                                                                                                                                                                                                   } */
 
             if (!existeDrive) {
                 console.log("Gravando...");
@@ -926,7 +949,6 @@ router.post("/api/deleteuploadfotov2", async function(req, res) {
 router.post("/api/changefilenameuploadfotov2", async function(req, res) {
     let arquivo = "";
     try {
-
         try {
             if (PORT == 3000) {
                 arquivo =
@@ -944,20 +966,19 @@ router.post("/api/changefilenameuploadfotov2", async function(req, res) {
                 version: "v3",
                 auth,
             });
-          
+
             const body = {
-                'name': 'foto do copo de agua'
-            }
-            
+                name: "foto do copo de agua",
+            };
+
             const response = await driveService.files.update({
-                fileId: '1My1uquyCu9aZ9C9ZIDn7iqlTUpsG4j9h',
+                fileId: "1My1uquyCu9aZ9C9ZIDn7iqlTUpsG4j9h",
                 resource: body,
-              });
+            });
             console.log("Retorno Do Google: ", response);
 
-            res.status(200).json({"message" : "Nome Alterado Com Sucesso!"});
-
-        } catch(err){
+            res.status(200).json({ message: "Nome Alterado Com Sucesso!" });
+        } catch (err) {
             if (err.name == "MyExceptionDB") {
                 res.status(409).json(err);
             } else {
@@ -977,5 +998,77 @@ router.post("/api/changefilenameuploadfotov2", async function(req, res) {
     }
 });
 
+router.post("/api/verify_filename", async function(req, res) {
+    const id_empresa = req.body.id_empresa;
+    const id_local = req.body.id_local;
+    const id_inventario = req.body.id_inventario;
+
+    try {
+        fileNames = [];
+
+        const par = {
+            id_empresa: id_empresa,
+            id_local: id_local,
+            id_inventario: id_inventario,
+            id_imobilizado: 0,
+            id_pasta: "",
+            id_file: "",
+            file_name: "",
+            destaque: "",
+            pagina: 0,
+            tamPagina: 50,
+            contador: "N",
+            orderby: "",
+            sharp: false,
+        };
+
+        const fotos = await fotoSrv.getFotos(par);
+
+        for (const foto of fotos) {
+            const com_camera = shared.file_name_com_camera(foto.file_name);
+            const tam_menor_64 = foto.file_name.trim().length < 64;
+            const erro_codigo = shared.tem_erro_codigo(
+                id_empresa,
+                id_local,
+                id_inventario,
+                foto.id_imobilizado,
+                foto.file_name
+            );
+            if (com_camera || tam_menor_64 || erro_codigo) {
+                const nome_certo = corrige_nome_foto(
+                    id_empresa,
+                    id_local,
+                    id_inventario,
+                    foto.id_imobilizado,
+                    foto.file_name
+                );
+                fileNames.push({
+                    com_camera: com_camera,
+                    tam_menor_64: tam_menor_64,
+                    erro_codigo: erro_codigo,
+                    nome_errado: foto.file_name,
+                    nome_certo: nome_certo,
+                });
+                await fotoSrv.updateFotoFileName(foto, nome_certo);
+            }
+        }
+
+        /*  fotos.forEach((foto) => {
+                                                                                                                            if (foto.file_name.trim().length < 64) {
+                                                                                                                                fileNames.push(foto.file_name);
+                                                                                                                            }
+                                                                                                                        }); */
+
+        res.status(200).json(fileNames);
+    } catch (err) {
+        if (err.name == "MyExceptionDB") {
+            res.status(409).json(err);
+        } else {
+            res
+                .status(500)
+                .json({ erro: "BAK-END", tabela: "Foto", message: err.message });
+        }
+    }
+});
 
 module.exports = router;

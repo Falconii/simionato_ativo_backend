@@ -2,7 +2,6 @@
 const db = require("../infra/database");
 const shared = require("../util/shared.js");
 
-
 /* GET CAMPOS */
 exports.getCampos = function(Imobilizado) {
     return [
@@ -247,7 +246,9 @@ exports.insertImobilizado = function(imobilizado) {
 exports.updateImobilizado = function(imobilizado) {
     strSql = `
             update imobilizados set
-            descricao = '${shared.excluirCaracteres(imobilizado.descricao.toUpperCase())}'
+            descricao = '${shared.excluirCaracteres(
+              imobilizado.descricao.toUpperCase()
+            )}'
             , cod_grupo = ${imobilizado.cod_grupo}
             , cod_cc = '${imobilizado.cod_cc}'
             , nfe = '${imobilizado.nfe}'

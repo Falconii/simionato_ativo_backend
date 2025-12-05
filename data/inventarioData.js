@@ -55,6 +55,7 @@ exports.getResumo = function(id_empresa, id_filial, codigo) {
 		_situacao_3 as situacao_3,
 		_situacao_4 as situacao_4,
 		_situacao_5 as situacao_5,
+		_situacao_6 as situacao_6,
 		_fotos      as fotos
  			FROM resumo_inventario(${id_empresa},${id_filial},${codigo})`;
     return db.oneOrNone(strSql);
