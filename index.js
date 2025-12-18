@@ -1,4 +1,4 @@
-const  dotenv = require("dotenv");
+const dotenv = require("dotenv");
 dotenv.config();
 const express = require("express");
 const { google } = require("googleapis");
@@ -12,7 +12,7 @@ const app = express();
 
 const fotoController = require("./controllers/fotocontroller");
 
-const WebSocketServer = require('./websocket/websocketServer');
+const WebSocketServer = require("./websocket/websocketServer");
 
 global.appRoot = path.resolve(__dirname);
 
@@ -37,7 +37,7 @@ const allowCors = (req, res, next) => {
 
 app.use(allowCors);
 
-app.use("/api/login", require('./route/loginRoute'));
+app.use("/api/login", require("./route/loginRoute"));
 app.use("/", require("./route/helloRoute.js"));
 app.use("/", require("./route/empresaRoute.js"));
 app.use("/", require("./route/localRoute.js"));
@@ -94,14 +94,13 @@ async function refresh() {
     //Buscando key google
 
     const param = await parametroSrv.getParametro(1, "key", "googledrive", 999);
-   
+
     if (param == null) {
         console.log("Não Foi Encontrada Chave GOOGLE DRIVE");
-        return ;
+        return;
     }
     if (PORT == 3000) {
-        arquivo =
-            "C:/Repositorios/Simionato/ativo web/keys/googlekey.json";
+        arquivo = "C:/Repositorios/Simionato/ativo web/keys/googlekey.json";
     } else {
         arquivo = "keys/googlekey.json";
     }
@@ -114,7 +113,7 @@ async function refresh() {
     } catch (error) {
         console.log(`Erro Na Gravação googlekey, No Servidor ${error}`);
     }
- 
+
     //google drive simionato
     //Buscando key google
     const param2 = await parametroSrv.getParametro(
@@ -156,8 +155,7 @@ async function refresh() {
         return;
     }
     if (PORT == 3000) {
-        arquivo =
-            "C:/Repositorios/Simionato/ativo web/keys/intelli-simionato.json";
+        arquivo = "C:/Repositorios/Simionato/ativo web/keys/intelli-simionato.json";
     } else {
         arquivo = "keys/intelli-simionato.json";
     }
@@ -172,11 +170,11 @@ async function refresh() {
             `Erro Na Gravação googlekey INTELLI-SIMIONATO, No Servidor ${error}`
         );
     }
-// Inicializa apenas o WebSocket
-//const wsServer = new WebSocketServer(WS_PORT);
+    // Inicializa apenas o WebSocket
+    //const wsServer = new WebSocketServer(WS_PORT);
 
-//console.log("Servidor WebSocket iniciado e pronto para receber conexões.");
+    //console.log("Servidor WebSocket iniciado e pronto para receber conexões.");
 
-//Função usada apenas uma vez para ajustar fotos 421
- //await  fotoController.funcaoAjusta421();
+    //Função usada apenas uma vez para ajustar fotos 421
+    //await  fotoController.funcaoAjusta421();
 }

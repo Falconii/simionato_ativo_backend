@@ -50,38 +50,6 @@ exports.create = async (req, res, _id_empresa, _id_local, _id_usuario) => {
         continue;
       }
 
-      /*
-                  campos[10] = campos[10].replace(/[a-zA-Z]{3}\//, (match) => {
-                    const months = {
-                      jan: '01-',
-                      fev: '02-',
-                      mar: '03-',
-                      abr: '04-',
-                      mai: '05-',
-                      jun: '06-',
-                      jul: '07-',
-                      ago: '08-',
-                      set: '09-',
-                      out: '10-',
-                      nov: '11-',
-                      dez: '12-',
-                      Jan: '01-',
-                      Feb: '02-',
-                      Mar: '03-',
-                      Apr: '04-',
-                      May: '05-',
-                      Jun: '06-',
-                      Jul: '07-',
-                      Aug: '08-',
-                      Sep: '09-',
-                      Oct: '10-',
-                      Nov: '11-',
-                      Dec: '12-'
-                    };
-                    return months[match.slice(0, 3)];
-                  });
-                  */
-
       if (nro_linha % 100 === 0) {
         console.log(
           `Processando Linha: ${nro_linha} - ${campos[6]} - ${campos[7]} - ${campos[8]}`
@@ -136,16 +104,11 @@ exports.create = async (req, res, _id_empresa, _id_local, _id_usuario) => {
         }
       }
 
-      const retorno = _principal(campos);
-
-      const principalModel = retorno.principalModel;
-      linhaPrincipal = retorno.principalModelSemFiltro;
+      const principalModel = _principal(campos);
 
       console.log("principalModel", principalModel);
 
-      console.log("linhaPrincipal", linhaPrincipal);
-
-      if (principalModel != null) {
+      if (principalModel != null && principalModel.codigo !== 0) {
         try {
           const result = await principalSrv.getPrincipal(
             id_empresa,
@@ -158,10 +121,10 @@ exports.create = async (req, res, _id_empresa, _id_local, _id_usuario) => {
         } catch (err) {
           console.log(err);
         }
+        console.log("Vou Gravar este principal: ", linhaPrincipal);
       }
-      console.log("Vou Gravar este principal: ", linhaPrincipal);
 
-      const ImobilizadoModel = _imobilizado(campos, linhaPrincipal);
+      const ImobilizadoModel = _imobilizado(campos, principalModel);
 
       console.log("ImobilizadoModel", ImobilizadoModel);
 
@@ -381,7 +344,6 @@ function _produto(campos) {
 
 function _principal(campos) {
   let principalModel = null;
-  let principalModelSemFiltro = null;
   let ct = 0;
   const idx_main = principal.findIndex((pr) => {
     return pr.cod_produto.trim() == campos[4].trim();
@@ -402,18 +364,8 @@ function _principal(campos) {
       user_update: 0,
     };
   }
-  const retorno = {
-    principalModel: principalModel,
-    principalModelSemFiltro: {
-      id_empresa: id_empresa,
-      id_filial: id_local,
-      codigo: campos[4].trim() !== "" ? campos[4] : 0,
-      descricao: shared.excluirCaracteres(campos[5]).toUpperCase(),
-      user_insert: id_usuario,
-      user_update: 0,
-    },
-  };
-  return retorno;
+
+  return principalModel;
 }
 
 function _principalSemFiltro(campos) {
@@ -432,7 +384,7 @@ function _principalSemFiltro(campos) {
   return principalModel;
 }
 
-function _imobilizado(campos, linhaPrincipal) {
+function _imobilizado(campos, principalModel) {
   let ImobilizadoModel = null;
   let ct = 0;
   const idx_mob = imobilizados.findIndex((imo) => {
@@ -459,7 +411,7 @@ function _imobilizado(campos, linhaPrincipal) {
       condicao: campos[12],
       apelido: campos[13],
       origem: "P",
-      principal: linhaPrincipal == null ? 0 : linhaPrincipal.codigo,
+      principal: principalModel == null ? 0 : linhaPrincipal.codigo,
       user_insert: id_usuario,
       user_update: 0,
     };
@@ -499,7 +451,7 @@ function _nfe(campos) {
       nfe: campos[16],
       serie: campos[17],
       item: campos[18],
-      chavee: campos[19],
+      chavee: campos[19].replace("NFE", ""),
       dtemissao: campos[27],
       dtlancamento: campos[28],
       qtd: shared.trocavirgulaporponto(campos[20]),

@@ -157,6 +157,15 @@ exports.getEmpresas = function(params) {
         return db.manyOrNone(strSql);
     }
 };
+
+exports.getEmpresaFrase = function(id) {
+    strSql = ` select   
+			   emp.frase as  frase    
+ 			FROM empresas emp 	     
+			 where emp.id = ${id}  `;
+    return db.oneOrNone(strSql);
+};
+
 /* CRUD - INSERT */
 exports.insertEmpresa = function(empresa) {
     strSql = `insert into empresas (
