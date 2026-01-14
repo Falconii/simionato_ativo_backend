@@ -3,28 +3,28 @@ const db = require("../infra/database");
 const shared = require("../util/shared.js");
 
 /* GET CAMPOS */
-exports.getCampos = function(Imobilizado) {
-    return [
-        Imobilizado.id_empresa,
-        Imobilizado.id_filial,
-        Imobilizado.codigo,
-        Imobilizado.descricao,
-        Imobilizado.cod_grupo,
-        Imobilizado.cod_cc,
-        Imobilizado.nfe,
-        Imobilizado.serie,
-        Imobilizado.item,
-        Imobilizado.origem,
-        Imobilizado.condicao,
-        Imobilizado.apelido,
-        Imobilizado.principal,
-        Imobilizado.user_insert,
-        Imobilizado.user_update,
-    ];
+exports.getCampos = function (Imobilizado) {
+  return [
+    Imobilizado.id_empresa,
+    Imobilizado.id_filial,
+    Imobilizado.codigo,
+    Imobilizado.descricao,
+    Imobilizado.cod_grupo,
+    Imobilizado.cod_cc,
+    Imobilizado.nfe,
+    Imobilizado.serie,
+    Imobilizado.item,
+    Imobilizado.origem,
+    Imobilizado.condicao,
+    Imobilizado.apelido,
+    Imobilizado.principal,
+    Imobilizado.user_insert,
+    Imobilizado.user_update,
+  ];
 };
 /* CRUD GET */
-exports.getImobilizado = function(id_empresa, id_filial, codigo) {
-    strSql = ` select   
+exports.getImobilizado = function (id_empresa, id_filial, codigo) {
+  strSql = ` select   
 			   imo.id_empresa as  id_empresa  
 			,  imo.id_filial as  id_filial  
 			,  imo.codigo as  codigo  
@@ -50,10 +50,10 @@ exports.getImobilizado = function(id_empresa, id_filial, codigo) {
 				 left  join nfes nfe on nfe.id_empresa = imo.id_empresa and nfe.id_filial = imo.id_filial and nfe.id_imobilizado = imo.codigo   
                  left  join principais prin on prin.id_empresa = imo.id_empresa and prin.id_filial = imo.id_filial and prin.codigo = imo.principal  
 			 where imo.id_empresa = ${id_empresa} and  imo.id_filial = ${id_filial} and  imo.codigo = ${codigo}  `;
-    return db.oneOrNone(strSql);
+  return db.oneOrNone(strSql);
 };
-exports.getImobilizadoOnly = function(id_empresa, id_filial, codigo) {
-    strSql = ` select   
+exports.getImobilizadoOnly = function (id_empresa, id_filial, codigo) {
+  strSql = ` select   
 			   imo.id_empresa as  id_empresa  
 			,  imo.id_filial as  id_filial  
 			,  imo.codigo as  codigo  
@@ -75,82 +75,82 @@ exports.getImobilizadoOnly = function(id_empresa, id_filial, codigo) {
             ,  '' as prin_descricao
  			FROM imobilizados imo 	  
 			 where imo.id_empresa = ${id_empresa} and  imo.id_filial = ${id_filial} and  imo.codigo = ${codigo}  `;
-    return db.oneOrNone(strSql);
+  return db.oneOrNone(strSql);
 };
 
 /* CRUD GET ALL*/
-exports.getImobilizados = function(params) {
-    if (params) {
-        console.log("Parametros getImobilizados: ", params);
+exports.getImobilizados = function (params) {
+  if (params) {
+    console.log("Parametros getImobilizados: ", params);
 
-        where = "";
-        orderby = "";
-        paginacao = "";
+    where = "";
+    orderby = "";
+    paginacao = "";
 
-        if (params.orderby == "") orderby = "imo.id_empresa,imo.id_filial";
-        if (params.orderby == "Filial") orderby = "imo.id_empresa,imo.id_filial";
-        if (params.orderby == "Código")
-            orderby = "imo.id_empresa,imo.id_filial,imo.codigo";
-        if (params.orderby == "Descricao")
-            orderby = "imo.id_empresa,imo.id_filial,imo.descricao";
+    if (params.orderby == "") orderby = "imo.id_empresa,imo.id_filial";
+    if (params.orderby == "Filial") orderby = "imo.id_empresa,imo.id_filial";
+    if (params.orderby == "Código")
+      orderby = "imo.id_empresa,imo.id_filial,imo.codigo";
+    if (params.orderby == "Descricao")
+      orderby = "imo.id_empresa,imo.id_filial,imo.descricao";
 
-        if (orderby != "") orderby = " order by " + orderby;
-        if (params.id_empresa !== 0) {
-            if (where != "") where += " and ";
-            where += `imo.id_empresa = ${params.id_empresa} `;
-        }
-        if (params.id_filial !== 0) {
-            if (where != "") where += " and ";
-            where += `imo.id_filial = ${params.id_filial} `;
-        }
-        if (params.codigo !== 0) {
-            if (where != "") where += " and ";
-            where += `imo.codigo = ${params.codigo} `;
-        }
-        if (params.descricao.trim() !== "") {
-            if (where != "") where += " and ";
-            if (params.sharp) {
-                where += `imo.descricao = '${params.descricao}' `;
-            } else {
-                where += `imo.descricao like '%${params.descricao.trim()}%' `;
-            }
-        }
-        if (params.grupo_cod !== 0) {
-            if (where != "") where += " and ";
-            where += `imo.cod_grupo = ${params.grupo_cod} `;
-        }
-        if (params.cc_cod.trim() !== "") {
-            if (where != "") where += " and ";
-            if (params.sharp) {
-                where += `imo.cod_cc = '${params.cc_cod}' `;
-            } else {
-                where += `imo.cod_cc like '%${params.cc_cod.trim()}%' `;
-            }
-        }
-        if (params.origem.trim() !== "") {
-            if (where != "") where += " and ";
-            if (params.sharp) {
-                where += `imo.origem = '${params.origem}' `;
-            } else {
-                where += `imo.origem like '%${params.origem.trim()}%' `;
-            }
-        }
-        if (where != "") where = " where " + where;
+    if (orderby != "") orderby = " order by " + orderby;
+    if (params.id_empresa !== 0) {
+      if (where != "") where += " and ";
+      where += `imo.id_empresa = ${params.id_empresa} `;
+    }
+    if (params.id_filial !== 0) {
+      if (where != "") where += " and ";
+      where += `imo.id_filial = ${params.id_filial} `;
+    }
+    if (params.codigo !== 0) {
+      if (where != "") where += " and ";
+      where += `imo.codigo = ${params.codigo} `;
+    }
+    if (params.descricao.trim() !== "") {
+      if (where != "") where += " and ";
+      if (params.sharp) {
+        where += `imo.descricao = '${params.descricao}' `;
+      } else {
+        where += `imo.descricao like '%${params.descricao.trim()}%' `;
+      }
+    }
+    if (params.grupo_cod !== 0) {
+      if (where != "") where += " and ";
+      where += `imo.cod_grupo = ${params.grupo_cod} `;
+    }
+    if (params.cc_cod.trim() !== "") {
+      if (where != "") where += " and ";
+      if (params.sharp) {
+        where += `imo.cod_cc = '${params.cc_cod}' `;
+      } else {
+        where += `imo.cod_cc like '%${params.cc_cod.trim()}%' `;
+      }
+    }
+    if (params.origem.trim() !== "") {
+      if (where != "") where += " and ";
+      if (params.sharp) {
+        where += `imo.origem = '${params.origem}' `;
+      } else {
+        where += `imo.origem like '%${params.origem.trim()}%' `;
+      }
+    }
+    if (where != "") where = " where " + where;
 
-        if (params.pagina != 0) {
-            paginacao = `limit ${params.tamPagina} offset ((${params.pagina} - 1) * ${params.tamPagina})`;
-        }
+    if (params.pagina != 0) {
+      paginacao = `limit ${params.tamPagina} offset ((${params.pagina} - 1) * ${params.tamPagina})`;
+    }
 
-        if (params.contador == "S") {
-            sqlStr = `SELECT COALESCE(COUNT(*),0) as total 
+    if (params.contador == "S") {
+      sqlStr = `SELECT COALESCE(COUNT(*),0) as total 
 				  FROM imobilizados imo   
 				 inner join grupos gru on gru.id_empresa = imo.id_empresa and gru.id_filial = imo.id_filial and gru.codigo = imo.cod_grupo
 				 inner join centroscustos cc on cc.id_empresa = imo.id_empresa and cc.id_filial = imo.id_filial and cc.codigo = imo.cod_cc
 				 left  join nfes nfe on nfe.id_empresa = imo.id_empresa and nfe.id_filial = imo.id_filial and nfe.id_imobilizado = imo.codigo   
 				  ${where} `;
-            return db.one(sqlStr);
-        } else {
-            strSql = `select   
+      return db.one(sqlStr);
+    } else {
+      strSql = `select   
 			   imo.id_empresa as  id_empresa  
 			,  imo.id_filial as  id_filial  
 			,  imo.codigo as  codigo  
@@ -174,11 +174,11 @@ exports.getImobilizados = function(params) {
 				 inner join centroscustos cc on cc.id_empresa = imo.id_empresa and cc.id_filial = imo.id_filial and cc.codigo = imo.cod_cc
 				 left  join nfes nfe on nfe.id_empresa = imo.id_empresa and nfe.id_filial = imo.id_filial and nfe.id_imobilizado = imo.codigo   
 			${where} 			${orderby} ${paginacao} `;
-            console.log("getImobilizados", strSql);
-            return db.manyOrNone(strSql);
-        }
-    } else {
-        strSql = `select   
+      console.log("getImobilizados", strSql);
+      return db.manyOrNone(strSql);
+    }
+  } else {
+    strSql = `select   
 			   imo.id_empresa as  id_empresa  
 			,  imo.id_filial as  id_filial  
 			,  imo.codigo as  codigo  
@@ -199,12 +199,12 @@ exports.getImobilizados = function(params) {
 				 inner join grupos gru on gru.id_empresa = imo.id_empresa and gru.id_filial = imo.id_filial and gru.codigo = imo.cod_grupo
 				 inner join centroscustos cc on cc.id_empresa = imo.id_empresa and cc.id_filial = imo.id_filial and cc.codigo = imo.cod_cc
 				 left  join nfes nfe on nfe.id_empresa = imo.id_empresa and nfe.id_filial = imo.id_filial and nfe.id_imobilizado = imo.codigo  `;
-        return db.manyOrNone(strSql);
-    }
+    return db.manyOrNone(strSql);
+  }
 };
 /* CRUD - INSERT */
-exports.insertImobilizado = function(imobilizado) {
-    strSql = `
+exports.insertImobilizado = function (imobilizado) {
+  strSql = `
             insert into imobilizados(
                   id_empresa
                 , id_filial
@@ -240,11 +240,12 @@ exports.insertImobilizado = function(imobilizado) {
                 ,  ${imobilizado.user_update}
             )
             returning * `;
-    return db.oneOrNone(strSql);
+  console.log("insertImobilizado: ", strSql);
+  return db.oneOrNone(strSql);
 };
 /* CRUD - UPDATE */
-exports.updateImobilizado = function(imobilizado) {
-    strSql = `
+exports.updateImobilizado = function (imobilizado) {
+  strSql = `
             update imobilizados set
             descricao = '${shared.excluirCaracteres(
               imobilizado.descricao.toUpperCase()
@@ -264,15 +265,15 @@ exports.updateImobilizado = function(imobilizado) {
             and id_filial = ${imobilizado.id_filial}
             and codigo = ${imobilizado.codigo}
             returning * `;
-    return db.oneOrNone(strSql);
+  return db.oneOrNone(strSql);
 };
 /* CRUD - DELETE */
-exports.deleteImobilizado = function(id_empresa, id_filial, codigo) {
-    strSql = `
+exports.deleteImobilizado = function (id_empresa, id_filial, codigo) {
+  strSql = `
             delete from imobilizados
             where id_empresa = ${id_empresa}
             and id_filial = ${id_filial}
             and codigo = ${codigo}
             `;
-    return db.oneOrNone(strSql);
+  return db.oneOrNone(strSql);
 };

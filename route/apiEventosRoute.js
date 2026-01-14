@@ -15,6 +15,7 @@ const nfeSrv = require("../service/nfeService");
 const valorSrv = require("../service/valorService");
 const erroDB = require("../util/userfunctiondb");
 const response = require("../util/respostaPadrao");
+const shared = require("../util/shared.js");
 const { autenticarToken } = require("../middleware/autenticartoken");
 
 router.use(autenticarToken);
@@ -76,18 +77,18 @@ async function TrocarCC(
 
 router.post("/trocarsituacaocc", async function (req, res) {
   /*
-                                                                                                                                                                                 {
-                                                                                                                                                                                    "id_empresa":1,
-                                                                                                                                                                                    "id_filial"  :14,   "Valores válidos 14 = COPPERSTEEL, 15 = INTELLI, 16 = TRES LAGOAS".
-                                                                                                                                                                                    "id_inventario":15, "Valores Validos 10 = COPPERSTEEL, 11= INTELLI,  12 = TRES LAGOAS".
-                                                                                                                                                                                    "codigo_ativo": 1,  
-                                                                                                                                                                                    "cod_evento" : 1,   "Valores Válidos 1 = Baixa do Ativo, 2 = Troca de Centro de Custo".
-                                                                                                                                                                                    "cc_novo":"",       "Usado apenas para o evento 2 - Troca de Centro de Custo"
-                                                                                                                                                                                  }
-                                                                                                                                                                                  validar os parametros e rejeitar se estiverem errados incluir também os campos do ativo
-                                                                                                                                                                                  validar se o ativo existe
-                                                                                                                                                                                  
-                                                                                                                                                                                */
+                                                                                                                                                                                                                                   {
+                                                                                                                                                                                                                                      "id_empresa":1,
+                                                                                                                                                                                                                                      "id_filial"  :14,   "Valores válidos 14 = COPPERSTEEL, 15 = INTELLI, 16 = TRES LAGOAS".
+                                                                                                                                                                                                                                      "id_inventario":15, "Valores Validos 10 = COPPERSTEEL, 11= INTELLI,  12 = TRES LAGOAS".
+                                                                                                                                                                                                                                      "codigo_ativo": 1,  
+                                                                                                                                                                                                                                      "cod_evento" : 1,   "Valores Válidos 1 = Baixa do Ativo, 2 = Troca de Centro de Custo".
+                                                                                                                                                                                                                                      "cc_novo":"",       "Usado apenas para o evento 2 - Troca de Centro de Custo"
+                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                    validar os parametros e rejeitar se estiverem errados incluir também os campos do ativo
+                                                                                                                                                                                                                                    validar se o ativo existe
+                                                                                                                                                                                                                                    
+                                                                                                                                                                                                                                  */
   console.log("Iniciando Processamento de Evento de Ativo");
   try {
     const id_empresa = req.body.id_empresa;
@@ -260,69 +261,69 @@ router.post("/trocarsituacaocc", async function (req, res) {
 
 router.post("/novoativo", async function (req, res) {
   /*
-        {
-        	"id_filial"   : 999,
-        	"id_inventario" : 999,
-        	"produto": {
-        								"codigo": 130001,
-        								"estado": 1,
-        								"descricao": "INSTALAÇÃO REDE OXIGÊNIO MONTAGEM QUADRO",
-        								"ncm": "99999999       "
-        	           },
-        	"principal":{
-        								"codigo": 163,
-        								"descricao": "ELEVADOR DE CANECAS PARA RESÍDUOS DE FUNDIÇÃO"
-        	            },
-        	"imobilizado":{
-        								"codigo": 130001,
-        								"descricao": "ESTABILIZADOR ELÉTRICO DE TENSÃO   3K1VA MONO ISO LITE 220-220",
-        								"cod_grupo": 5,
-        								"cod_cc": "3-15",
-        								"condicao": 9,
-        								"apelido": "APELIDO",
-        								"nfe": "143",
-        								"serie": "2",
-        								"item": "0",
-        								"origem": "P"
-        	            },
-        "grupo":      {
-                        "codigo": 5,
-                        "descricao": "EQUIPAMENTOS DE INFORMÁTICA"
-                      },
-          "centrocusto":{
-                        "codigo": "3-15",
-                        "descricao": "COPPERSTEEL - ADMINISTRAÇÃO"
-                },
-          "nfe": {
-        							"cnpj_fornecedor": "MARIA DA PENHA",
-        							"razao_fornecedor": "025.078.678-84",
-        		          "nfe" : "143",
-        							"serie": "2",
-        							"item": "60",
-        							"chavee": "123456789012345678901234567890123456789012",
-        							"dtemissao": "16/06/1964",
-        							"dtlancamento": "20/06/1964",
-        							"qtd":  100.0000,
-        							"punit": 1.50,
-        							"totalitem": 150.00,
-        						  "vlrcontabil":150.89,
-        							"baseicms":  150.0000,
-        							"percicms":  12.00,
-        							"vlrcicms":  12.5000
-        				 },
-        	"valor":{
-        							"dtaquisicao" : "16/06/2023",
-        							"vlraquisicao":  1.0000,
-        							"totaldepreciado": 335.0400,
-        							"vlrresidual":  3014.9600,
-        							"reavalicao":  234.0000,
-        							"deemed":  890.908,
-        							"vlrconsolidado":  3014.9600 
-        						}
-        }
-         
+                                                          {
+                                                          	"id_filial"   : 999,
+                                                          	"id_inventario" : 999,
+                                                          	"produto": {
+                                                          								"codigo": 130001,
+                                                          								"estado": 1,
+                                                          								"descricao": "INSTALAÇÃO REDE OXIGÊNIO MONTAGEM QUADRO",
+                                                          								"ncm": "99999999       "
+                                                          	           },
+                                                          	"principal":{
+                                                          								"codigo": 163,
+                                                          								"descricao": "ELEVADOR DE CANECAS PARA RESÍDUOS DE FUNDIÇÃO"
+                                                          	            },
+                                                          	"imobilizado":{
+                                                          								"codigo": 130001,
+                                                          								"descricao": "ESTABILIZADOR ELÉTRICO DE TENSÃO   3K1VA MONO ISO LITE 220-220",
+                                                          								"cod_grupo": 5,
+                                                          								"cod_cc": "3-15",
+                                                          								"condicao": 9,
+                                                          								"apelido": "APELIDO",
+                                                          								"nfe": "143",
+                                                          								"serie": "2",
+                                                          								"item": "0",
+                                                          								"origem": "P"
+                                                          	            },
+                                                          "grupo":      {
+                                                                          "codigo": 5,
+                                                                          "descricao": "EQUIPAMENTOS DE INFORMÁTICA"
+                                                                        },
+                                                            "centrocusto":{
+                                                                          "codigo": "3-15",
+                                                                          "descricao": "COPPERSTEEL - ADMINISTRAÇÃO"
+                                                                  },
+                                                            "nfe": {
+                                                          							"cnpj_fornecedor": "MARIA DA PENHA",
+                                                          							"razao_fornecedor": "025.078.678-84",
+                                                          		          "nfe" : "143",
+                                                          							"serie": "2",
+                                                          							"item": "60",
+                                                          							"chavee": "123456789012345678901234567890123456789012",
+                                                          							"dtemissao": "16/06/1964",
+                                                          							"dtlancamento": "20/06/1964",
+                                                          							"qtd":  100.0000,
+                                                          							"punit": 1.50,
+                                                          							"totalitem": 150.00,
+                                                          						  "vlrcontabil":150.89,
+                                                          							"baseicms":  150.0000,
+                                                          							"percicms":  12.00,
+                                                          							"vlrcicms":  12.5000
+                                                          				 },
+                                                          	"valor":{
+                                                          							"dtaquisicao" : "16/06/2023",
+                                                          							"vlraquisicao":  1.0000,
+                                                          							"totaldepreciado": 335.0400,
+                                                          							"vlrresidual":  3014.9600,
+                                                          							"reavalicao":  234.0000,
+                                                          							"deemed":  890.908,
+                                                          							"vlrconsolidado":  3014.9600 
+                                                          						}
+                                                          }
+                                                           
 
-        */
+                                                          */
 
   try {
     const id_empresa = req.user.id_empresa;
@@ -415,12 +416,12 @@ router.post("/novoativo", async function (req, res) {
     centrocusto.user_update = 0;
 
     /* console.log("user", req.user);
-                                                        console.log("produto", produto);
-                                                        console.log("principal", principal);
-                                                        console.log("imobilizado", imobilizado);
-                                                        console.log("grupo", grupo);
-                                                        console.log("centro custo", centrocusto);
-                                                        console.log("nfe", nfe); */
+                                                                                                                                                            console.log("produto", produto);
+                                                                                                                                                            console.log("principal", principal);
+                                                                                                                                                            console.log("imobilizado", imobilizado);
+                                                                                                                                                            console.log("grupo", grupo);
+                                                                                                                                                            console.log("centro custo", centrocusto);
+                                                                                                                                                            console.log("nfe", nfe); */
 
     // Empresa
     const empresa = await empresaSrv.getEmpresa(id_empresa);
@@ -449,7 +450,7 @@ router.post("/novoativo", async function (req, res) {
         id_imobilizado: imobilizado.codigo,
       });
     }
-
+    console.log("Ponto A");
     if (!(Object.entries(produto).length === 0)) {
       produto.id_empresa = id_empresa;
       produto.id_filial = id_filial;
@@ -461,9 +462,13 @@ router.post("/novoativo", async function (req, res) {
         id_filial,
         produto.codigo
       );
-      if (_produto == null) {
+      if (!(Object.entries(produto).length === 0)) {
         try {
-          produto.id_principal = principal.codigo;
+          if (!(Object.entries(principal).length === 0)) {
+            produto.id_principal = principal.codigo;
+          } else {
+            produto.id_principal = 0;
+          }
           await produtoSrv.insertProduto(produto);
         } catch (error) {
           return response.error(res, "Erro Ao Incluir Produto", {
@@ -473,7 +478,10 @@ router.post("/novoativo", async function (req, res) {
         }
       }
     }
+
+    console.log("Ponto A1");
     if (!(Object.entries(principal).length === 0)) {
+      console.log("Incluindo Principal", principal);
       principal.id_empresa = id_empresa;
       principal.id_filial = id_filial;
       principal.user_insert = id_usuario;
@@ -494,34 +502,7 @@ router.post("/novoativo", async function (req, res) {
         }
       }
     }
-    if (!(Object.entries(nfe).length === 0)) {
-      if (imobilizado !== null && nfe !== null) {
-        nfe.id_empresa = id_empresa;
-        nfe.id_filial = id_filial;
-        nfe.id_imobilizado = imobilizado.codigo;
-        nfe.user_insert = id_usuario;
-        nfe.user_update = 0;
-        const _nfe = await nfeSrv.getNfeByImobilizado(
-          nfe.id_empresa,
-          nfe.id_filial,
-          nfe.id_imobilizado,
-          nfe.nfe,
-          nfe.serie,
-          nfe.item
-        );
-        if (_nfe.length == 0) {
-          try {
-            await nfeSrv.insertNfe(nfe);
-          } catch (error) {
-            return response.error(res, "Erro Ao Incluir NFE", {
-              nfe: nfe,
-              error: error,
-            });
-          }
-        }
-      }
-    }
-
+    console.log("_imobilizado", _imobilizado);
     if (_imobilizado == null) {
       try {
         if (!(Object.entries(nfe).length === 0) && nfe !== null) {
@@ -533,15 +514,43 @@ router.post("/novoativo", async function (req, res) {
           imobilizado.serie = "";
           imobilizado.item = "";
         }
-        await imobilizadoSrv.insertImobilizado(imobilizado);
+        console.log(
+          "Validando Tamanhos dos Campos",
+          imobilizado.descricao.length
+        );
+        console.log(
+          "Validando Tamanhos dos Campos",
+          imobilizado.apelido.length
+        );
+        if (imobilizado.descricao.length > 150) {
+          return response.error(
+            res,
+            "Erro Ao Incluir Imobilizado - Campo Descrição Maior Que 150 Caracteres"
+          );
+        }
+        if (imobilizado.apelido.length > 30) {
+          return response.error(
+            res,
+            "Erro Ao Incluir Imobilizado - Campo Apelido Maior Que 30 Caracteres"
+          );
+        }
+        console.log("Incluindo Imobilizado", imobilizado);
+        (imobilizado.descricao = shared
+          .excluirCaracteres(imobilizado.descricao)
+          .toUpperCase()),
+          (imobilizado.apelido = shared
+            .excluirCaracteres(imobilizado.apelido)
+            .toUpperCase()),
+          await imobilizadoSrv.insertImobilizado(imobilizado);
       } catch (error) {
-        return response.error(res, "Erro Ao Incluir Principal", {
-          principal: principal,
+        return response.error(res, "Erro Ao Incluir Imobilizado", {
+          imobilizado: imobilizado,
           error: error,
         });
       }
     }
 
+    console.log("Ponto A2");
     const _grupo = await gruposrv.getGrupo(
       grupo.id_empresa,
       grupo.id_filial,
@@ -573,6 +582,35 @@ router.post("/novoativo", async function (req, res) {
           centrocusto: centrocusto,
           error: error,
         });
+      }
+    }
+    console.log("Ponto A3");
+    if (!(Object.entries(nfe).length === 0)) {
+      if (imobilizado !== null && nfe !== null) {
+        nfe.id_empresa = id_empresa;
+        nfe.id_filial = id_filial;
+        nfe.id_imobilizado = imobilizado.codigo;
+        nfe.user_insert = id_usuario;
+        nfe.user_update = 0;
+        const _nfe = await nfeSrv.getNfeByImobilizado(
+          nfe.id_empresa,
+          nfe.id_filial,
+          nfe.id_imobilizado,
+          nfe.nfe,
+          nfe.serie,
+          nfe.item
+        );
+        if (_nfe.length == 0) {
+          try {
+            console.log("Incluindo NFE", nfe);
+            await nfeSrv.insertNfe(nfe);
+          } catch (error) {
+            return response.error(res, "Erro Ao Incluir NFE", {
+              nfe: nfe,
+              error: error,
+            });
+          }
+        }
       }
     }
 
