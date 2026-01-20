@@ -104,7 +104,7 @@ exports.getImobilizadosinventarios = function (params) {
     if (params.orderby == "")
       orderby =
         "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo_inv.id_imobilizado";
-    //Ativo-Antigo    
+    //Ativo-Antigo
     if (params.orderby == "001")
       orderby =
         "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo_inv.id_imobilizado";
@@ -128,19 +128,18 @@ exports.getImobilizadosinventarios = function (params) {
     if (params.orderby == "006")
       orderby =
         "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo.descricao";
-     //Observação
-     if (params.orderby == "007")
+    //Observação
+    if (params.orderby == "007")
       orderby =
         "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,coalesce(lanca.obs,'')";
     //Data
-     if (params.orderby == "008")
+    if (params.orderby == "008")
       orderby =
         "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,lanca.dtlanca";
-    //Apelido   
-     if (params.orderby == "009")
+    //Apelido
+    if (params.orderby == "009")
       orderby =
         "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo.apelido";
-    
 
     if (orderby != "") orderby = " order by " + orderby;
 
@@ -161,20 +160,25 @@ exports.getImobilizadosinventarios = function (params) {
       where += ` imo_inv.id_imobilizado = ${params.id_imobilizado} `;
     }
     if (params.id_cc.trim() !== "") {
-       const codigos = params.id_cc.split(';');
-       const queryString = `( imo.cod_cc IN ('${codigos.join("','")}') or imo_inv.new_cc IN ('${codigos.join("','")}') )`;
-       if (where != "") where += " and ";
-       if (codigos.length == 1) {
-          where += `( imo.cod_cc = '${params.id_cc}' OR imo_inv.new_cc = '${params.id_cc}' )`;
-       } else {
-           where += queryString;
-       }
+      const codigos = params.id_cc.split(";");
+      const queryString = `( imo.cod_cc IN ('${codigos.join(
+        "','"
+      )}') or imo_inv.new_cc IN ('${codigos.join("','")}') )`;
+      if (where != "") where += " and ";
+      if (codigos.length == 1) {
+        where += `( imo.cod_cc = '${params.id_cc}' OR imo_inv.new_cc = '${params.id_cc}' )`;
+      } else {
+        where += queryString;
+      }
     }
 
-    
-    if (params.dtinicial !== '') {
+    if (params.dtinicial !== "") {
       if (where != "") where += " and ";
-      where += `( lanca.dtlanca >=  ${shared.formatDateYYYYMMDD(params.dtinicial)} and  lanca.dtlanca <=  ${shared.formatDateYYYYMMDD(params.dtfinal)} ) `;
+      where += `( lanca.dtlanca >=  ${shared.formatDateYYYYMMDD(
+        params.dtinicial
+      )} and  lanca.dtlanca <=  ${shared.formatDateYYYYMMDD(
+        params.dtfinal
+      )} ) `;
     }
 
     if (params.id_grupo !== 0) {
@@ -184,9 +188,13 @@ exports.getImobilizadosinventarios = function (params) {
     if (params.descricao !== "") {
       if (where != "") where += " and ";
       if (params.sharp) {
-        where += `unaccent(imo.descricao) = '${shared.semAcento(params.descricao)})' `;
+        where += `unaccent(imo.descricao) = '${shared.semAcento(
+          params.descricao
+        )})' `;
       } else {
-        where += `unaccent(imo.descricao) like '%${shared.semAcento(params.descricao.trim())}%' `;
+        where += `unaccent(imo.descricao) like '%${shared.semAcento(
+          params.descricao.trim()
+        )}%' `;
       }
     }
     console.log("observacao", params.observacao);
@@ -194,20 +202,40 @@ exports.getImobilizadosinventarios = function (params) {
       if (params.observacao !== "") {
         if (where != "") where += " and ";
         if (params.sharp) {
-          where += `unaccent(lanca.obs)  = '${shared.semAcento(params.observacao)}' `;
+          where += `unaccent(lanca.obs)  = '${shared.semAcento(
+            params.observacao
+          )}' `;
         } else {
-          where += `unaccent(lanca.obs)  like '%${shared.semAcento(params.observacao.trim())}%' `;
+          where += `unaccent(lanca.obs)  like '%${shared.semAcento(
+            params.observacao.trim()
+          )}%' `;
         }
       }
     }
-     console.log("apelido", params.apelido);
-     if (params.apelido) {
+    console.log("apelido", params.apelido);
+    if (params.apelido) {
       if (params.apelido !== "") {
         if (where != "") where += " and ";
         if (params.sharp) {
-          where += `unaccent(imo.apelido) = '${shared.semAcento(params.apelido)}' `;
+          where += `unaccent(imo.apelido) = '${shared.semAcento(
+            params.apelido
+          )}' `;
         } else {
-          where += `unaccent(imo.apelido) like '%${shared.semAcento(params.apelido.trim())}%' `;
+          where += `unaccent(imo.apelido) like '%${shared.semAcento(
+            params.apelido.trim()
+          )}%' `;
+        }
+      }
+    }
+    if (params.nfe) {
+      if (params.nfe !== "") {
+        if (where != "") where += " and ";
+        if (params.sharp) {
+          where += `unaccent(imo.nfe) = '${shared.semAcento(params.nfe)}' `;
+        } else {
+          where += `unaccent(imo.nfe) like '%${shared.semAcento(
+            params.nfe.trim()
+          )}%' `;
         }
       }
     }
@@ -240,14 +268,13 @@ exports.getImobilizadosinventarios = function (params) {
       where += `lanca.id_usuario = ${params.id_usuario} `;
     }
 
-    
-    if (params.id_principal){
+    if (params.id_principal) {
       if (params.id_principal !== 0) {
         if (where != "") where += " and ";
         where += `imo.principal = ${params.id_principal} `;
       }
-   }
-    
+    }
+
     if (params.origem.trim() !== "") {
       if (where != "") where += " and ";
       if (params.sharp) {
@@ -257,7 +284,7 @@ exports.getImobilizadosinventarios = function (params) {
       }
     }
     //TEMPORARIO
-    //where += ` and ( (imo.cod_cc = '4-21' and  imo_inv.id_imobilizado <= 666)  OR (imo.cod_cc <>  '4-21'))  `; 
+    //where += ` and ( (imo.cod_cc = '4-21' and  imo_inv.id_imobilizado <= 666)  OR (imo.cod_cc <>  '4-21'))  `;
     if (where != "") where = " where " + where;
 
     if (params.pagina != 0) {
@@ -359,146 +386,162 @@ exports.getImobilizadosinventarios = function (params) {
 };
 
 exports.getImobilizadosinventariosFotos = function (params) {
-    console.log("Fotos Inventario Parametros",params);
-    where = "";
-    orderby = "";
-    paginacao = "";
+  console.log("Fotos Inventario Parametros", params);
+  where = "";
+  orderby = "";
+  paginacao = "";
 
-    if (params.orderby == "")
-      orderby =
-        "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo_inv.id_imobilizado";
-    if (params.orderby == "Filial")
-      orderby =
-        "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo_inv.id_imobilizado";
-    if (params.orderby == "Inventario")
-      orderby =
-        "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo_inv.id_imobilizado";
-    if (params.orderby == "Imobilizado")
-      orderby =
-        "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo_inv.id_imobilizado";
-    if (params.orderby == "Descrição")
-      orderby =
-        "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo.descricao";
-    if (params.orderby == "CC")
-      orderby =
-        "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo.id_cc,imo_inv.id_imobilizado";
+  if (params.orderby == "")
+    orderby =
+      "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo_inv.id_imobilizado";
+  if (params.orderby == "Filial")
+    orderby =
+      "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo_inv.id_imobilizado";
+  if (params.orderby == "Inventario")
+    orderby =
+      "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo_inv.id_imobilizado";
+  if (params.orderby == "Imobilizado")
+    orderby =
+      "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo_inv.id_imobilizado";
+  if (params.orderby == "Descrição")
+    orderby =
+      "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo.descricao";
+  if (params.orderby == "CC")
+    orderby =
+      "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario,imo.id_cc,imo_inv.id_imobilizado";
 
-    if (orderby != "") orderby = " order by " + orderby;
+  if (orderby != "") orderby = " order by " + orderby;
 
-    try {
-      if (params.id_empresa !== 0) {
-        if (where != "") where += " and ";
-        where += `imo_inv.id_empresa = ${params.id_empresa} `;
-      }
-      if (params.id_filial !== 0) {
-        if (where != "") where += " and ";
-        where += `imo_inv.id_filial = ${params.id_filial} `;
-      }
-      if (params.id_inventario !== 0) {
-        if (where != "") where += " and ";
-        where += `imo_inv.id_inventario = ${params.id_inventario} `;
-      }
-      if (params.id_imobilizado !== 0) {
-        if (where != "") where += " and ";
-        where += `imo_inv.id_imobilizado = ${params.id_imobilizado} `;
-      }
-      if (params.id_cc.trim() !== "") {
-        if (where != "") where += " and ";
-        where += `imo.cod_cc = '${params.id_cc}' `;
-      }
-
-      if (params.dtinicial !== '') {
-        if (where != "") where += " and ";
-        where += `( lanca.dtlanca >=  ${shared.formatDateYYYYMMDD(params.dtinicial)} and  lanca.dtlanca <=  ${shared.formatDateYYYYMMDD(params.dtfinal)} ) `;
-      }
-
-      if (params.id_grupo !== 0) {
-        if (where != "") where += " and ";
-        where += `imo.cod_grupo = ${params.id_grupo} `;
-      }
-      if (params.descricao !== "") {
-        if (where != "") where += " and ";
-        if (params.sharp) {
-          where += `unaccent(imo.descricao) = '${shared.semAcento(params.descricao)}' `;
-        } else {
-          where += `unaccent(imo.descricao) like '%${shared.semAcento(params.descricao.trim())}%' `;
-        }
-      }
-      if (params.observacao) {
-        if (params.observacao !== "") {
-          if (where != "") where += " and ";
-          if (params.sharp) {
-            where += `unaccent(lanca.obs)  = '${shared.semAcento(params.observacao)}' `;
-          } else {
-            where += `unaccent(lanca.obs)  like '%${shared(params.observacao.trim())}%' `;
-          }
-        }
-      }
-      if (params.apelido) {
-        if (params.apelido !== "") {
-          if (where != "") where += " and ";
-          if (params.sharp) {
-            where += `unaccent(imo.apelido) = '${shared.semAcento(params.apelido)}' `;
-          } else {
-            where += `unaccent(imo.apelido) like '%${shared.semAcento(params.apelido.trim())}%' `;
-          }
-        }
-     }
-
-      if (params.status !== -1) {
-        if (where != "") where += " and ";
-        if (params.status == 90) {
-          where += `imo_inv.status > 0 `;
-        } else {
-          where += `imo_inv.status = ${params.status} `;
-        }
-      }
-      if (params.new_cc.trim() !== "") {
-        if (where != "") where += " and ";
-        where += `imo_inv.new_cc = '${params.new_cc}' `;
-      }
-      if (params.new_codigo !== 0) {
-        if (where != "") where += " and ";
-        where += `imo_inv.new_codigo = ${params.new_codigo} `;
-      }
-      if (params.condicao !== 0) {
-        if (where != "") where += " and ";
-        where += `imo_inv.condicao = ${params.condicao} `;
-      }
-      if (params.book !== "") {
-        if (where != "") where += " and ";
-        where += `imo_inv.book = '${params.book}'`;
-      }
-      if (params.id_usuario !== 0) {
-        if (where != "") where += " and ";
-        where += `lanca.id_usuario = ${params.id_usuario} `;
-      }
-      if (params.origem.trim() !== "") {
-        if (where != "") where += " and ";
-        if (params.sharp) {
-          where += `imo.origem = '${params.origem}' `;
-        } else {
-          where += `imo.origem like '%${params.origem.trim()}%' `;
-        }
-      }
-      if (params.id_principal){
-          if (params.id_principal !== 0) {
-            if (where != "") where += " and ";
-            where += `imo.principal = ${params.id_principal} `;
-          }
-       }
-
-      if (where != "") where = " where " + where;
-
-      if (params.pagina != 0) {
-        paginacao = `limit ${params.tamPagina} offset ((${params.pagina} - 1) * ${params.tamPagina})`;
-      }
-    } catch(error){
-        console.log("Erro Na Montagem Do Where",error);
+  try {
+    if (params.id_empresa !== 0) {
+      if (where != "") where += " and ";
+      where += `imo_inv.id_empresa = ${params.id_empresa} `;
     }
-    
-    if (params.contador == "S") {
-      sqlStr = `SELECT COALESCE(COUNT(*),0) as total  from
+    if (params.id_filial !== 0) {
+      if (where != "") where += " and ";
+      where += `imo_inv.id_filial = ${params.id_filial} `;
+    }
+    if (params.id_inventario !== 0) {
+      if (where != "") where += " and ";
+      where += `imo_inv.id_inventario = ${params.id_inventario} `;
+    }
+    if (params.id_imobilizado !== 0) {
+      if (where != "") where += " and ";
+      where += `imo_inv.id_imobilizado = ${params.id_imobilizado} `;
+    }
+    if (params.id_cc.trim() !== "") {
+      if (where != "") where += " and ";
+      where += `imo.cod_cc = '${params.id_cc}' `;
+    }
+
+    if (params.dtinicial !== "") {
+      if (where != "") where += " and ";
+      where += `( lanca.dtlanca >=  ${shared.formatDateYYYYMMDD(
+        params.dtinicial
+      )} and  lanca.dtlanca <=  ${shared.formatDateYYYYMMDD(
+        params.dtfinal
+      )} ) `;
+    }
+
+    if (params.id_grupo !== 0) {
+      if (where != "") where += " and ";
+      where += `imo.cod_grupo = ${params.id_grupo} `;
+    }
+    if (params.descricao !== "") {
+      if (where != "") where += " and ";
+      if (params.sharp) {
+        where += `unaccent(imo.descricao) = '${shared.semAcento(
+          params.descricao
+        )}' `;
+      } else {
+        where += `unaccent(imo.descricao) like '%${shared.semAcento(
+          params.descricao.trim()
+        )}%' `;
+      }
+    }
+    if (params.observacao) {
+      if (params.observacao !== "") {
+        if (where != "") where += " and ";
+        if (params.sharp) {
+          where += `unaccent(lanca.obs)  = '${shared.semAcento(
+            params.observacao
+          )}' `;
+        } else {
+          where += `unaccent(lanca.obs)  like '%${shared(
+            params.observacao.trim()
+          )}%' `;
+        }
+      }
+    }
+    if (params.apelido) {
+      if (params.apelido !== "") {
+        if (where != "") where += " and ";
+        if (params.sharp) {
+          where += `unaccent(imo.apelido) = '${shared.semAcento(
+            params.apelido
+          )}' `;
+        } else {
+          where += `unaccent(imo.apelido) like '%${shared.semAcento(
+            params.apelido.trim()
+          )}%' `;
+        }
+      }
+    }
+
+    if (params.status !== -1) {
+      if (where != "") where += " and ";
+      if (params.status == 90) {
+        where += `imo_inv.status > 0 `;
+      } else {
+        where += `imo_inv.status = ${params.status} `;
+      }
+    }
+    if (params.new_cc.trim() !== "") {
+      if (where != "") where += " and ";
+      where += `imo_inv.new_cc = '${params.new_cc}' `;
+    }
+    if (params.new_codigo !== 0) {
+      if (where != "") where += " and ";
+      where += `imo_inv.new_codigo = ${params.new_codigo} `;
+    }
+    if (params.condicao !== 0) {
+      if (where != "") where += " and ";
+      where += `imo_inv.condicao = ${params.condicao} `;
+    }
+    if (params.book !== "") {
+      if (where != "") where += " and ";
+      where += `imo_inv.book = '${params.book}'`;
+    }
+    if (params.id_usuario !== 0) {
+      if (where != "") where += " and ";
+      where += `lanca.id_usuario = ${params.id_usuario} `;
+    }
+    if (params.origem.trim() !== "") {
+      if (where != "") where += " and ";
+      if (params.sharp) {
+        where += `imo.origem = '${params.origem}' `;
+      } else {
+        where += `imo.origem like '%${params.origem.trim()}%' `;
+      }
+    }
+    if (params.id_principal) {
+      if (params.id_principal !== 0) {
+        if (where != "") where += " and ";
+        where += `imo.principal = ${params.id_principal} `;
+      }
+    }
+
+    if (where != "") where = " where " + where;
+
+    if (params.pagina != 0) {
+      paginacao = `limit ${params.tamPagina} offset ((${params.pagina} - 1) * ${params.tamPagina})`;
+    }
+  } catch (error) {
+    console.log("Erro Na Montagem Do Where", error);
+  }
+
+  if (params.contador == "S") {
+    sqlStr = `SELECT COALESCE(COUNT(*),0) as total  from
                 (select
                       imo_inv.id_empresa    as  id_empresa
                     ,  imo_inv.id_filial     as  id_filial
@@ -519,10 +562,10 @@ exports.getImobilizadosinventariosFotos = function (params) {
                     ,  imo_inv.id_inventario
                     ,  imo_inv.id_imobilizado ) as tabela
 				 `;
-      console.log("Fotos Inventario Contador", sqlStr);
-      return db.one(sqlStr);
-    } else {
-      strSql = `select   distinct
+    console.log("Fotos Inventario Contador", sqlStr);
+    return db.one(sqlStr);
+  } else {
+    strSql = `select   distinct
 	     imo_inv.id_empresa as  id_empresa
 	  ,  imo_inv.id_filial as  id_filial
 	  ,  imo_inv.id_inventario as  id_inventario
@@ -563,10 +606,10 @@ exports.getImobilizadosinventariosFotos = function (params) {
     left join usuarios      usu on usu.id_empresa = imo_inv.id_empresa and usu.id = lanca.id_usuario       
     left join centroscustos new_cc on new_cc.id_empresa = imo_inv.id_empresa and new_cc.id_filial = imo_inv.id_filial and new_cc.codigo = imo_inv.new_cc
 			${where} ${orderby} ${paginacao} `;
-      console.log("Fotos Inventario", strSql);
-      return db.manyOrNone(strSql);
-    }
-  };
+    console.log("Fotos Inventario", strSql);
+    return db.manyOrNone(strSql);
+  }
+};
 
 exports.getImobilizadosinventariosResumo = function (params) {
   if (params) {
@@ -615,9 +658,13 @@ exports.getImobilizadosinventariosResumo = function (params) {
       if (where != "") where += " and ";
       where += `imo.cod_cc = '${params.id_cc}' `;
     }
-    if (params.dtinicial !== '') {
+    if (params.dtinicial !== "") {
       if (where != "") where += " and ";
-      where += `( lanca.dtlanca >=  ${shared.formatDateYYYYMMDD(params.dtinicial)} and  lanca.dtlanca <=  ${shared.formatDateYYYYMMDD(params.dtfinal)} ) `;
+      where += `( lanca.dtlanca >=  ${shared.formatDateYYYYMMDD(
+        params.dtinicial
+      )} and  lanca.dtlanca <=  ${shared.formatDateYYYYMMDD(
+        params.dtfinal
+      )} ) `;
     }
 
     if (params.id_grupo !== 0) {
@@ -627,9 +674,13 @@ exports.getImobilizadosinventariosResumo = function (params) {
     if (params.descricao !== "") {
       if (where != "") where += " and ";
       if (params.sharp) {
-        where += `unaccent(imo.descricao) = '${shared.semAcento(params.descricao)}' `;
+        where += `unaccent(imo.descricao) = '${shared.semAcento(
+          params.descricao
+        )}' `;
       } else {
-        where += `unaccent(imo.descricao) like '%${shared.semAcento(params.descricao.trim())}%' `;
+        where += `unaccent(imo.descricao) like '%${shared.semAcento(
+          params.descricao.trim()
+        )}%' `;
       }
     }
     if (params.status !== -1) {
@@ -865,9 +916,13 @@ exports.getControleEtiquetas = function (params) {
     if (params.descricao !== "") {
       if (where != "") where += " and ";
       if (params.sharp) {
-        where += `unaccent(imo.descricao) = '${shared.semAcento(params.descricao)}' `;
+        where += `unaccent(imo.descricao) = '${shared.semAcento(
+          params.descricao
+        )}' `;
       } else {
-        where += `unaccent(imo.descricao) like '%${shared.semAcento(params.descricao.trim())}%' `;
+        where += `unaccent(imo.descricao) like '%${shared.semAcento(
+          params.descricao.trim()
+        )}%' `;
       }
     }
     if (params.status !== -1) {
