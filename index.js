@@ -19,20 +19,20 @@ global.appRoot = path.resolve(__dirname);
 app.use(express.json());
 
 const allowCors = (req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*"); // colocar os dominios permitidos | ex: 127.0.0.1:3000
+  res.header("Access-Control-Allow-Origin", "*"); // colocar os dominios permitidos | ex: 127.0.0.1:3000
 
-    res.header(
-        "Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Credentials, X-Access-Token, X-Key"
-    );
-    res.header(
-        "Access-Control-Allow-Methods",
-        "GET, PUT, POST, DELETE, OPTIONS, PATCH"
-    );
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Credentials, X-Access-Token, X-Key",
+  );
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET, PUT, POST, DELETE, OPTIONS, PATCH",
+  );
 
-    res.header("Access-Control-Allow-Credentials", "false");
+  res.header("Access-Control-Allow-Credentials", "false");
 
-    next();
+  next();
 };
 
 app.use(allowCors);
@@ -79,9 +79,10 @@ app.use("/", require("./route/realocadoRoute.js"));
 //app.use("/", require("./route/websockectRoute.js"));
 app.use("/api/eventos", require("./route/apiEventosRoute.js"));
 app.use("/api/intercompany", require("./route/intercompanyRoute.js"));
+app.use("/api/dellapi", require("./route/dellApiRoute.js"));
 
 app.listen(PORT, () => {
-    console.log(`Servidor No Ar. Porta Legal ${PORT}`);
+  console.log(`Servidor No Ar. Porta Legal ${PORT}`);
 });
 
 //atualizando a key
@@ -89,92 +90,92 @@ app.listen(PORT, () => {
 refresh();
 
 async function refresh() {
-    let arquivo = "";
-    //google drive falconi
-    //Buscando key google
+  let arquivo = "";
+  //google drive falconi
+  //Buscando key google
 
-    const param = await parametroSrv.getParametro(1, "key", "googledrive", 999);
+  const param = await parametroSrv.getParametro(1, "key", "googledrive", 999);
 
-    if (param == null) {
-        console.log("Não Foi Encontrada Chave GOOGLE DRIVE");
-        return;
-    }
-    if (PORT == 3000) {
-        arquivo = "C:/Repositorios/Simionato/ativo web/keys/googlekey.json";
-    } else {
-        arquivo = "keys/googlekey.json";
-    }
+  if (param == null) {
+    console.log("Não Foi Encontrada Chave GOOGLE DRIVE");
+    return;
+  }
+  if (PORT == 3000) {
+    arquivo = "C:/Repositorios/Simionato/ativo web/keys/googlekey.json";
+  } else {
+    arquivo = "keys/googlekey.json";
+  }
 
-    try {
-        var writeStream = fs.createWriteStream(arquivo);
-        writeStream.write(param.parametro);
-        writeStream.end();
-        console.log("Chave Atualizada Com Sucesso!");
-    } catch (error) {
-        console.log(`Erro Na Gravação googlekey, No Servidor ${error}`);
-    }
+  try {
+    var writeStream = fs.createWriteStream(arquivo);
+    writeStream.write(param.parametro);
+    writeStream.end();
+    console.log("Chave Atualizada Com Sucesso!");
+  } catch (error) {
+    console.log(`Erro Na Gravação googlekey, No Servidor ${error}`);
+  }
 
-    //google drive simionato
-    //Buscando key google
-    const param2 = await parametroSrv.getParametro(
-        1,
-        "key-000001-000014-000010",
-        "googledrive",
-        999
+  //google drive simionato
+  //Buscando key google
+  const param2 = await parametroSrv.getParametro(
+    1,
+    "key-000001-000014-000010",
+    "googledrive",
+    999,
+  );
+  if (param2 == null) {
+    console.log("Não Foi Encontrada Chave GOOGLE DRIVE-SIMONATO");
+    return;
+  }
+  if (PORT == 3000) {
+    arquivo =
+      "C:/Repositorios/Simionato/ativo web/keys/google-simionato-000001-000014-000010-key.json";
+  } else {
+    arquivo = "keys/google-simionato-000001-000014-000010-key.json";
+  }
+
+  try {
+    var writeStream = fs.createWriteStream(arquivo);
+    writeStream.write(param2.parametro);
+    writeStream.end();
+    console.log("Chave Atualizada Com Sucesso Simionato!");
+  } catch (error) {
+    console.log(`Erro Na Gravação googlekey SIMIONATO, No Servidor ${error}`);
+  }
+
+  //google drive intelli-simionato
+  //Buscando key google
+  const param3 = await parametroSrv.getParametro(
+    1,
+    "key-intelli",
+    "googledrive",
+    999,
+  );
+  if (param3 == null) {
+    console.log("Não Foi Encontrada Chave GOOGLE DRIVE-INTELLI-SIMONATO");
+    return;
+  }
+  if (PORT == 3000) {
+    arquivo = "C:/Repositorios/Simionato/ativo web/keys/intelli-simionato.json";
+  } else {
+    arquivo = "keys/intelli-simionato.json";
+  }
+
+  try {
+    var writeStream = fs.createWriteStream(arquivo);
+    writeStream.write(param3.parametro);
+    writeStream.end();
+    console.log("Chave Atualizada Com Sucesso iNTELLI-Simionato!");
+  } catch (error) {
+    console.log(
+      `Erro Na Gravação googlekey INTELLI-SIMIONATO, No Servidor ${error}`,
     );
-    if (param2 == null) {
-        console.log("Não Foi Encontrada Chave GOOGLE DRIVE-SIMONATO");
-        return;
-    }
-    if (PORT == 3000) {
-        arquivo =
-            "C:/Repositorios/Simionato/ativo web/keys/google-simionato-000001-000014-000010-key.json";
-    } else {
-        arquivo = "keys/google-simionato-000001-000014-000010-key.json";
-    }
+  }
+  // Inicializa apenas o WebSocket
+  //const wsServer = new WebSocketServer(WS_PORT);
 
-    try {
-        var writeStream = fs.createWriteStream(arquivo);
-        writeStream.write(param2.parametro);
-        writeStream.end();
-        console.log("Chave Atualizada Com Sucesso Simionato!");
-    } catch (error) {
-        console.log(`Erro Na Gravação googlekey SIMIONATO, No Servidor ${error}`);
-    }
+  //console.log("Servidor WebSocket iniciado e pronto para receber conexões.");
 
-    //google drive intelli-simionato
-    //Buscando key google
-    const param3 = await parametroSrv.getParametro(
-        1,
-        "key-intelli",
-        "googledrive",
-        999
-    );
-    if (param3 == null) {
-        console.log("Não Foi Encontrada Chave GOOGLE DRIVE-INTELLI-SIMONATO");
-        return;
-    }
-    if (PORT == 3000) {
-        arquivo = "C:/Repositorios/Simionato/ativo web/keys/intelli-simionato.json";
-    } else {
-        arquivo = "keys/intelli-simionato.json";
-    }
-
-    try {
-        var writeStream = fs.createWriteStream(arquivo);
-        writeStream.write(param3.parametro);
-        writeStream.end();
-        console.log("Chave Atualizada Com Sucesso iNTELLI-Simionato!");
-    } catch (error) {
-        console.log(
-            `Erro Na Gravação googlekey INTELLI-SIMIONATO, No Servidor ${error}`
-        );
-    }
-    // Inicializa apenas o WebSocket
-    //const wsServer = new WebSocketServer(WS_PORT);
-
-    //console.log("Servidor WebSocket iniciado e pronto para receber conexões.");
-
-    //Função usada apenas uma vez para ajustar fotos 421
-    //await  fotoController.funcaoAjusta421();
+  //Função usada apenas uma vez para ajustar fotos 421
+  //await  fotoController.funcaoAjusta421();
 }
