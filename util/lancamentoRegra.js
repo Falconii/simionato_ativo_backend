@@ -1,5 +1,5 @@
 const lancamentoSrv = require("../service/lancamentoService");
-const imobilizadoinventarioSrv = require("../service/imobilizadoinventarioService");
+const deparaSrv = require("../service/custom/deparaService");
 const erroDB = require("../util/userfunctiondb");
 const shared = require("../util/shared");
 /* REGRA DE NEGOCIO lancamentos */
@@ -10,7 +10,7 @@ exports.lancamento_Inclusao = async function (lancamento) {
       lancamento.id_empresa,
       lancamento.id_filial,
       lancamento.id_inventario,
-      lancamento.id_imobilizado
+      lancamento.id_imobilizado,
     );
     if (obj != null) {
       throw new erroDB.UserException("Regra de negócio", [
@@ -19,26 +19,6 @@ exports.lancamento_Inclusao = async function (lancamento) {
           message: `"INCLUSÃO" Registro Já Existe Na Base De Dados.!`,
         },
       ]);
-    }
-
-    if (lancamento.new_codigo > 0) {
-      const obj_new =
-        await imobilizadoinventarioSrv.getImobilizadoinventarioExisteNew(
-          lancamento.id_empresa,
-          lancamento.id_filial,
-          lancamento.id_inventario,
-          lancamento.id_imobilizado,
-          lancamento.new_codigo,
-          true
-        );
-      if (obj_new.length > 0) {
-        throw new erroDB.UserException("Regra de negócio", [
-          {
-            tabela: "IMOBILIZADOINVENTARIO",
-            message: `"INCLUSÃO" NOVO CÓDIGO Já Existe Na Base De Dados.!`,
-          },
-        ]);
-      }
     }
   } catch (err) {
     throw err;
@@ -53,7 +33,7 @@ exports.lancamento_Alteracao = async function (lancamento) {
       lancamento.id_empresa,
       lancamento.id_filial,
       lancamento.id_inventario,
-      lancamento.id_imobilizado
+      lancamento.id_imobilizado,
     );
     if (obj == null) {
       throw new erroDB.UserException("Regra de negócio", [
@@ -63,24 +43,20 @@ exports.lancamento_Alteracao = async function (lancamento) {
         },
       ]);
     }
-    if (lancamento.new_codigo > 0) {
-      const obj_new =
-        await imobilizadoinventarioSrv.getImobilizadoinventarioExisteNew(
-          lancamento.id_empresa,
-          lancamento.id_filial,
-          lancamento.id_inventario,
-          lancamento.id_imobilizado,
-          lancamento.new_codigo,
-          false
-        );
-      if (obj_new.length > 0) {
-        throw new erroDB.UserException("Regra de negócio", [
-          {
-            tabela: "IMOBILIZADOINVENTARIO",
-            message: `"ALTERAÇÃO" NOVO CÓDIGO Já Existe Na Base De Dados.!`,
-          },
-        ]);
-      }
+    const deparas = await deparaSrv.existeDepara(
+      lancamento.id_empresa,
+      lancamento.id_filial,
+      lancamento.id_inventario,
+      lancamento.id_imobilizado,
+    );
+
+    if (deparas.length > 0) {
+      throw new erroDB.UserException("Regra de negócio", [
+        {
+          tabela: "LANCAMENTO",
+          message: `"ALTERAÇÃO" Ativo Pertence A LIsta "DE PARA"!`,
+        },
+      ]);
     }
   } catch (err) {
     throw err;
@@ -93,20 +69,35 @@ exports.lancamento_Exclusao = async function (
   id_empresa,
   id_filial,
   id_inventario,
-  id_imobilizado
+  id_imobilizado,
 ) {
   try {
     const obj = await lancamentoSrv.getLancamento(
       id_empresa,
       id_filial,
       id_inventario,
-      id_imobilizado
+      id_imobilizado,
     );
     if (obj == null) {
       throw new erroDB.UserException("Regra de negócio", [
         {
           tabela: "LANCAMENTO",
           message: `"EXCLUSÃO" Registro Não Existe Na Base De Dados.!`,
+        },
+      ]);
+    }
+    const deparas = await deparaSrv.existeDepara(
+      id_empresa,
+      id_filial,
+      id_inventario,
+      id_imobilizado,
+    );
+
+    if (deparas.length > 0) {
+      throw new erroDB.UserException("Regra de negócio", [
+        {
+          tabela: "LANCAMENTO",
+          message: `"EXCLUSÃO" Ativo Pertence A LIsta "DE PARA"!`,
         },
       ]);
     }

@@ -75,11 +75,13 @@ app.use("/", require("./route/padrao_cabRoute.js"));
 app.use("/", require("./route/padrao_caracteristicaRoute.js"));
 app.use("/", require("./route/padrao_sugestaoRoute.js"));
 app.use("/", require("./route/deparaRoute.js"));
+app.use("/", require("./route/custom/deparaRoute.js"));
 app.use("/", require("./route/realocadoRoute.js"));
+app.use("/", require("./route/custom/fotoRoute.js"));
 //app.use("/", require("./route/websockectRoute.js"));
 app.use("/api/eventos", require("./route/apiEventosRoute.js"));
 app.use("/api/intercompany", require("./route/intercompanyRoute.js"));
-app.use("/api/dellapi", require("./route/dellApiRoute.js"));
+//app.use("/api/dellapi", require("./route/dellApiRoute.js"));
 
 app.listen(PORT, () => {
   console.log(`Servidor No Ar. Porta Legal ${PORT}`);

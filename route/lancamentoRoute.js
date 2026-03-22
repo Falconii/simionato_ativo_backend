@@ -13,7 +13,7 @@ router.get(
         req.params.id_empresa,
         req.params.id_filial,
         req.params.id_inventario,
-        req.params.id_imobilizado
+        req.params.id_imobilizado,
       );
       if (lsLista == null) {
         res.status(409).json({ message: "Lançamento Não Encontrada." });
@@ -31,7 +31,7 @@ router.get(
         });
       }
     }
-  }
+  },
 );
 /* ROTA GETALL lancamento */
 router.get("/api/lancamentos", async function (req, res) {
@@ -185,7 +185,7 @@ router.delete(
         req.params.id_empresa,
         req.params.id_filial,
         req.params.id_inventario,
-        req.params.id_imobilizado
+        req.params.id_imobilizado,
       );
       res.status(200).json({ message: "Lancamento Excluído Com Sucesso!" });
     } catch (err) {
@@ -199,24 +199,24 @@ router.delete(
         });
       }
     }
-  }
+  },
 );
 /* ROTA CONSULTA POST lancamentos */
 router.post("/api/lancamentos", async function (req, res) {
   /*
-                  	{
-                  		"id_empresa":0, 
-                  		"id_filial":0, 
-                  		"id_lanca":0, 
-                  		"id_inventario":0, 
-                  		"id_imobilizado":0, 
-                  		"pagina":0, 
-                  		"tamPagina":50, 
-                  		"contador":"N", 
-                  		"orderby":"", 
-                  		"sharp":false 
-                  	}
-                  */
+                    	{
+                    		"id_empresa":0, 
+                    		"id_filial":0, 
+                    		"id_lanca":0, 
+                    		"id_inventario":0, 
+                    		"id_imobilizado":0, 
+                    		"pagina":0, 
+                    		"tamPagina":50, 
+                    		"contador":"N", 
+                    		"orderby":"", 
+                    		"sharp":false 
+                    	}
+                    */
   try {
     const params = req.body;
     const lsRegistros = await lancamentoSrv.getLancamentos(params);
@@ -241,12 +241,12 @@ router.post("/api/lancamentos", async function (req, res) {
 /* ROTA CONSULTA POST Resumo Lancamentos */
 router.post("/api/resumolancamentos", async function (req, res) {
   /*
-                  	{
-                  		public id_empresa: number = 0;
-                          public id_filial: number = 0;
-                          public id_inventario: number = 0;
-                  	}
-                  */
+                    	{
+                    		public id_empresa: number = 0;
+                            public id_filial: number = 0;
+                            public id_inventario: number = 0;
+                    	}
+                    */
   console.log(`Chegue na Rota resumolancamentos`);
   try {
     const params = req.body;

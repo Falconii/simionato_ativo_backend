@@ -30,7 +30,7 @@ exports.getFoto = function(
     id_imobilizado,
     id_pasta,
     id_file,
-    file_name
+    file_name,
 ) {
     strSql = ` select   
 			   foto.id_empresa as  id_empresa  
@@ -240,12 +240,12 @@ exports.updateFoto = function(foto) {
  		 ,   user_insert = ${foto.user_insert} 
  		 ,   user_update = ${foto.user_update} 
  		 where id_empresa = ${foto.id_empresa} and  id_local = ${
-    foto.id_local
-  } and  id_inventario = ${foto.id_inventario} and  id_imobilizado = ${
-    foto.id_imobilizado
-  } and  id_pasta = '${foto.id_pasta}' and  id_file = '${
-    foto.id_file
-  }' and  file_name = '${foto.file_name}'  returning * `;
+       foto.id_local
+     } and  id_inventario = ${foto.id_inventario} and  id_imobilizado = ${
+       foto.id_imobilizado
+     } and  id_pasta = '${foto.id_pasta}' and  id_file = '${
+       foto.id_file
+     }' and  file_name = '${foto.file_name}'  returning * `;
 
     return db.oneOrNone(strSql);
 };
@@ -254,7 +254,7 @@ exports.atualizaFoto = function(
     foto,
     old_id_pasta,
     old_id_file,
-    old_file_name
+    old_file_name,
 ) {
     strSql = `update   fotos set  
 		     file_name_original = '${foto.file_name_original}' 
@@ -269,15 +269,16 @@ exports.atualizaFoto = function(
  		 ,   user_insert = ${foto.user_insert} 
  		 ,   user_update = ${foto.user_update} 
  		 where id_empresa = ${foto.id_empresa} and  id_local = ${
-    foto.id_local
-  } and  id_inventario = ${foto.id_inventario} and  id_imobilizado = ${
-    foto.id_imobilizado
-  } and  id_pasta = '${old_id_pasta}' and  id_file = '${old_id_file}' and  file_name = '${old_file_name}'  returning * `;
+       foto.id_local
+     } and  id_inventario = ${foto.id_inventario} and  id_imobilizado = ${
+       foto.id_imobilizado
+     } and  id_pasta = '${old_id_pasta}' and  id_file = '${old_id_file}' and  file_name = '${old_file_name}'  returning * `;
     console.log("Atualizando a foto: ", strSql);
     return db.oneOrNone(strSql);
 };
 
 exports.updateFotoFileName = function(foto, new_name) {
+    console.log("Foto:", foto, "new_name", new_name);
     strSql = `update   fotos set  
 		     file_name = '${new_name}'  
  		 where id_empresa = ${foto.id_empresa} and  id_local = ${foto.id_local} and  id_inventario = ${foto.id_inventario} and  id_imobilizado = ${foto.id_imobilizado} and  id_pasta = '${foto.id_pasta}' and  id_file = '${foto.id_file}' and  file_name = '${foto.file_name}'  returning * `;
@@ -293,7 +294,7 @@ exports.deleteFoto = function(
     id_imobilizado,
     id_pasta,
     id_file,
-    file_name
+    file_name,
 ) {
     strSql = `delete from fotos 
 		 where id_empresa = ${id_empresa} and  id_local = ${id_local} and  id_inventario = ${id_inventario} and  id_imobilizado = ${id_imobilizado} and  id_pasta = '${id_pasta}' and  id_file = '${id_file}' and  file_name = '${file_name}'  `;

@@ -1,7 +1,7 @@
 {
     "app": {
         "backend": {
-            "src": "C://Repositorios Git//Simionato//controle de ativo//backend",
+            "src": "C://Repositorios//Simionato//ativo web//simionato_ativo_backend",
             "database": {
                 "type": "POSGRESQL",
                 "name": "db_ajustes",
@@ -11,9 +11,242 @@
                     "host": "localhost",
                     "port": 5432
                 },
-                "script_src": "C://Repositorios Git//Simionato//controle de ativo/backend//script"
+                "script_src": "C://Repositorios//Simionato//ativo web//simionato_ativo_backend//script"
             },
-            "tables": [
+            "tables": [{
+                    "name": "de_para",
+                    "fields": [{
+                            "name": "id_empresa",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id_local",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id_inventario",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "de",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "para",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "status",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "de_descricao",
+                            "type": "varchar",
+                            "length": 155,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id_usuario",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "dt_processamento",
+                            "type": "TIMESTAMPTZ",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "updated_at",
+                            "type": "TIMESTAMPTZ",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_insert",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_update",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }
+                    ],
+                    "inner_join": [],
+                    "left_join": [],
+                    "primaryKey": [{
+                            "key": "id_empresa"
+                        },
+                        {
+                            "key": "id_local"
+                        },
+                        {
+                            "key": "id_inventario"
+                        },
+                        {
+                            "key": "de"
+                        },
+                        {
+                            "key": "para"
+                        }
+                    ],
+                    "variables": {
+                        "getone": "depara",
+                        "getall": "deparas",
+                        "alias": "param"
+                    },
+                    "where": {
+                        "parametro_01": [{
+                                "name": "id_empresa",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "id_local",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "id_inventario",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "de",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "para",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "status",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "id_usuario",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "pagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "tamPagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 50
+                            },
+                            {
+                                "name": "contador",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": "N"
+                            },
+                            {
+                                "name": "orderby",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "sharp",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "boolean",
+                                "padrao": "false"
+                            }
+                        ]
+                    },
+                    "orderby": [{
+                            "label": "",
+                            "comparativo": " != '' ",
+                            "key": "depara.id_empresa,depara.id_local,depara.id_inventario,depara.de"
+                        },
+                        {
+                            "label": "000001",
+                            "comparativo": " != '' ",
+                            "key": "depara.id_empresa,depara.id_local,depara.id_inventario,depara.de"
+                        }
+                    ],
+                    "tablespace": "Producao"
+                },
                 {
                     "name": "parametros",
                     "fields": [{
@@ -96,27 +329,91 @@
                         }
                     ],
                     "variables": {
-                        "getone": "parametro",
-                        "getall": "parametros",
-                        "alias": "param"
+                        "getone": "depara",
+                        "getall": "deparas",
+                        "alias": "depara"
                     },
                     "where": {
-                        "parametro_01": [
-                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "modulo", "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
-                            { "name": "assinatura", "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
-                            { "name": "id_usuario", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
-                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
-                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
-                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
-                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        "parametro_01": [{
+                                "name": "id_empresa",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "modulo",
+                                "filtro": "S",
+                                "atividador": " !== ''",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "assinatura",
+                                "filtro": "S",
+                                "atividador": " !== ''",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "id_usuario",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "pagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "tamPagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 50
+                            },
+                            {
+                                "name": "contador",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": "N"
+                            },
+                            {
+                                "name": "orderby",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "sharp",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "boolean",
+                                "padrao": "false"
+                            }
                         ]
                     },
-                    "orderby": [
-                        { "label": "", "comparativo": " != '' ", "key": "param.id_empresa" },
-                        { "label": "Módulo", "comparativo": " != '' ", "key": "param.id_empresa,param.modulo" },
-                        { "label": "Usuário", "comparativo": " != 0 ", "key": "param.id_empresa,param.id_usuario" }
+                    "orderby": [{
+                            "label": "",
+                            "comparativo": " != '' ",
+                            "key": "param.id_empresa"
+                        },
+                        {
+                            "label": "Módulo",
+                            "comparativo": " != '' ",
+                            "key": "param.id_empresa,param.modulo"
+                        },
+                        {
+                            "label": "Usuário",
+                            "comparativo": " != 0 ",
+                            "key": "param.id_empresa,param.id_usuario"
+                        }
                     ],
                     "tablespace": "Producao"
                 },
@@ -139,7 +436,8 @@
                             "nulo": "N",
                             "padrao": "",
                             "validacao": []
-                        }, {
+                        },
+                        {
                             "name": "razao",
                             "type": "varchar",
                             "length": 40,
@@ -177,7 +475,8 @@
                                 { "key": "require", "value": "false" },
                                 { "key": "maxLength", "value": 14 }
                             ]
-                        }, {
+                        },
+                        {
                             "name": "cadastr",
                             "type": "Date",
                             "length": 0,
@@ -185,7 +484,8 @@
                             "nulo": "N",
                             "padrao": "",
                             "validacao": []
-                        }, {
+                        },
+                        {
                             "name": "ruaf",
                             "type": "varchar",
                             "length": 80,
@@ -193,7 +493,8 @@
                             "nulo": "N",
                             "padrao": "",
                             "validacao": []
-                        }, {
+                        },
+                        {
                             "name": "nrof",
                             "type": "varchar",
                             "length": 10,
@@ -201,7 +502,8 @@
                             "nulo": "N",
                             "padrao": "",
                             "validacao": []
-                        }, {
+                        },
+                        {
                             "name": "complementof",
                             "type": "varchar",
                             "length": 30,
@@ -313,22 +615,81 @@
                         "alias": "emp"
                     },
                     "where": {
-                        "parametro_01": [
-                            { "name": "id", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "razao", "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
-                            { "name": "cnpj_cpf", "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
-                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
-                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
-                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
-                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
-                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        "parametro_01": [{
+                                "name": "id",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "razao",
+                                "filtro": "S",
+                                "atividador": " !== ''",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "cnpj_cpf",
+                                "filtro": "S",
+                                "atividador": " !== ''",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "pagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "tamPagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 50
+                            },
+                            {
+                                "name": "contador",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": "N"
+                            },
+                            {
+                                "name": "orderby",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "sharp",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "boolean",
+                                "padrao": "false"
+                            }
                         ]
                     },
                     "orderby": [
                         { "label": "", "comparativo": " != '' ", "key": "emp.id" },
-                        { "label": "Código", "comparativo": " != 0 ", "key": "emp.id" },
-                        { "label": "Razão", "comparativo": " != '' ", "key": "emp.razao" },
-                        { "label": "CNPJ/CPF", "comparativo": " != '' ", "key": "emp.id,emp.cnpj_cpf" }
+                        {
+                            "label": "Código",
+                            "comparativo": " != 0 ",
+                            "key": "emp.id"
+                        },
+                        {
+                            "label": "Razão",
+                            "comparativo": " != '' ",
+                            "key": "emp.razao"
+                        },
+                        {
+                            "label": "CNPJ/CPF",
+                            "comparativo": " != '' ",
+                            "key": "emp.id,emp.cnpj_cpf"
+                        }
                     ],
                     "tablespace": "Producao"
                 },
@@ -360,7 +721,8 @@
                             "nulo": "N",
                             "padrao": "",
                             "validacao": []
-                        }, {
+                        },
+                        {
                             "name": "inscri",
                             "type": "varchar",
                             "length": 14,
@@ -368,7 +730,8 @@
                             "nulo": "N",
                             "padrao": "",
                             "validacao": []
-                        }, {
+                        },
+                        {
                             "name": "razao",
                             "type": "varchar",
                             "length": 65,
@@ -385,7 +748,8 @@
                             "nulo": "N",
                             "padrao": "",
                             "validacao": []
-                        }, {
+                        },
+                        {
                             "name": "cadastr",
                             "type": "Date",
                             "length": 0,
@@ -393,7 +757,8 @@
                             "nulo": "N",
                             "padrao": "",
                             "validacao": []
-                        }, {
+                        },
+                        {
                             "name": "ruaf",
                             "type": "varchar",
                             "length": 80,
@@ -401,7 +766,8 @@
                             "nulo": "N",
                             "padrao": "",
                             "validacao": []
-                        }, {
+                        },
+                        {
                             "name": "nrof",
                             "type": "varchar",
                             "length": 10,
@@ -409,7 +775,8 @@
                             "nulo": "N",
                             "padrao": "",
                             "validacao": []
-                        }, {
+                        },
+                        {
                             "name": "complementof",
                             "type": "varchar",
                             "length": 30,
@@ -525,23 +892,91 @@
                         "alias": "local"
                     },
                     "where": {
-                        "parametro_01": [
-                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "id", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "razao", "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
-                            { "name": "cnpj_cpf", "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
-                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
-                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
-                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
-                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
-                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        "parametro_01": [{
+                                "name": "id_empresa",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "id",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "razao",
+                                "filtro": "S",
+                                "atividador": " !== ''",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "cnpj_cpf",
+                                "filtro": "S",
+                                "atividador": " !== ''",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "pagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "tamPagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 50
+                            },
+                            {
+                                "name": "contador",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": "N"
+                            },
+                            {
+                                "name": "orderby",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "sharp",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "boolean",
+                                "padrao": "false"
+                            }
                         ]
                     },
-                    "orderby": [
-                        { "label": "", "comparativo": " != '' ", "key": "local.id_empresa,local.id" },
-                        { "label": "Código", "comparativo": " != 0 ", "key": "local.id_empresa,local.id" },
-                        { "label": "Razão", "comparativo": " != '' ", "key": "local.id_empresa,local.razao" },
-                        { "label": "CNPJ/CPF", "comparativo": " != '' ", "key": "local.id_empresa,local.id,local.cnpj_cpf" }
+                    "orderby": [{
+                            "label": "",
+                            "comparativo": " != '' ",
+                            "key": "local.id_empresa,local.id"
+                        },
+                        {
+                            "label": "Código",
+                            "comparativo": " != 0 ",
+                            "key": "local.id_empresa,local.id"
+                        },
+                        {
+                            "label": "Razão",
+                            "comparativo": " != '' ",
+                            "key": "local.id_empresa,local.razao"
+                        },
+                        {
+                            "label": "CNPJ/CPF",
+                            "comparativo": " != '' ",
+                            "key": "local.id_empresa,local.id,local.cnpj_cpf"
+                        }
                     ],
                     "tablespace": "Producao"
                 },
@@ -591,7 +1026,8 @@
                             "nulo": "N",
                             "padrao": "",
                             "validacao": []
-                        }, {
+                        },
+                        {
                             "name": "rua",
                             "type": "varchar",
                             "length": 80,
@@ -599,7 +1035,8 @@
                             "nulo": "N",
                             "padrao": "",
                             "validacao": []
-                        }, {
+                        },
+                        {
                             "name": "nro",
                             "type": "varchar",
                             "length": 10,
@@ -607,7 +1044,8 @@
                             "nulo": "N",
                             "padrao": "",
                             "validacao": []
-                        }, {
+                        },
+                        {
                             "name": "complemento",
                             "type": "varchar",
                             "length": 30,
@@ -758,25 +1196,103 @@
                         "alias": "usu"
                     },
                     "where": {
-                        "parametro_01": [
-                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "id", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "razao", "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
-                            { "name": "cnpj_cpf", "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
-                            { "name": "grupo", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
-                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
-                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
-                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
-                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        "parametro_01": [{
+                                "name": "id_empresa",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "id",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "razao",
+                                "filtro": "S",
+                                "atividador": " !== ''",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "cnpj_cpf",
+                                "filtro": "S",
+                                "atividador": " !== ''",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "grupo",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "pagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "tamPagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 50
+                            },
+                            {
+                                "name": "contador",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": "N"
+                            },
+                            {
+                                "name": "orderby",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "sharp",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "boolean",
+                                "padrao": "false"
+                            }
                         ]
                     },
-                    "orderby": [
-                        { "label": "", "comparativo": " != '' ", "key": "usu.id_empresa,usu.id" },
-                        { "label": "Código", "comparativo": " != 0 ", "key": "usu.id_empresa,usu.id" },
-                        { "label": "Razão", "comparativo": " != '' ", "key": "usu.id_empresa,usu.razao" },
-                        { "label": "Grupo", "comparativo": " != 0 ", "key": "usu.id_empresa,usu.grupo,usu.razao" },
-                        { "label": "CNPJ/CPF", "comparativo": " != '' ", "key": "usu.id_empresa,usu.id,usu.cnpj_cpf" }
+                    "orderby": [{
+                            "label": "",
+                            "comparativo": " != '' ",
+                            "key": "usu.id_empresa,usu.id"
+                        },
+                        {
+                            "label": "Código",
+                            "comparativo": " != 0 ",
+                            "key": "usu.id_empresa,usu.id"
+                        },
+                        {
+                            "label": "Razão",
+                            "comparativo": " != '' ",
+                            "key": "usu.id_empresa,usu.razao"
+                        },
+                        {
+                            "label": "Grupo",
+                            "comparativo": " != 0 ",
+                            "key": "usu.id_empresa,usu.grupo,usu.razao"
+                        },
+                        {
+                            "label": "CNPJ/CPF",
+                            "comparativo": " != '' ",
+                            "key": "usu.id_empresa,usu.id,usu.cnpj_cpf"
+                        }
                     ],
                     "tablespace": "Producao"
                 },
@@ -843,22 +1359,84 @@
                         "alias": "grupo"
                     },
                     "where": {
-                        "parametro_01": [
-                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "codigo", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "descricao", "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
-                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
-                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
-                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
-                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
-                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        "parametro_01": [{
+                                "name": "id_empresa",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "codigo",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "descricao",
+                                "filtro": "S",
+                                "atividador": " !== ''",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "pagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "tamPagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 50
+                            },
+                            {
+                                "name": "contador",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": "N"
+                            },
+                            {
+                                "name": "orderby",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "sharp",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "boolean",
+                                "padrao": "false"
+                            }
                         ]
                     },
-                    "orderby": [
-                        { "label": "", "comparativo": " != '' ", "key": "grupo.id_empresa,grupo.id_filial,grupo.codigo" },
-                        { "label": "Filial", "comparativo": " != 0 ", "key": "grupo.id_empresa,grupo.id_filial" },
-                        { "label": "Codigo", "comparativo": " != 0 ", "key": "grupo.id_empresa,grupo.id_filial,grupo.codigo" },
-                        { "label": "Descrição", "comparativo": " != '' ", "key": "grupo.id_empresa,grupo.id_filial,grupo.descricao" }
+                    "orderby": [{
+                            "label": "",
+                            "comparativo": " != '' ",
+                            "key": "grupo.id_empresa,grupo.id_filial,grupo.codigo"
+                        },
+                        {
+                            "label": "Filial",
+                            "comparativo": " != 0 ",
+                            "key": "grupo.id_empresa,grupo.id_filial"
+                        },
+                        {
+                            "label": "Codigo",
+                            "comparativo": " != 0 ",
+                            "key": "grupo.id_empresa,grupo.id_filial,grupo.codigo"
+                        },
+                        {
+                            "label": "Descrição",
+                            "comparativo": " != '' ",
+                            "key": "grupo.id_empresa,grupo.id_filial,grupo.descricao"
+                        }
                     ],
                     "tablespace": "Producao"
                 },
@@ -872,7 +1450,8 @@
                             "nulo": "N",
                             "padrao": "",
                             "validacao": []
-                        }, {
+                        },
+                        {
                             "name": "id_filial",
                             "type": "int4",
                             "length": 0,
@@ -898,7 +1477,8 @@
                             "nulo": "N",
                             "padrao": "",
                             "validacao": []
-                        }, {
+                        },
+                        {
                             "name": "inscri",
                             "type": "varchar",
                             "length": 14,
@@ -906,7 +1486,8 @@
                             "nulo": "N",
                             "padrao": "",
                             "validacao": []
-                        }, {
+                        },
+                        {
                             "name": "razao",
                             "type": "varchar",
                             "length": 65,
@@ -923,7 +1504,8 @@
                             "nulo": "N",
                             "padrao": "",
                             "validacao": []
-                        }, {
+                        },
+                        {
                             "name": "cadastr",
                             "type": "Date",
                             "length": 0,
@@ -931,7 +1513,8 @@
                             "nulo": "N",
                             "padrao": "",
                             "validacao": []
-                        }, {
+                        },
+                        {
                             "name": "rua",
                             "type": "varchar",
                             "length": 80,
@@ -939,7 +1522,8 @@
                             "nulo": "N",
                             "padrao": "",
                             "validacao": []
-                        }, {
+                        },
+                        {
                             "name": "nro",
                             "type": "varchar",
                             "length": 10,
@@ -947,7 +1531,8 @@
                             "nulo": "N",
                             "padrao": "",
                             "validacao": []
-                        }, {
+                        },
+                        {
                             "name": "complemento",
                             "type": "varchar",
                             "length": 30,
@@ -1067,23 +1652,91 @@
                         "alias": "forne"
                     },
                     "where": {
-                        "parametro_01": [
-                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "id", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "razao", "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
-                            { "name": "cnpj_cpf", "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
-                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
-                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
-                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
-                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
-                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        "parametro_01": [{
+                                "name": "id_empresa",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "id",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "razao",
+                                "filtro": "S",
+                                "atividador": " !== ''",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "cnpj_cpf",
+                                "filtro": "S",
+                                "atividador": " !== ''",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "pagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "tamPagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 50
+                            },
+                            {
+                                "name": "contador",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": "N"
+                            },
+                            {
+                                "name": "orderby",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "sharp",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "boolean",
+                                "padrao": "false"
+                            }
                         ]
                     },
-                    "orderby": [
-                        { "label": "", "comparativo": " != '' ", "key": "forne.id_empresa,forne.id" },
-                        { "label": "Código", "comparativo": " != 0 ", "key": "forne.id_empresa,forne.id" },
-                        { "label": "Razão", "comparativo": " != '' ", "key": "forne.id_empresa,forne.razao" },
-                        { "label": "CNPJ/CPF", "comparativo": " != '' ", "key": "forne.id_empresa,forne.id,forne.cnpj_cpf" }
+                    "orderby": [{
+                            "label": "",
+                            "comparativo": " != '' ",
+                            "key": "forne.id_empresa,forne.id"
+                        },
+                        {
+                            "label": "Código",
+                            "comparativo": " != 0 ",
+                            "key": "forne.id_empresa,forne.id"
+                        },
+                        {
+                            "label": "Razão",
+                            "comparativo": " != '' ",
+                            "key": "forne.id_empresa,forne.razao"
+                        },
+                        {
+                            "label": "CNPJ/CPF",
+                            "comparativo": " != '' ",
+                            "key": "forne.id_empresa,forne.id,forne.cnpj_cpf"
+                        }
                     ],
                     "tablespace": "Producao"
                 },
@@ -1162,23 +1815,91 @@
                         "alias": "princ"
                     },
                     "where": {
-                        "parametro_01": [
-                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "id_filial", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "codigo", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "descricao", "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
-                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
-                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
-                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
-                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
-                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        "parametro_01": [{
+                                "name": "id_empresa",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "id_filial",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "codigo",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "descricao",
+                                "filtro": "S",
+                                "atividador": " !== ''",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "pagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "tamPagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 50
+                            },
+                            {
+                                "name": "contador",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": "N"
+                            },
+                            {
+                                "name": "orderby",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "sharp",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "boolean",
+                                "padrao": "false"
+                            }
                         ]
                     },
-                    "orderby": [
-                        { "label": "", "comparativo": " != '' ", "key": "princ.id_empresa,princ.id_filial,princ.codigo" },
-                        { "label": "Filial", "comparativo": " != 0 ", "key": "princ.id_empresa,princ.id_filial" },
-                        { "label": "Codigo", "comparativo": " != 0 ", "key": "princ.id_empresa,princ.id_filial,princ.codigo" },
-                        { "label": "Descrição", "comparativo": " != '' ", "key": "princ.id_empresa,princ.id_filial,princ.descricao" }
+                    "orderby": [{
+                            "label": "",
+                            "comparativo": " != '' ",
+                            "key": "princ.id_empresa,princ.id_filial,princ.codigo"
+                        },
+                        {
+                            "label": "Filial",
+                            "comparativo": " != 0 ",
+                            "key": "princ.id_empresa,princ.id_filial"
+                        },
+                        {
+                            "label": "Codigo",
+                            "comparativo": " != 0 ",
+                            "key": "princ.id_empresa,princ.id_filial,princ.codigo"
+                        },
+                        {
+                            "label": "Descrição",
+                            "comparativo": " != '' ",
+                            "key": "princ.id_empresa,princ.id_filial,princ.descricao"
+                        }
                     ],
                     "tablespace": "Producao"
                 },
@@ -1293,23 +2014,91 @@
                         "alias": "prod"
                     },
                     "where": {
-                        "parametro_01": [
-                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "id_filial", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "codigo", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "descricao", "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
-                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
-                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
-                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
-                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
-                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        "parametro_01": [{
+                                "name": "id_empresa",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "id_filial",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "codigo",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "descricao",
+                                "filtro": "S",
+                                "atividador": " !== ''",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "pagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "tamPagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 50
+                            },
+                            {
+                                "name": "contador",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": "N"
+                            },
+                            {
+                                "name": "orderby",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "sharp",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "boolean",
+                                "padrao": "false"
+                            }
                         ]
                     },
-                    "orderby": [
-                        { "label": "", "comparativo": " != '' ", "key": "princ.id_empresa,princ.id_filial,princ.codigo" },
-                        { "label": "Filial", "comparativo": " != 0 ", "key": "princ.id_empresa,princ.id_filial" },
-                        { "label": "Codigo", "comparativo": " != 0 ", "key": "princ.id_empresa,princ.id_filial,princ.codigo" },
-                        { "label": "Descrição", "comparativo": " != '' ", "key": "princ.id_empresa,princ.id_filial,princ.descricao" }
+                    "orderby": [{
+                            "label": "",
+                            "comparativo": " != '' ",
+                            "key": "princ.id_empresa,princ.id_filial,princ.codigo"
+                        },
+                        {
+                            "label": "Filial",
+                            "comparativo": " != 0 ",
+                            "key": "princ.id_empresa,princ.id_filial"
+                        },
+                        {
+                            "label": "Codigo",
+                            "comparativo": " != 0 ",
+                            "key": "princ.id_empresa,princ.id_filial,princ.codigo"
+                        },
+                        {
+                            "label": "Descrição",
+                            "comparativo": " != '' ",
+                            "key": "princ.id_empresa,princ.id_filial,princ.descricao"
+                        }
                     ],
                     "tablespace": "Producao"
                 },
@@ -1388,23 +2177,91 @@
                         "alias": "grupo"
                     },
                     "where": {
-                        "parametro_01": [
-                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "id_filial", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "codigo", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "descricao", "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
-                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
-                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
-                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
-                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
-                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        "parametro_01": [{
+                                "name": "id_empresa",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "id_filial",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "codigo",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "descricao",
+                                "filtro": "S",
+                                "atividador": " !== ''",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "pagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "tamPagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 50
+                            },
+                            {
+                                "name": "contador",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": "N"
+                            },
+                            {
+                                "name": "orderby",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "sharp",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "boolean",
+                                "padrao": "false"
+                            }
                         ]
                     },
-                    "orderby": [
-                        { "label": "", "comparativo": " != '' ", "key": "grupo.id_empresa,grupo.id_filial,grupo.codigo" },
-                        { "label": "Filial", "comparativo": " != 0 ", "key": "grupo.id_empresa,grupo.id_filial" },
-                        { "label": "Codigo", "comparativo": " != 0 ", "key": "grupo.id_empresa,grupo.id_filial,grupo.codigo" },
-                        { "label": "Descrição", "comparativo": " != '' ", "key": "grupo.id_empresa,grupo.id_filial,grupo.descricao" }
+                    "orderby": [{
+                            "label": "",
+                            "comparativo": " != '' ",
+                            "key": "grupo.id_empresa,grupo.id_filial,grupo.codigo"
+                        },
+                        {
+                            "label": "Filial",
+                            "comparativo": " != 0 ",
+                            "key": "grupo.id_empresa,grupo.id_filial"
+                        },
+                        {
+                            "label": "Codigo",
+                            "comparativo": " != 0 ",
+                            "key": "grupo.id_empresa,grupo.id_filial,grupo.codigo"
+                        },
+                        {
+                            "label": "Descrição",
+                            "comparativo": " != '' ",
+                            "key": "grupo.id_empresa,grupo.id_filial,grupo.descricao"
+                        }
                     ],
                     "tablespace": "Producao"
                 },
@@ -1483,23 +2340,91 @@
                         "alias": "cc"
                     },
                     "where": {
-                        "parametro_01": [
-                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "id_filial", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "codigo", "filtro": "S", "atividador": " !== '' ", "tipo": "string", "padrao": "" },
-                            { "name": "descricao", "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
-                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
-                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
-                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
-                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
-                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        "parametro_01": [{
+                                "name": "id_empresa",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "id_filial",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "codigo",
+                                "filtro": "S",
+                                "atividador": " !== '' ",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "descricao",
+                                "filtro": "S",
+                                "atividador": " !== ''",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "pagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "tamPagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 50
+                            },
+                            {
+                                "name": "contador",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": "N"
+                            },
+                            {
+                                "name": "orderby",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "sharp",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "boolean",
+                                "padrao": "false"
+                            }
                         ]
                     },
-                    "orderby": [
-                        { "label": "", "comparativo": " != '' ", "key": "cc.id_empresa,cc.id_filial,cc.codigo" },
-                        { "label": "Filial", "comparativo": " != 0 ", "key": "cc.id_empresa,cc.id_filial" },
-                        { "label": "Codigo", "comparativo": " != '' ", "key": "cc.id_empresa,cc.id_filial,cc.codigo" },
-                        { "label": "Descrição", "comparativo": " != '' ", "key": "cc.id_empresa,cc.id_filial,cc.descricao" }
+                    "orderby": [{
+                            "label": "",
+                            "comparativo": " != '' ",
+                            "key": "cc.id_empresa,cc.id_filial,cc.codigo"
+                        },
+                        {
+                            "label": "Filial",
+                            "comparativo": " != 0 ",
+                            "key": "cc.id_empresa,cc.id_filial"
+                        },
+                        {
+                            "label": "Codigo",
+                            "comparativo": " != '' ",
+                            "key": "cc.id_empresa,cc.id_filial,cc.codigo"
+                        },
+                        {
+                            "label": "Descrição",
+                            "comparativo": " != '' ",
+                            "key": "cc.id_empresa,cc.id_filial,cc.descricao"
+                        }
                     ],
                     "tablespace": "Producao"
                 },
@@ -1540,7 +2465,8 @@
                             "nulo": "N",
                             "padrao": "",
                             "validacao": []
-                        }, {
+                        },
+                        {
                             "name": "cod_grupo",
                             "type": "int4",
                             "length": 0,
@@ -1548,7 +2474,8 @@
                             "nulo": "N",
                             "padrao": "",
                             "validacao": []
-                        }, {
+                        },
+                        {
                             "name": "cod_cc",
                             "type": "varchar",
                             "length": 10,
@@ -1565,7 +2492,8 @@
                             "nulo": "N",
                             "padrao": "0",
                             "validacao": []
-                        }, {
+                        },
+                        {
                             "name": "nfe",
                             "type": "int4",
                             "length": 0,
@@ -1573,7 +2501,8 @@
                             "nulo": "N",
                             "padrao": "",
                             "validacao": []
-                        }, {
+                        },
+                        {
                             "name": "serie",
                             "type": "varchar",
                             "length": 3,
@@ -1581,7 +2510,8 @@
                             "nulo": "N",
                             "padrao": "",
                             "validacao": []
-                        }, {
+                        },
+                        {
                             "name": "item",
                             "type": "int4",
                             "length": 0,
@@ -1656,25 +2586,105 @@
                         "alias": "imo"
                     },
                     "where": {
-                        "parametro_01": [
-                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "id_filial", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "codigo", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "descricao", "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
-                            { "name": "grupo_cod", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "cc_cod", "filtro": "S", "atividador": " !== '' ", "tipo": "string", "padrao": "" },
-                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
-                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
-                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
-                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
-                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        "parametro_01": [{
+                                "name": "id_empresa",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "id_filial",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "codigo",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "descricao",
+                                "filtro": "S",
+                                "atividador": " !== ''",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "grupo_cod",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "cc_cod",
+                                "filtro": "S",
+                                "atividador": " !== '' ",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "pagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "tamPagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 50
+                            },
+                            {
+                                "name": "contador",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": "N"
+                            },
+                            {
+                                "name": "orderby",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "sharp",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "boolean",
+                                "padrao": "false"
+                            }
                         ]
                     },
-                    "orderby": [
-                        { "label": "", "comparativo": " != '' ", "key": "imo.id_empresa,imo.id_filial" },
-                        { "label": "Filial", "comparativo": " != 0 ", "key": "imo.id_empresa,imo.id_filial" },
-                        { "label": "Código", "comparativo": " != 0 ", "key": "imo.id_empresa,imo.id_filial,imo.codigo" },
-                        { "label": "Descricao", "comparativo": " != '' ", "key": "imo.id_empresa,imo.id_filial,imo.descricao" }
+                    "orderby": [{
+                            "label": "",
+                            "comparativo": " != '' ",
+                            "key": "imo.id_empresa,imo.id_filial"
+                        },
+                        {
+                            "label": "Filial",
+                            "comparativo": " != 0 ",
+                            "key": "imo.id_empresa,imo.id_filial"
+                        },
+                        {
+                            "label": "Código",
+                            "comparativo": " != 0 ",
+                            "key": "imo.id_empresa,imo.id_filial,imo.codigo"
+                        },
+                        {
+                            "label": "Descricao",
+                            "comparativo": " != '' ",
+                            "key": "imo.id_empresa,imo.id_filial,imo.descricao"
+                        }
                     ],
                     "tablespace": "Producao"
                 },
@@ -1724,7 +2734,8 @@
                             "nulo": "N",
                             "padrao": "",
                             "validacao": []
-                        }, {
+                        },
+                        {
                             "name": "serie",
                             "type": "varchar",
                             "length": 3,
@@ -1732,7 +2743,8 @@
                             "nulo": "N",
                             "padrao": "",
                             "validacao": []
-                        }, {
+                        },
+                        {
                             "name": "item",
                             "type": "int4",
                             "length": 0,
@@ -1900,26 +2912,112 @@
                         "alias": "nf"
                     },
                     "where": {
-                        "parametro_01": [
-                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "id_filial", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "id_fornecedor", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "id_imobilizado", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "nfe", "filtro": "S", "atividador": " !== '' ", "tipo": "string", "padrao": "" },
-                            { "name": "serie", "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
-                            { "name": "chavee", "filtro": "S", "atividador": " !== '' ", "tipo": "string", "padrao": "" },
-                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
-                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
-                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
-                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
-                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        "parametro_01": [{
+                                "name": "id_empresa",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "id_filial",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "id_fornecedor",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "id_imobilizado",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "nfe",
+                                "filtro": "S",
+                                "atividador": " !== '' ",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "serie",
+                                "filtro": "S",
+                                "atividador": " !== ''",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "chavee",
+                                "filtro": "S",
+                                "atividador": " !== '' ",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "pagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "tamPagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 50
+                            },
+                            {
+                                "name": "contador",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": "N"
+                            },
+                            {
+                                "name": "orderby",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "sharp",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "boolean",
+                                "padrao": "false"
+                            }
                         ]
                     },
-                    "orderby": [
-                        { "label": "", "comparativo": " != '' ", "key": "nfe.id_empresa,nfe.id_filial" },
-                        { "label": "Filial", "comparativo": " != 0 ", "key": "nfe.id_empresa,nfe.id_filial" },
-                        { "label": "Nfe", "comparativo": " != 0 ", "key": "nfe.id_empresa,nfe.id_filial,nfe.nfe" },
-                        { "label": "Fornecedor", "comparativo": " != '' ", "key": "nfe.id_empresa,nfe.id_filial,nfe.id_fornecedor" }
+                    "orderby": [{
+                            "label": "",
+                            "comparativo": " != '' ",
+                            "key": "nfe.id_empresa,nfe.id_filial"
+                        },
+                        {
+                            "label": "Filial",
+                            "comparativo": " != 0 ",
+                            "key": "nfe.id_empresa,nfe.id_filial"
+                        },
+                        {
+                            "label": "Nfe",
+                            "comparativo": " != 0 ",
+                            "key": "nfe.id_empresa,nfe.id_filial,nfe.nfe"
+                        },
+                        {
+                            "label": "Fornecedor",
+                            "comparativo": " != '' ",
+                            "key": "nfe.id_empresa,nfe.id_filial,nfe.id_fornecedor"
+                        }
                     ],
                     "tablespace": "Producao"
                 },
@@ -2016,7 +3114,8 @@
                             "nulo": "N",
                             "padrao": "",
                             "validacao": []
-                        }, {
+                        },
+                        {
                             "name": "user_insert",
                             "type": "int4",
                             "length": 0,
@@ -2062,21 +3161,79 @@
                         "alias": "val"
                     },
                     "where": {
-                        "parametro_01": [
-                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "id_filial", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "id_imobilizado", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
-                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
-                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
-                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
-                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        "parametro_01": [{
+                                "name": "id_empresa",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "id_filial",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "id_imobilizado",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "pagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "tamPagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 50
+                            },
+                            {
+                                "name": "contador",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": "N"
+                            },
+                            {
+                                "name": "orderby",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "sharp",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "boolean",
+                                "padrao": "false"
+                            }
                         ]
                     },
-                    "orderby": [
-                        { "label": "", "comparativo": " != '' ", "key": "val.id_empresa,val.id_filial" },
-                        { "label": "Filial", "comparativo": " != 0 ", "key": "val.id_empresa,val.id_filial" },
-                        { "label": "Imobilizado", "comparativo": " != 0 ", "key": "val.id_empresa,val.id_filial,val.id_imobilizado" }
+                    "orderby": [{
+                            "label": "",
+                            "comparativo": " != '' ",
+                            "key": "val.id_empresa,val.id_filial"
+                        },
+                        {
+                            "label": "Filial",
+                            "comparativo": " != 0 ",
+                            "key": "val.id_empresa,val.id_filial"
+                        },
+                        {
+                            "label": "Imobilizado",
+                            "comparativo": " != 0 ",
+                            "key": "val.id_empresa,val.id_filial,val.id_imobilizado"
+                        }
                     ],
                     "tablespace": "Producao"
                 },
@@ -2117,7 +3274,8 @@
                             "nulo": "N",
                             "padrao": "",
                             "validacao": []
-                        }, {
+                        },
+                        {
                             "name": "id_responsavel",
                             "type": "int4",
                             "length": 0,
@@ -2125,7 +3283,8 @@
                             "nulo": "N",
                             "padrao": "",
                             "validacao": []
-                        }, {
+                        },
+                        {
                             "name": "data_inicial",
                             "type": "date",
                             "length": 0,
@@ -2218,23 +3377,91 @@
                         "alias": "inv"
                     },
                     "where": {
-                        "parametro_01": [
-                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "id_filial", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "codigo", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "descricao", "filtro": "S", "atividador": " !== ''", "tipo": "string", "padrao": "" },
-                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
-                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
-                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
-                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
-                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        "parametro_01": [{
+                                "name": "id_empresa",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "id_filial",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "codigo",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "descricao",
+                                "filtro": "S",
+                                "atividador": " !== ''",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "pagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "tamPagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 50
+                            },
+                            {
+                                "name": "contador",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": "N"
+                            },
+                            {
+                                "name": "orderby",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "sharp",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "boolean",
+                                "padrao": "false"
+                            }
                         ]
                     },
-                    "orderby": [
-                        { "label": "", "comparativo": " != '' ", "key": "inv.id_empresa,inv.id_filial" },
-                        { "label": "Filial", "comparativo": " != 0 ", "key": "inv.id_empresa,inv.id_filial" },
-                        { "label": "Código", "comparativo": " != 0 ", "key": "inv.id_empresa,inv.id_filial,inv.codigo" },
-                        { "label": "Descricao", "comparativo": " != '' ", "key": "inv.id_empresa,inv.id_filial,inv.descricao" }
+                    "orderby": [{
+                            "label": "",
+                            "comparativo": " != '' ",
+                            "key": "inv.id_empresa,inv.id_filial"
+                        },
+                        {
+                            "label": "Filial",
+                            "comparativo": " != 0 ",
+                            "key": "inv.id_empresa,inv.id_filial"
+                        },
+                        {
+                            "label": "Código",
+                            "comparativo": " != 0 ",
+                            "key": "inv.id_empresa,inv.id_filial,inv.codigo"
+                        },
+                        {
+                            "label": "Descricao",
+                            "comparativo": " != '' ",
+                            "key": "inv.id_empresa,inv.id_filial,inv.descricao"
+                        }
                     ],
                     "tablespace": "Producao"
                 },
@@ -2337,22 +3564,84 @@
                         "alias": "usu_inv"
                     },
                     "where": {
-                        "parametro_01": [
-                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "id_inventario", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "id_usuario", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
-                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
-                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
-                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
-                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        "parametro_01": [{
+                                "name": "id_empresa",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "id_inventario",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "id_usuario",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "pagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "tamPagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 50
+                            },
+                            {
+                                "name": "contador",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": "N"
+                            },
+                            {
+                                "name": "orderby",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "sharp",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "boolean",
+                                "padrao": "false"
+                            }
                         ]
                     },
-                    "orderby": [
-                        { "label": "", "comparativo": " != '' ", "key": "usu_inv.id_empresa,usu_inv.id_filial" },
-                        { "label": "Filial", "comparativo": " != 0 ", "key": "usu_inv.id_empresa,usu_inv.id_filial" },
-                        { "label": "Inventario", "comparativo": " != 0 ", "key": "usu_inv.id_empresa,usu_inv.id_filial,usu_inv.id_inventario" },
-                        { "label": "Usuário", "comparativo": " != '' ", "key": "usu_inv.id_empresa,usu_inv.id_filial,usu_inv.id_usuario" }
+                    "orderby": [{
+                            "label": "",
+                            "comparativo": " != '' ",
+                            "key": "usu_inv.id_empresa,usu_inv.id_filial"
+                        },
+                        {
+                            "label": "Filial",
+                            "comparativo": " != 0 ",
+                            "key": "usu_inv.id_empresa,usu_inv.id_filial"
+                        },
+                        {
+                            "label": "Inventario",
+                            "comparativo": " != 0 ",
+                            "key": "usu_inv.id_empresa,usu_inv.id_filial,usu_inv.id_inventario"
+                        },
+                        {
+                            "label": "Usuário",
+                            "comparativo": " != '' ",
+                            "key": "usu_inv.id_empresa,usu_inv.id_filial,usu_inv.id_usuario"
+                        }
                     ],
                     "tablespace": "Producao"
                 },
@@ -2453,22 +3742,84 @@
                         "alias": "imo_inv"
                     },
                     "where": {
-                        "parametro_01": [
-                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "id_inventario", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "id_imobilizado", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
-                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
-                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
-                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
-                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        "parametro_01": [{
+                                "name": "id_empresa",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "id_inventario",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "id_imobilizado",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "pagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "tamPagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 50
+                            },
+                            {
+                                "name": "contador",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": "N"
+                            },
+                            {
+                                "name": "orderby",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "sharp",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "boolean",
+                                "padrao": "false"
+                            }
                         ]
                     },
-                    "orderby": [
-                        { "label": "", "comparativo": " != '' ", "key": "imo_inv.id_empresa,imo_inv.id_filial" },
-                        { "label": "Filial", "comparativo": " != 0 ", "key": "imo_inv.id_empresa,imo_inv.id_filial" },
-                        { "label": "Inventario", "comparativo": " != 0 ", "key": "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario" },
-                        { "label": "Imobilizado", "comparativo": " != '' ", "key": "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_imobilizado" }
+                    "orderby": [{
+                            "label": "",
+                            "comparativo": " != '' ",
+                            "key": "imo_inv.id_empresa,imo_inv.id_filial"
+                        },
+                        {
+                            "label": "Filial",
+                            "comparativo": " != 0 ",
+                            "key": "imo_inv.id_empresa,imo_inv.id_filial"
+                        },
+                        {
+                            "label": "Inventario",
+                            "comparativo": " != 0 ",
+                            "key": "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario"
+                        },
+                        {
+                            "label": "Imobilizado",
+                            "comparativo": " != '' ",
+                            "key": "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_imobilizado"
+                        }
                     ],
                     "tablespace": "Producao"
                 },
@@ -2596,24 +3947,608 @@
                         "alias": "lanca"
                     },
                     "where": {
-                        "parametro_01": [
-                            { "name": "id_empresa", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "id", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "id_inventario", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "id_imobilizado", "filtro": "S", "atividador": " !== 0 ", "tipo": "number", "padrao": 0 },
-                            { "name": "pagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 0 },
-                            { "name": "tamPagina", "filtro": "N", "atividador": "", "tipo": "number", "padrao": 50 },
-                            { "name": "contador", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "N" },
-                            { "name": "orderby", "filtro": "N", "atividador": "", "tipo": "string", "padrao": "" },
-                            { "name": "sharp", "filtro": "N", "atividador": "", "tipo": "boolean", "padrao": "false" }
+                        "parametro_01": [{
+                                "name": "id_empresa",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "id",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "id_inventario",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "id_imobilizado",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "pagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "tamPagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 50
+                            },
+                            {
+                                "name": "contador",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": "N"
+                            },
+                            {
+                                "name": "orderby",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "sharp",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "boolean",
+                                "padrao": "false"
+                            }
                         ]
                     },
-                    "orderby": [
-                        { "label": "", "comparativo": " != '' ", "key": "imo_inv.id_empresa,imo_inv.id_filial" },
-                        { "label": "Filial", "comparativo": " != 0 ", "key": "imo_inv.id_empresa,imo_inv.id_filial" },
-                        { "label": "Nro", "comparativo": " != 0 ", "key": "imo_inv.id_empresa,imo_inv.id_filial" },
-                        { "label": "Inventario", "comparativo": " != 0 ", "key": "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario" },
-                        { "label": "Imobilizado", "comparativo": " != '' ", "key": "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_imobilizado" }
+                    "orderby": [{
+                            "label": "",
+                            "comparativo": " != '' ",
+                            "key": "imo_inv.id_empresa,imo_inv.id_filial"
+                        },
+                        {
+                            "label": "Filial",
+                            "comparativo": " != 0 ",
+                            "key": "imo_inv.id_empresa,imo_inv.id_filial"
+                        },
+                        {
+                            "label": "Nro",
+                            "comparativo": " != 0 ",
+                            "key": "imo_inv.id_empresa,imo_inv.id_filial"
+                        },
+                        {
+                            "label": "Inventario",
+                            "comparativo": " != 0 ",
+                            "key": "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_inventario"
+                        },
+                        {
+                            "label": "Imobilizado",
+                            "comparativo": " != '' ",
+                            "key": "imo_inv.id_empresa,imo_inv.id_filial,imo_inv.id_imobilizado"
+                        }
+                    ],
+                    "tablespace": "Producao"
+                },
+                {
+                    "name": "cabplanilhas",
+                    "fields": [{
+                            "name": "id_empresa",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+
+                        {
+                            "name": "id_local",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id_inventario",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id",
+                            "type": "serial",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "arquivo",
+                            "type": "varchar",
+                            "length": 255,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "total_linhas",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "linhas_processadas",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "total_linhas_erro",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "status_planilha",
+                            "type": "char",
+                            "length": 1,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "status_processamento",
+                            "type": "char",
+                            "length": 1,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_insert",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "user_update",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }
+                    ],
+                    "inner_join": [],
+                    "left_join": [],
+                    "primaryKey": [{
+                            "key": "id_empresa"
+                        },
+                        {
+                            "key": "id_local"
+                        },
+                        {
+                            "key": "id_inventario"
+                        },
+                        {
+                            "key": "id"
+                        }
+                    ],
+                    "variables": {
+                        "getone": "cabplanilha",
+                        "getall": "cabplanilhas",
+                        "alias": "cab"
+                    },
+                    "where": {
+                        "parametro_01": [{
+                                "name": "id_empresa",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "id_local",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "id_inventario",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "id",
+                                "filtro": "S",
+                                "atividador": " !== 0 ",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "arquivo",
+                                "filtro": "S",
+                                "atividador": " !== '' ",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "status_planilha",
+                                "filtro": "S",
+                                "atividador": " !== '' ",
+                                "tipo": "string",
+                                "padrao": ""
+                            } {
+                                "name": "status_processamento",
+                                "filtro": "S",
+                                "atividador": " !== '' ",
+                                "tipo": "string",
+                                "padrao": ""
+                            } {
+                                "name": "pagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 0
+                            },
+                            {
+                                "name": "tamPagina",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "number",
+                                "padrao": 50
+                            },
+                            {
+                                "name": "contador",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": "N"
+                            },
+                            {
+                                "name": "orderby",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "string",
+                                "padrao": ""
+                            },
+                            {
+                                "name": "sharp",
+                                "filtro": "N",
+                                "atividador": "",
+                                "tipo": "boolean",
+                                "padrao": "false"
+                            }
+                        ]
+                    },
+                    "orderby": [{
+                            "label": "",
+                            "comparativo": " != '' ",
+                            "key": "cab.id_empresa,cab.id_local,cab.id_inventario,cab.id"
+                        },
+                        {
+                            "label": "000000",
+                            "comparativo": " != '' ",
+                            "key": "cab.id_empresa,cab.id_local,cab.id_inventario,cab.id"
+                        },
+                        {
+                            "label": "000001",
+                            "comparativo": " != '' ",
+                            "key": "cab.id_empresa,cab.id_local,cab.id_inventario,cab.arquivo"
+                        }
+                    ],
+                    "tablespace": "Producao"
+                },
+                {
+                    "name": "detPlanilhas",
+                    "fields": [{
+                            "name": "id_empresa",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "id_local",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "id_inventario",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        },
+                        {
+                            "name": "id_cabec",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "id",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        } {
+                            "name": "cnpj_cpf",
+                            "type": "varchar",
+                            "length": 14,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "nome",
+                            "type": "varchar",
+                            "length": 60,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": [
+                                { "key": "check", "value": "true" },
+                                { "key": "require", "value": "true" },
+                                { "key": "maxLength", "value": 60 }
+                            ]
+                        },
+                        {
+                            "name": "estrangeiro",
+                            "type": "char",
+                            "length": 1,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "N",
+                            "validacao": [
+                                { "key": "check", "value": "true" },
+                                { "key": "require", "value": "false" },
+                                { "key": "maxLength", "value": 1 }
+                            ]
+                        },
+                        {
+                            "name": "sexo",
+                            "type": "char",
+                            "length": 1,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "M",
+                            "validacao": [
+                                { "key": "check", "value": "true" },
+                                { "key": "require", "value": "false" },
+                                { "key": "maxLength", "value": 1 }
+                            ]
+                        },
+                        {
+                            "name": "data_nasc",
+                            "type": "varchar",
+                            "length": 10,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "inscricao",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "nro_peito",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "id_categoria",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "id_inscrito",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "status",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "mensagem_erro",
+                            "type": "varchar",
+                            "length": 100,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "user_insert",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }, {
+                            "name": "user_update",
+                            "type": "int4",
+                            "length": 0,
+                            "precision": 0,
+                            "nulo": "N",
+                            "padrao": "",
+                            "validacao": []
+                        }
+                    ],
+                    "inner_join": [{
+                        "name": "eventos",
+                        "inner_alias": "evento",
+                        "inner_on": "evento.id_empresa = det.id_empresa and evento.id = det.id_evento",
+                        "inner_fields": [{
+                            "name": "descricao",
+                            "as_col": "evento_descricao",
+                            "tipo": "char"
+                        }]
+                    }],
+                    "left_join": [],
+                    "primaryKey": [{
+                        "key": "id_empresa"
+                    }, {
+                        "key": "id_evento"
+                    }, {
+                        "key": "id_cabec"
+                    }, {
+                        "key": "cnpj_cpf"
+                    }, {
+                        "key": "inscricao"
+                    }],
+                    "variables": {
+                        "getone": "detPlanilha",
+                        "getall": "detPlanilhas",
+                        "alias": "det"
+                    },
+                    "where": {
+                        "parametro_01": [{
+                            "name": "id_empresa",
+                            "filtro": "S",
+                            "atividador": " !== 0 ",
+                            "tipo": "number",
+                            "padrao": 0
+                        }, {
+                            "name": "id_evento",
+                            "filtro": "S",
+                            "atividador": " !== 0 ",
+                            "tipo": "number",
+                            "padrao": 0
+                        }, {
+                            "name": "id_cabec",
+                            "filtro": "S",
+                            "atividador": " !== 0 ",
+                            "tipo": "number",
+                            "padrao": 0
+                        }, {
+                            "name": "cnpj_cpf",
+                            "filtro": "S",
+                            "atividador": " !== '' ",
+                            "tipo": "string",
+                            "padrao": 0
+                        }, {
+                            "name": "nome",
+                            "filtro": "S",
+                            "atividador": " !== '' ",
+                            "tipo": "string",
+                            "padrao": ""
+                        }, {
+                            "name": "status",
+                            "filtro": "S",
+                            "atividador": " !== -1 ",
+                            "tipo": "number",
+                            "padrao": -1
+                        }, {
+                            "name": "pagina",
+                            "filtro": "N",
+                            "atividador": "",
+                            "tipo": "number",
+                            "padrao": 0
+                        }, {
+                            "name": "tamPagina",
+                            "filtro": "N",
+                            "atividador": "",
+                            "tipo": "number",
+                            "padrao": 50
+                        }, {
+                            "name": "contador",
+                            "filtro": "N",
+                            "atividador": "",
+                            "tipo": "string",
+                            "padrao": "N"
+                        }, {
+                            "name": "orderby",
+                            "filtro": "N",
+                            "atividador": "",
+                            "tipo": "string",
+                            "padrao": ""
+                        }, {
+                            "name": "sharp",
+                            "filtro": "N",
+                            "atividador": "",
+                            "tipo": "boolean",
+                            "padrao": "false"
+                        }]
+                    },
+                    "orderby": [{
+                            "label": "",
+                            "comparativo": " != '' ",
+                            "key": "det.id_empresa,det.id_evento,det.cnpj_cpf"
+                        }, {
+                            "label": "000000",
+                            "comparativo": " != '' ",
+                            "key": "det.id_empresa,det.id_evento,det.cnpj_cpf"
+                        }, {
+                            "label": "000001",
+                            "comparativo": " != '' ",
+                            "key": "det.id_empresa,det.id_evento,det.nome"
+                        }
+
                     ],
                     "tablespace": "Producao"
                 }
@@ -2621,7 +4556,7 @@
             "parametros": []
         },
         "frontend": {
-            "src": "C://Repositorios Git//Simionato//controle de ativo//frontend//src//app",
+            "src": "C://Repositorios//Simionato//ativo web//simionato_ativo_frontend//src//app",
             "server": {
                 "includes": [{
                         "variable": "express",

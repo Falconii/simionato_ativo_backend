@@ -27,7 +27,7 @@ exports.getLancamento = function (
   id_empresa,
   id_filial,
   id_inventario,
-  id_imobilizado
+  id_imobilizado,
 ) {
   strSql = ` select   
 			   lanca.id_empresa as  id_empresa  
@@ -226,10 +226,10 @@ exports.updateLancamento = function (lancamento) {
  		 ,   user_insert = ${lancamento.user_insert} 
  		 ,   user_update = ${lancamento.user_update} 
  		 where id_empresa = ${lancamento.id_empresa} and  id_filial = ${
-    lancamento.id_filial
-  } and  id_inventario = ${lancamento.id_inventario} and  id_imobilizado = ${
-    lancamento.id_imobilizado
-  }  returning * `;
+       lancamento.id_filial
+     } and  id_inventario = ${lancamento.id_inventario} and  id_imobilizado = ${
+       lancamento.id_imobilizado
+     }  returning * `;
   console.log("updateLancamento", strSql);
   return db.oneOrNone(strSql);
 };
@@ -238,7 +238,7 @@ exports.deleteLancamento = function (
   id_empresa,
   id_filial,
   id_inventario,
-  id_imobilizado
+  id_imobilizado,
 ) {
   strSql = `delete from lancamentos 
 		 where id_empresa = ${id_empresa} and  id_filial = ${id_filial} and  id_inventario = ${id_inventario} and  id_imobilizado = ${id_imobilizado}  `;

@@ -85,16 +85,12 @@ LANGUAGE 'plpgsql'
 select * from resumo_inventario(1,8,2)
 */
 
+-- DROP FUNCTION public.call_change_inv(in int4, in int4, in int4, in int4, out int4);
 
-CREATE OR REPLACE FUNCTION "public"."call_change_inv" (
-	in _id_empresa    int4, 
-	in _id_local      int4, 
-	in _id_inventario int4, 
-	in _status        int4,
-	out _qtd          int4
-	) 
-AS
-$$
+CREATE OR REPLACE FUNCTION public.call_change_inv(_id_empresa integer, _id_local integer, _id_inventario integer, _status integer, OUT _qtd integer)
+ RETURNS integer
+ LANGUAGE plpgsql
+AS $function$
 DECLARE
 
  tempo public.de_para%ROWTYPE;
@@ -175,8 +171,11 @@ _qtd := 0 ;
 
 
 END;
-$$
-LANGUAGE 'plpgsql'
+$function$
+;
+
+
+
 /*
 select * from de_para
 select * from call_change_inv(1,14,10,3)

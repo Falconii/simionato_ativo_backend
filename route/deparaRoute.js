@@ -1,17 +1,66 @@
-/* ROUTE credenciais */
+/* ROUTE de_para */
 const db = require("../infra/database");
 const express = require("express");
 const router = express.Router();
+
 const deparaSrv = require("../service/deparaService");
-const funcoes = require("../util/deparaFuncoes");
 
-/* Insert De_Para */
-router.post("/api/de_para", async function (req, res) {
+/* ROTA GETONE depara */
+router.get(
+  "/api/depara/:id_empresa/:id_local/:id_inventario/:de/:para",
+  async function (req, res) {
+    try {
+      const lsLista = await deparaSrv.getDepara(
+        req.params.id_empresa,
+        req.params.id_local,
+        req.params.id_inventario,
+        req.params.de,
+        req.params.para,
+      );
+      if (lsLista == null) {
+        res.status(409).json({ message: "Depara Não Encontrada." });
+      } else {
+        res.status(200).json(lsLista);
+      }
+    } catch (err) {
+      if (err.name == "MyExceptionDB") {
+        res.status(409).json(err);
+      } else {
+        res
+          .status(500)
+          .json({ erro: "BAK-END", tabela: "depara", message: err.message });
+      }
+    }
+  },
+);
+/* ROTA GETALL depara */
+router.get("/api/depara/", async function (req, res) {
+  try {
+    const lsLista = await deparaSrv.getDeparas();
+    if (lsLista.length == 0) {
+      res
+        .status(409)
+        .json({ message: "Nehuma Informação Para Esta Consulta." });
+    } else {
+      res.status(200).json(lsLista);
+    }
+  } catch (err) {
+    if (err.name == "MyExceptionDB") {
+      res.status(409).json(err);
+    } else {
+      res
+        .status(500)
+        .json({ erro: "BAK-END", tabela: "depara", message: err.message });
+    }
+  }
+});
+/* ROTA INSERT depara */
+router.post("/api/depara/", async function (req, res) {
   try {
     const depara = req.body;
-    const registro = await deparaSrv.insertDe_Para(depara);
+    const registro = await deparaSrv.insertDepara(depara);
     if (registro == null) {
-      res.status(409).json({ message: "De_Para Incluído Com Sucesso!" });
+      res.status(409).json({ message: "Depara Cadastrado!" });
     } else {
       res.status(200).json(registro);
     }
@@ -21,18 +70,17 @@ router.post("/api/de_para", async function (req, res) {
     } else {
       res
         .status(500)
-        .json({ erro: "BAK-END", tabela: "De_Para", message: err.message });
+        .json({ erro: "BAK-END", tabela: "Depara", message: err.message });
     }
   }
 });
-
-/* ROTA UPDATE de_para */
-router.put("/api/de_para", async function (req, res) {
+/* ROTA UPDATE depara */
+router.put("/api/depara/", async function (req, res) {
   try {
     const depara = req.body;
-    const registro = await deparaSrv.updateDe_Para(depara);
+    const registro = await deparaSrv.updateDepara(depara);
     if (registro == null) {
-      res.status(409).json({ message: "De_Para Alterado Com Sucesso!" });
+      res.status(409).json({ message: "Depara Alterado Com Sucesso!" });
     } else {
       res.status(200).json(registro);
     }
@@ -42,81 +90,58 @@ router.put("/api/de_para", async function (req, res) {
     } else {
       res
         .status(500)
-        .json({ erro: "BAK-END", tabela: "Empresa", message: err.message });
+        .json({ erro: "BAK-END", tabela: "Depara", message: err.message });
     }
   }
 });
-
-/* processar depara */
-router.post("/api/processardepara", async function (req, res) {
-  try {
-    const credencial = req.body;
-    const registro = await deparaSrv.processarDePara(credencial);
-    if (registro == null) {
-      res.status(409).json({ message: "Arquivo De Para Processado!" });
-    } else {
-      res.status(200).json(registro);
+/* ROTA DELETE depara */
+router.delete(
+  "/api/depara/:id_empresa/:id_local/:id_inventario/:de/:para",
+  async function (req, res) {
+    try {
+      await deparaSrv.deleteDepara(
+        req.params.id_empresa,
+        req.params.id_local,
+        req.params.id_inventario,
+        req.params.de,
+        req.params.para,
+      );
+      res.status(200).json({ message: "Depara Excluído Com Sucesso!" });
+    } catch (err) {
+      if (err.name == "MyExceptionDB") {
+        res.status(409).json(err);
+      } else {
+        res
+          .status(500)
+          .json({ erro: "BAK-END", tabela: "Depara", message: err.message });
+      }
     }
-  } catch (err) {
-    if (err.name == "MyExceptionDB") {
-      res.status(409).json(err);
-    } else {
-      res
-        .status(500)
-        .json({ erro: "BAK-END", tabela: "DePara", message: err.message });
-    }
-  }
-});
-
-router.post("/api/substituirativo", async function (req, res) {
-  try {
-    const { id_empresa, id_local, id_inventario } = req.body;
-
-    const registro = await funcoes.SubstituirAtivo(
-      id_empresa,
-      id_local,
-      id_inventario
-    );
-
-    if (registro == null) {
-      res.status(409).json({ message: "Falha No Processamento!" });
-    } else {
-      res.status(200).json(registro);
-    }
-  } catch (err) {
-    if (err.name == "MyExceptionDB") {
-      res.status(409).json(err);
-    } else {
-      res
-        .status(500)
-        .json({ erro: "BAK-END", tabela: "DePara", message: err.message });
-    }
-  }
-});
-
-/* ROTA CONSULTA POST getDeparas */
-router.post("/api/getDeparas", async function (req, res) {
+  },
+);
+/* ROTA CONSULTA POST de_para */
+router.post("/api/deparas", async function (req, res) {
   /*
-	{
-         "id_empresa":0, 
-        "id_local":7, 
-        "id_inventario":0, 
-        "de":0, 
-        "para":0,
-        "status":0,						
-        "pagina":0, 
-        "tamPagina":50, 
-        "contador":"N", 
-        "orderby":"", 
-        "sharp":false 
-    }
-                 
-*/
+            	{
+            		"id_empresa":0, 
+            		"id_local":0, 
+            		"id_inventario":0, 
+            		"de":0, 
+            		"para":0, 
+            		"status":0, 
+            		"id_usuario":0, 
+            		"pagina":0, 
+            		"tamPagina":50, 
+            		"contador":"N", 
+            		"orderby":"", 
+            		"sharp":false 
+            	}
+            */
   try {
     const params = req.body;
+    console.log(params);
     const lsRegistros = await deparaSrv.getDeparas(params);
     if (lsRegistros.length == 0) {
-      res.status(409).json({ message: "De_Para Nenhum Registro Encontrado!" });
+      res.status(409).json({ message: "Depara Nenhum Registro Encontrado!" });
     } else {
       res.status(200).json(lsRegistros);
     }
@@ -126,27 +151,7 @@ router.post("/api/getDeparas", async function (req, res) {
     } else {
       res
         .status(500)
-        .json({ erro: "BAK-END", tabela: "De_Para", message: err.message });
-    }
-  }
-});
-
-router.get("/api/testeretira_camera_foto/:filename", async function (req, res) {
-  try {
-    const fileName = req.params.filename;
-
-    const result = funcoes.retira_camera_foto(fileName);
-
-    console.log(result);
-
-    res.status(200).json({ Novo_Nome: result });
-  } catch (err) {
-    if (err.name == "MyExceptionDB") {
-      res.status(409).json(err);
-    } else {
-      res
-        .status(500)
-        .json({ erro: "BAK-END", tabela: "DePara", message: err.message });
+        .json({ erro: "BAK-END", tabela: "Depara", message: err.message });
     }
   }
 });
