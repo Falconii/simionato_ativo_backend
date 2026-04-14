@@ -322,3 +322,24 @@ exports.getEvolucaoLancamentos = function (params) {
     return db.manyOrNone(strSql);
   }
 };
+
+exports.checkDuplicidadeNewCodigo = function (params) {
+  if (params.acao == "INSERT") {
+    strSql = `
+			  select coalesce(count(*),0) as total 
+			  from lancamentos 
+			  where id_empresa = ${params.id_empresa} and 
+			  id_filial = ${params.id_filial} and 
+			  id_inventario = ${params.id_inventario} and 
+			  new_codigo = ${params.new_codigo} `;
+  } else {
+    strSql = `
+			  select coalesce(count(*),0) as total 
+			  from lancamentos 
+			  where id_empresa = ${params.id_empresa} and 
+			  id_filial = ${params.id_filial} and 
+			  id_inventario = ${params.id_inventario} and 
+			  new_codigo = ${params.new_codigo} and id_lanca != ${params.id_lanca} `;
+  }
+  return db.manyOrNone(strSql);
+};

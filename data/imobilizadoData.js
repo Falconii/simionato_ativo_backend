@@ -248,7 +248,7 @@ exports.updateImobilizado = function (imobilizado) {
   strSql = `
             update imobilizados set
             descricao = '${shared.excluirCaracteres(
-              imobilizado.descricao.toUpperCase()
+              imobilizado.descricao.toUpperCase(),
             )}'
             , cod_grupo = ${imobilizado.cod_grupo}
             , cod_cc = '${imobilizado.cod_cc}'

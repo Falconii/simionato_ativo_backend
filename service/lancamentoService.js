@@ -76,3 +76,7 @@ exports.getResumoLancamentos = async function (params) {
 exports.getEvolucaoLancamentos = async function (params) {
   return lancamentoData.getEvolucaoLancamentos(params);
 };
+
+exports.checkDuplicidadeNewCodigo = async function (params) {
+  return lancamentoData.checkDuplicidadeNewCodigo(params);
+};

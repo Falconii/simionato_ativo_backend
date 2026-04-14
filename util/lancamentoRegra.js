@@ -20,6 +20,28 @@ exports.lancamento_Inclusao = async function (lancamento) {
         },
       ]);
     }
+    if (lancamento.new_codigo != 0) {
+      const duplicidade = await lancamentoSrv.checkDuplicidadeNewCodigo({
+        acao: "INSERT",
+        id_empresa: lancamento.id_empresa,
+        id_filial: lancamento.id_filial,
+        id_inventario: lancamento.id_inventario,
+        new_codigo: lancamento.new_codigo,
+        id_imobilizado: lancamento.id_imobilizado,
+        id_lanca: lancamento.id_lanca,
+      });
+
+      const total = Number(duplicidade[0].total);
+
+      if (total > 0) {
+        throw new erroDB.UserException("Regra de negócio", [
+          {
+            tabela: "LANCAMENTO",
+            message: `"ALTERAÇÃO" Já Existe Um Registro Com O "Novo Código" Informado.!`,
+          },
+        ]);
+      }
+    }
   } catch (err) {
     throw err;
   }
@@ -57,6 +79,29 @@ exports.lancamento_Alteracao = async function (lancamento) {
           message: `"ALTERAÇÃO" Ativo Pertence A LIsta "DE PARA"!`,
         },
       ]);
+    }
+
+    if (lancamento.new_codigo != 0) {
+      const duplicidade = await lancamentoSrv.checkDuplicidadeNewCodigo({
+        acao: "UPDATE",
+        id_empresa: lancamento.id_empresa,
+        id_filial: lancamento.id_filial,
+        id_inventario: lancamento.id_inventario,
+        new_codigo: lancamento.new_codigo,
+        id_imobilizado: lancamento.id_imobilizado,
+        id_lanca: lancamento.id_lanca,
+      });
+
+      const total = Number(duplicidade[0].total);
+
+      if (total > 0) {
+        throw new erroDB.UserException("Regra de negócio", [
+          {
+            tabela: "LANCAMENTO",
+            message: `"ALTERAÇÃO" Já Existe Um Registro Com O "Novo Código" Informado.!`,
+          },
+        ]);
+      }
     }
   } catch (err) {
     throw err;
