@@ -4,6 +4,7 @@ const express = require("express");
 const router = express.Router();
 const imobilizadoSrv = require("../service/imobilizadoService");
 const imobilizadoinventarioSrv = require("../service/imobilizadoinventarioService");
+const imobilizadoinventarioCustomSrv = require("../service/custom/imobilizadoinventarioService");
 
 /* ROTA GETONE imobilizado */
 router.get(
@@ -13,7 +14,7 @@ router.get(
       const lsLista = await imobilizadoSrv.getImobilizado(
         req.params.id_empresa,
         req.params.id_filial,
-        req.params.codigo
+        req.params.codigo,
       );
       if (lsLista == null) {
         res.status(409).json({ message: "Imobilizado Não Encontrada." });
@@ -31,7 +32,7 @@ router.get(
         });
       }
     }
-  }
+  },
 );
 /* ROTA GETALL imobilizado */
 router.get("/api/imobilizados", async function (req, res) {
@@ -112,9 +113,8 @@ router.post("/api/imobilizado_inv", async function (req, res) {
       usu_razao: "",
       new_cc_descricao: "",
     };
-    const imo = await imobilizadoinventarioSrv.insertImobilizadoinventario(
-      imo_inv
-    );
+    const imo =
+      await imobilizadoinventarioSrv.insertImobilizadoinventario(imo_inv);
     if (registro == null) {
       res
         .status(409)
@@ -156,14 +156,40 @@ router.put("/api/imobilizado", async function (req, res) {
 });
 /* ROTA DELETE imobilizado */
 router.delete(
-  "/api/imobilizado/:id_empresa/:id_filial/:codigo",
+  "/api/imobilizado/:id_empresa/:id_filial/:codigo/:id_inventario",
   async function (req, res) {
     try {
+      console.log("delete", req.params);
+      const inventarios =
+        await imobilizadoinventarioCustomSrv.getExisteImoInventarioComMovimento(
+          req.params.id_empresa,
+          req.params.id_filial,
+          req.params.codigo,
+          req.params.id_inventario,
+        );
+
+      if (inventarios.length > 0) {
+        return res.status(200).json({
+          message: "Existem Inventarios Ativos!",
+          inventarios: inventarios,
+        });
+      }
+
+      await imobilizadoinventarioSrv.deleteImobilizadoinventario(
+        req.params.id_empresa,
+        req.params.id_filial,
+        req.params.id_inventario,
+        req.params.codigo,
+      );
+
       await imobilizadoSrv.deleteImobilizado(
         req.params.id_empresa,
         req.params.id_filial,
-        req.params.codigo
+        req.params.codigo,
+        req.params.id_inventario,
       );
+      console.log("delete", "Imobilizado Excluído Com Sucesso!");
+
       res.status(200).json({ message: "Imobilizado Excluído Com Sucesso!" });
     } catch (err) {
       if (err.name == "MyExceptionDB") {
@@ -176,25 +202,25 @@ router.delete(
         });
       }
     }
-  }
+  },
 );
 /* ROTA CONSULTA POST imobilizados */
 router.post("/api/imobilizados", async function (req, res) {
   /*
-        	{
-        		"id_empresa":0, 
-        		"id_filial":0, 
-        		"codigo":0, 
-        		"descricao":"", 
-        		"grupo_cod":0, 
-        		"cc_cod":"", 
-        		"pagina":0, 
-        		"tamPagina":50, 
-        		"contador":"N", 
-        		"orderby":"", 
-        		"sharp":false 
-        	}
-        */
+                      	{
+                      		"id_empresa":0, 
+                      		"id_filial":0, 
+                      		"codigo":0, 
+                      		"descricao":"", 
+                      		"grupo_cod":0, 
+                      		"cc_cod":"", 
+                      		"pagina":0, 
+                      		"tamPagina":50, 
+                      		"contador":"N", 
+                      		"orderby":"", 
+                      		"sharp":false 
+                      	}
+                      */
   try {
     const params = req.body;
     const lsRegistros = await imobilizadoSrv.getImobilizados(params);
@@ -215,6 +241,5 @@ router.post("/api/imobilizados", async function (req, res) {
     }
   }
 });
-
 
 module.exports = router;

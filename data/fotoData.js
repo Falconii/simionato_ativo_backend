@@ -3,36 +3,36 @@ const db = require("../infra/database");
 const shared = require("../util/shared.js");
 
 /* GET CAMPOS */
-exports.getCampos = function(Foto) {
-    return [
-        Foto.id_empresa,
-        Foto.id_local,
-        Foto.id_inventario,
-        Foto.id_imobilizado,
-        Foto.id_pasta,
-        Foto.id_file,
-        Foto.file_name,
-        Foto.file_name_original,
-        Foto.id_usuario,
-        Foto.data,
-        Foto.destaque,
-        Foto.obs,
-        Foto.localizacao,
-        Foto.user_insert,
-        Foto.user_update,
-    ];
+exports.getCampos = function (Foto) {
+  return [
+    Foto.id_empresa,
+    Foto.id_local,
+    Foto.id_inventario,
+    Foto.id_imobilizado,
+    Foto.id_pasta,
+    Foto.id_file,
+    Foto.file_name,
+    Foto.file_name_original,
+    Foto.id_usuario,
+    Foto.data,
+    Foto.destaque,
+    Foto.obs,
+    Foto.localizacao,
+    Foto.user_insert,
+    Foto.user_update,
+  ];
 };
 /* CRUD GET */
-exports.getFoto = function(
-    id_empresa,
-    id_local,
-    id_inventario,
-    id_imobilizado,
-    id_pasta,
-    id_file,
-    file_name,
+exports.getFoto = function (
+  id_empresa,
+  id_local,
+  id_inventario,
+  id_imobilizado,
+  id_pasta,
+  id_file,
+  file_name,
 ) {
-    strSql = ` select   
+  strSql = ` select   
 			   foto.id_empresa as  id_empresa  
 			,  foto.id_local as  id_local  
 			,  foto.id_inventario as  id_inventario  
@@ -54,97 +54,103 @@ exports.getFoto = function(
              INNER JOIN imobilizados imo on imo.id_empresa = foto.id_empresa and imo.id_filial = foto.id_local and imo.codigo = foto.id_imobilizado
              INNER JOIN usuarios     usu on usu.id_empresa = usu.id_empresa  and usu.id = foto.id_usuario 	     
 			 where foto.id_empresa = ${id_empresa} and  foto.id_local = ${id_local} and  foto.id_inventario = ${id_inventario} and  foto.id_imobilizado = ${id_imobilizado} and  foto.id_pasta = '${id_pasta}' and  foto.id_file = '${id_file}' and  foto.file_name = '${file_name}'  `;
-    console.log("Buscando a foto: ", strSql);
-    return db.oneOrNone(strSql);
+  console.log("Buscando a foto: ", strSql);
+  return db.oneOrNone(strSql);
 };
 /* CRUD GET ALL*/
-exports.getFotos = function(params) {
-    if (params) {
-        where = "";
-        orderby = "";
-        paginacao = "";
+exports.getFotos = function (params) {
+  if (params) {
+    where = "";
+    orderby = "";
+    paginacao = "";
 
-        // console.log("params", params);
+    // console.log("params", params);
 
-        if (params.orderby == "")
-            orderby =
-            "id_empresa,id_empresa,id_local,id_inventario,id_imobilizado,id_pasta,id_file,file_name";
-        if (params.orderby == "Imobilizado")
-            orderby =
-            "id_empresa,id_empresa,id_local,id_inventario,id_imobilizado,id_pasta,id_file,file_name";
+    if (params.orderby == "")
+      orderby =
+        "id_empresa,id_empresa,id_local,id_inventario,id_imobilizado,id_pasta,id_file,file_name";
+    if (params.orderby == "Imobilizado")
+      orderby =
+        "id_empresa,id_empresa,id_local,id_inventario,id_imobilizado,id_pasta,id_file,file_name";
 
-        if (orderby != "") orderby = " order by " + orderby;
-        if (params.id_empresa !== 0) {
-            if (where != "") where += " and ";
-            where += `foto.id_empresa = ${params.id_empresa} `;
-        }
-        if (params.id_local !== 0) {
-            if (where != "") where += " and ";
-            where += `foto.id_local = ${params.id_local} `;
-        }
-        if (params.id_inventario !== 0) {
-            if (where != "") where += " and ";
-            where += `foto.id_inventario = ${params.id_inventario} `;
-        }
-        if (params.id_imobilizado !== 0) {
-            if (where != "") where += " and ";
-            where += `foto.id_imobilizado = ${params.id_imobilizado} `;
-        }
-        if (params.imobilizados) {
-            if (params.imobilizados.length > 0) {
-                const imobilizados = params.imobilizados;
+    if (orderby != "") orderby = " order by " + orderby;
+    if (params.id_empresa !== 0) {
+      if (where != "") where += " and ";
+      where += `foto.id_empresa = ${params.id_empresa} `;
+    }
+    if (params.id_local !== 0) {
+      if (where != "") where += " and ";
+      where += `foto.id_local = ${params.id_local} `;
+    }
+    if (params.id_inventario !== 0) {
+      if (where != "") where += " and ";
+      where += `foto.id_inventario = ${params.id_inventario} `;
+    }
+    if (params.id_imobilizado !== 0) {
+      if (where != "") where += " and ";
+      where += `foto.id_imobilizado = ${params.id_imobilizado} `;
+    }
+    if (params.imobilizados) {
+      if (params.imobilizados.length > 0) {
+        const imobilizados = params.imobilizados;
 
-                let filtro = imobilizados.toString();
+        let filtro = imobilizados.toString();
 
-                if (where != "") where += " and ";
+        if (where != "") where += " and ";
 
-                where += `foto.id_imobilizado in ( ${filtro} )`;
-            }
-        }
+        where += `foto.id_imobilizado in ( ${filtro} )`;
+      }
+    }
+    if (params.localizacao) {
+      if (params.localizacao != "") {
+        if (where != "") where += " and ";
 
-        if (params.id_pasta.trim() !== "") {
-            if (where != "") where += " and ";
-            if (params.sharp) {
-                where += `foto.id_pasta = '${params.id_pasta}' `;
-            } else {
-                where += `foto.id_pasta like '%${params.id_pasta.trim()}%' `;
-            }
-        }
-        if (params.id_file.trim() !== "") {
-            if (where != "") where += " and ";
-            if (params.sharp) {
-                where += `foto.id_file = '${params.id_file}' `;
-            } else {
-                where += `foto.id_file like '%${params.id_file.trim()}%' `;
-            }
-        }
-        if (params.file_name.trim() !== "") {
-            if (where != "") where += " and ";
-            if (params.sharp) {
-                where += `foto.file_name = '${params.file_name}' `;
-            } else {
-                where += `foto.file_name like '%${params.file_name.trim()}%' `;
-            }
-        }
-        if (params.destaque.trim() !== "") {
-            if (where != "") where += " and ";
-            where += `foto.destaque = '${params.destaque}' `;
-        }
+        where += `foto.localizacao = '${params.localizacao.trim()}' `;
+      }
+    }
+    if (params.id_pasta.trim() !== "") {
+      if (where != "") where += " and ";
+      if (params.sharp) {
+        where += `foto.id_pasta = '${params.id_pasta}' `;
+      } else {
+        where += `foto.id_pasta like '%${params.id_pasta.trim()}%' `;
+      }
+    }
+    if (params.id_file.trim() !== "") {
+      if (where != "") where += " and ";
+      if (params.sharp) {
+        where += `foto.id_file = '${params.id_file}' `;
+      } else {
+        where += `foto.id_file like '%${params.id_file.trim()}%' `;
+      }
+    }
+    if (params.file_name.trim() !== "") {
+      if (where != "") where += " and ";
+      if (params.sharp) {
+        where += `foto.file_name = '${params.file_name}' `;
+      } else {
+        where += `foto.file_name like '%${params.file_name.trim()}%' `;
+      }
+    }
+    if (params.destaque.trim() !== "") {
+      if (where != "") where += " and ";
+      where += `foto.destaque = '${params.destaque}' `;
+    }
 
-        if (params.pagina != 0) {
-            paginacao = `limit ${params.tamPagina} offset ((${params.pagina} - 1) * ${params.tamPagina})`;
-        }
+    if (params.pagina != 0) {
+      paginacao = `limit ${params.tamPagina} offset ((${params.pagina} - 1) * ${params.tamPagina})`;
+    }
 
-        if (where != "") where = " where " + where;
-        if (params.contador == "S") {
-            sqlStr = `SELECT COALESCE(COUNT(*),0) as total 
+    if (where != "") where = " where " + where;
+    if (params.contador == "S") {
+      sqlStr = `SELECT COALESCE(COUNT(*),0) as total 
 				  FROM fotos foto   
                   INNER JOIN imobilizados imo on imo.id_empresa = foto.id_empresa and imo.id_filial = foto.id_local  and imo.codigo = foto.id_imobilizado
                   INNER JOIN usuarios     usu on usu.id_empresa = usu.id_empresa  and usu.id = foto.id_usuario    
 				  ${where} `;
-            return db.one(sqlStr);
-        } else {
-            strSql = `select   
+      return db.one(sqlStr);
+    } else {
+      strSql = `select   
 			   foto.id_empresa as  id_empresa  
 			,  foto.id_local as  id_local  
 			,  foto.id_inventario as  id_inventario  
@@ -166,10 +172,10 @@ exports.getFotos = function(params) {
             INNER JOIN imobilizados imo on imo.id_empresa = foto.id_empresa and imo.id_filial = foto.id_local  and imo.codigo = foto.id_imobilizado
             INNER JOIN usuarios     usu on usu.id_empresa = usu.id_empresa  and usu.id = foto.id_usuario 
 			${where} 			${orderby} ${paginacao} `;
-            return db.manyOrNone(strSql);
-        }
-    } else {
-        strSql = `select   
+      return db.manyOrNone(strSql);
+    }
+  } else {
+    strSql = `select   
 			   foto.id_empresa as  id_empresa  
 			,  foto.id_local as  id_local  
 			,  foto.id_inventario as  id_inventario  
@@ -186,12 +192,12 @@ exports.getFotos = function(params) {
 			,  foto.user_insert as  user_insert  
 			,  foto.user_update as  user_update    
 			FROM fotos foto			     `;
-        return db.manyOrNone(strSql);
-    }
+    return db.manyOrNone(strSql);
+  }
 };
 /* CRUD - INSERT */
-exports.insertFoto = function(foto) {
-    strSql = `insert into fotos (
+exports.insertFoto = function (foto) {
+  strSql = `insert into fotos (
 		     id_empresa 
 		 ,   id_local 
 		 ,   id_inventario 
@@ -226,11 +232,11 @@ exports.insertFoto = function(foto) {
 		 ,    ${foto.user_update} 
 		 ) 
  returning * `;
-    return db.oneOrNone(strSql);
+  return db.oneOrNone(strSql);
 };
 /* CRUD - UPDATE */
-exports.updateFoto = function(foto) {
-    strSql = `update   fotos set  
+exports.updateFoto = function (foto) {
+  strSql = `update   fotos set  
 		     file_name_original = '${foto.file_name_original}' 
  		 ,   id_usuario = ${foto.id_usuario} 
  		 ,   data =  ${shared.formatDateYYYYMMDD(foto.data)} 
@@ -247,16 +253,16 @@ exports.updateFoto = function(foto) {
        foto.id_file
      }' and  file_name = '${foto.file_name}'  returning * `;
 
-    return db.oneOrNone(strSql);
+  return db.oneOrNone(strSql);
 };
 
-exports.atualizaFoto = function(
-    foto,
-    old_id_pasta,
-    old_id_file,
-    old_file_name,
+exports.atualizaFoto = function (
+  foto,
+  old_id_pasta,
+  old_id_file,
+  old_file_name,
 ) {
-    strSql = `update   fotos set  
+  strSql = `update   fotos set  
 		     file_name_original = '${foto.file_name_original}' 
  		 ,   id_usuario = ${foto.id_usuario} 
  		 ,   data =  ${shared.formatDateYYYYMMDD(foto.data)} 
@@ -273,36 +279,36 @@ exports.atualizaFoto = function(
      } and  id_inventario = ${foto.id_inventario} and  id_imobilizado = ${
        foto.id_imobilizado
      } and  id_pasta = '${old_id_pasta}' and  id_file = '${old_id_file}' and  file_name = '${old_file_name}'  returning * `;
-    console.log("Atualizando a foto: ", strSql);
-    return db.oneOrNone(strSql);
+  console.log("Atualizando a foto: ", strSql);
+  return db.oneOrNone(strSql);
 };
 
-exports.updateFotoFileName = function(foto, new_name) {
-    console.log("Foto:", foto, "new_name", new_name);
-    strSql = `update   fotos set  
+exports.updateFotoFileName = function (foto, new_name) {
+  console.log("Foto:", foto, "new_name", new_name);
+  strSql = `update   fotos set  
 		     file_name = '${new_name}'  
  		 where id_empresa = ${foto.id_empresa} and  id_local = ${foto.id_local} and  id_inventario = ${foto.id_inventario} and  id_imobilizado = ${foto.id_imobilizado} and  id_pasta = '${foto.id_pasta}' and  id_file = '${foto.id_file}' and  file_name = '${foto.file_name}'  returning * `;
-    console.log("updateFotoFileName", strSql);
-    return db.oneOrNone(strSql);
+  console.log("updateFotoFileName", strSql);
+  return db.oneOrNone(strSql);
 };
 
 /* CRUD - DELETE */
-exports.deleteFoto = function(
-    id_empresa,
-    id_local,
-    id_inventario,
-    id_imobilizado,
-    id_pasta,
-    id_file,
-    file_name,
+exports.deleteFoto = function (
+  id_empresa,
+  id_local,
+  id_inventario,
+  id_imobilizado,
+  id_pasta,
+  id_file,
+  file_name,
 ) {
-    strSql = `delete from fotos 
+  strSql = `delete from fotos 
 		 where id_empresa = ${id_empresa} and  id_local = ${id_local} and  id_inventario = ${id_inventario} and  id_imobilizado = ${id_imobilizado} and  id_pasta = '${id_pasta}' and  id_file = '${id_file}' and  file_name = '${file_name}'  `;
-    return db.oneOrNone(strSql);
+  return db.oneOrNone(strSql);
 };
 
-exports.getFotosTempo = function() {
-    strSql = `select 
+exports.getFotosTempo = function () {
+  strSql = `select 
                foto.id_empresa as  id_empresa  
 			,  foto.id_local as  id_local  
 			,  foto.id_inventario as  id_inventario  
@@ -326,6 +332,6 @@ exports.getFotosTempo = function() {
                 inner join fotos_drive ft on ft.id_empresa = foto.id_empresa and ft.id_filial = foto.id_local and foto.id_file = ft.id_file
                 where foto.id_empresa = 1 and foto.id_local = 14 and foto.id_inventario = 10 and foto.id_pasta = '1Oc4S6bEQy_TPPPSsxzl1gYkOs8wvwuWq' and foto.file_name <> ft.name_file
                 order by foto.id_empresa,foto.id_local,foto.id_inventario,foto.id_imobilizado `;
-    console.log("strSql", strSql);
-    return db.manyOrNone(strSql);
+  console.log("strSql", strSql);
+  return db.manyOrNone(strSql);
 };

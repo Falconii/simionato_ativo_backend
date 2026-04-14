@@ -1,4 +1,5 @@
 const deparaSrv = require("../service/deparaService");
+const fotoSrv = require("../service/fotoService");
 const erroDB = require("../util/userfunctiondb");
 const shared = require("../util/shared");
 /* REGRA DE NEGOCIO de_para */
@@ -38,6 +39,32 @@ exports.depara_Inclusao = async function(depara) {
             throw new erroDB.UserException("Regra de negócio", [{
                 tabela: "DEPARA",
                 message: `"INCLUSÃO" Ativo "PARA" - Já Foi Incluído!`,
+            }, ]);
+        }
+
+        const parFoto = {
+            "id_empresa": depara.id_empresa,
+            "id_local": depara.id_local,
+            "id_inventario": depara.id_inventario,
+            "id_imobilizado": depara.de,
+            "id_pasta": "",
+            "id_file": "",
+            "file_name": "",
+            "destaque": "N",
+            "localizacao": "D",
+            "pagina": 1,
+            "tamPagina": 50,
+            "contador": "N",
+            "orderby": "",
+            "sharp": false
+        }
+
+        const fotos = await fotoSrv.getFotos(parFoto);
+
+        if (fotos.length > 0) {
+            throw new erroDB.UserException("Regra de negócio", [{
+                tabela: "DEPARA",
+                message: `"INCLUSÃO" Ativo "DE" Possui Fotos No Dispositivo!`,
             }, ]);
         }
     } catch (err) {

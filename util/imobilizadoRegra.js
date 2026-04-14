@@ -1,5 +1,5 @@
 const imobilizadoSrv = require("../service/imobilizadoService");
-const imobilizadoinventarioService = require("../service/imobilizadoinventarioService");
+const imobilizadoinventarioService = require("../service/custom/imobilizadoinventarioService");
 const erroDB = require("../util/userfunctiondb");
 const shared = require("../util/shared");
 /* REGRA DE NEGOCIO imobilizados */
@@ -48,12 +48,18 @@ exports.imobilizado_Alteracao = async function (imobilizado) {
   return;
 };
 
-exports.imobilizado_Exclusao = async function (id_empresa, id_filial, codigo) {
+exports.imobilizado_Exclusao = async function (
+  id_empresa,
+  id_filial,
+  codigo,
+  id_inventario,
+) {
   try {
     const obj = await imobilizadoSrv.getImobilizado(
       id_empresa,
       id_filial,
       codigo,
+      id_inventario,
     );
     if (obj == null) {
       throw new erroDB.UserException("Regra de negócio", [
@@ -64,36 +70,19 @@ exports.imobilizado_Exclusao = async function (id_empresa, id_filial, codigo) {
       ]);
     }
 
-    param = {
-      id_empresa: id_empresa,
-      id_filial: id_filial,
-      id_inventario: 0,
-      id_imobilizado: codigo,
-      id_cc: "",
-      id_grupo: 0,
-      descricao: "",
-      status: 0,
-      new_cc: "",
-      new_codigo: 0,
-      id_usuario: 0,
-      origem: "",
-      condicao: 0,
-      book: "",
-      pagina: 0,
-      tamPagina: 50,
-      contador: "S",
-      orderby: "",
-      sharp: false,
-    };
-
     const invs =
-      await imobilizadoinventarioService.getImobilizadosinventarios(param);
+      await imobilizadoinventarioService.getExisteImoInventarioComMovimento(
+        id_empresa,
+        id_filial,
+        codigo,
+        id_inventario,
+      );
 
     if (invs.total > 0) {
       throw new erroDB.UserException("Regra de negócio", [
         {
           tabela: "IMOBILIZADO",
-          message: `"EXCLUSÃO" Existem Inventários Associados A Este Ativo!`,
+          message: `"EXCLUSÃO" Existem De  Associados Ou Fotos Associados A Este Ativo!`,
         },
       ]);
     }

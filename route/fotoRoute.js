@@ -186,21 +186,22 @@ router.delete(
 /* ROTA CONSULTA POST fotos */
 router.post("/api/fotos", async function(req, res) {
     /*
-                                                                                                                                	{
-                                                                                                                                		"id_empresa":0, 
-                                                                                                                                		"id_local":0, 
-                                                                                                                                		"id_inventario":0, 
-                                                                                                                                		"id_imobilizado":0, 
-                                                                                                                                		"id_pasta":"", 
-                                                                                                                                		"id_file":"", 
-                                                                                                                                		"file_name":"", 
-                                                                                                                                		"destaque":"N", 
-                                                                                                                                		"pagina":0, 
-                                                                                                                                		"tamPagina":50, 
-                                                                                                                                		"contador":"N", 
-                                                                                                                                		"orderby":"", 
-                                                                                                                                		"sharp":false 
-                                                                                                                                	}
+    {
+        "id_empresa":0, 
+        "id_local":0, 
+        "id_inventario":0, 
+        "id_imobilizado":0, 
+        "id_pasta":"", 
+        "id_file":"", 
+        "file_name":"", 
+        "destaque":"N", 
+        "localizacao":"N"
+        "pagina":0, 
+        "tamPagina":50, 
+        "contador":"N", 
+        "orderby":"", 
+        "sharp":false 
+    }
                                                                                                                                 */
     try {
         const params = req.body;
