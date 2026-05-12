@@ -10,13 +10,13 @@ exports.getImobilizadoinventario = async function (
   id_empresa,
   id_filial,
   id_inventario,
-  id_imobilizado
+  id_imobilizado,
 ) {
   return imobilizadoinventarioData.getImobilizadoinventario(
     id_empresa,
     id_filial,
     id_inventario,
-    id_imobilizado
+    id_imobilizado,
   );
 };
 
@@ -26,7 +26,7 @@ exports.getImobilizadoinventarioExisteNew = async function (
   id_inventario,
   id_imobilizado,
   new_codigo,
-  inclusao
+  inclusao,
 ) {
   return imobilizadoinventarioData.getImobilizadoinventarioExisteNew(
     id_empresa,
@@ -34,7 +34,7 @@ exports.getImobilizadoinventarioExisteNew = async function (
     id_inventario,
     id_imobilizado,
     new_codigo,
-    inclusao
+    inclusao,
   );
 };
 
@@ -55,10 +55,10 @@ exports.insertImobilizadoinventario = async function (imobilizadoinventario) {
     validacao.Validacao(
       TABELA,
       imobilizadoinventario,
-      parametros.imobilizadosinventarios()
+      parametros.imobilizadosinventarios(),
     );
     return imobilizadoinventarioData.insertImobilizadoinventario(
-      imobilizadoinventario
+      imobilizadoinventario,
     );
   } catch (err) {
     //console.log("DEU ERRO : insertImobilizadoinventario", err);
@@ -72,10 +72,10 @@ exports.updateImobilizadoinventario = async function (imobilizadoinventario) {
     validacao.Validacao(
       TABELA,
       imobilizadoinventario,
-      parametros.imobilizadosinventarios()
+      parametros.imobilizadosinventarios(),
     );
     return imobilizadoinventarioData.updateImobilizadoinventario(
-      imobilizadoinventario
+      imobilizadoinventario,
     );
   } catch (err) {
     throw new erroDB.UserException(err.erro, err);
@@ -95,20 +95,20 @@ exports.deleteImobilizadoinventario = async function (
   id_empresa,
   id_filial,
   id_inventario,
-  id_imobilizado
+  id_imobilizado,
 ) {
   try {
     await regras.imobilizadoinventario_Exclusao(
       id_empresa,
       id_filial,
       id_inventario,
-      id_imobilizado
+      id_imobilizado,
     );
     return imobilizadoinventarioData.deleteImobilizadoinventario(
       id_empresa,
       id_filial,
       id_inventario,
-      id_imobilizado
+      id_imobilizado,
     );
   } catch (err) {
     throw new erroDB.UserException(err.erro, err);
