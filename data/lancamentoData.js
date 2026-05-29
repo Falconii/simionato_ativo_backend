@@ -233,6 +233,20 @@ exports.updateLancamento = function (lancamento) {
   console.log("updateLancamento", strSql);
   return db.oneOrNone(strSql);
 };
+
+exports.updateLancamentoObs = function (lancamento) {
+  strSql = `update   lancamentos set   
+ 		     obs = '${lancamento.obs}' 
+ 		 ,   user_update = ${lancamento.user_update} 
+ 		 where id_empresa = ${lancamento.id_empresa} and  id_filial = ${
+       lancamento.id_filial
+     } and  id_inventario = ${lancamento.id_inventario} and  id_imobilizado = ${
+       lancamento.id_imobilizado
+     }  returning * `;
+  console.log("updateLancamento", strSql);
+  return db.oneOrNone(strSql);
+};
+
 /* CRUD - DELETE */
 exports.deleteLancamento = function (
   id_empresa,

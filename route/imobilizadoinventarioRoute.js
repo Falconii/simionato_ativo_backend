@@ -151,25 +151,25 @@ router.delete(
 /* ROTA CONSULTA POST imobilizadosinventarios */
 router.post("/api/imobilizadosinventarios", async function (req, res) {
   /*
-                                                                      	{
-                                                                      		"id_empresa":0, 
-                                                                      		"id_filial":0, 
-                                                                      		"id_inventario":0, 
-                                                                      		"id_imobilizado":0, 
-                                                                      		"id_cc":"", 
-                                                                      		"id_grupo":0, 
-                                                                      		"status":0, 
-                                                                      		"new_cc":"", 
-                                                                      		"new_codigo":0, 
-                                                                      		"id_usuario":0, 
-                                                                            "id_principal":0,
-                                                                      		"pagina":0, 
-                                                                      		"tamPagina":50, 
-                                                                      		"contador":"N", 
-                                                                      		"orderby":"", 
-                                                                      		"sharp":false 
-                                                                      	}
-                                                                      */
+                                                                        	{
+                                                                        		"id_empresa":0, 
+                                                                        		"id_filial":0, 
+                                                                        		"id_inventario":0, 
+                                                                        		"id_imobilizado":0, 
+                                                                        		"id_cc":"", 
+                                                                        		"id_grupo":0, 
+                                                                        		"status":0, 
+                                                                        		"new_cc":"", 
+                                                                        		"new_codigo":0, 
+                                                                        		"id_usuario":0, 
+                                                                              "id_principal":0,
+                                                                        		"pagina":0, 
+                                                                        		"tamPagina":50, 
+                                                                        		"contador":"N", 
+                                                                        		"orderby":"", 
+                                                                        		"sharp":false 
+                                                                        	}
+                                                                        */
   try {
     const params = req.body;
     const lsRegistros =
@@ -242,12 +242,12 @@ router.post("/api/imobilizadosinventariosfotos", async function (req, res) {
 /* Anexar Produto No Inventario */
 router.post("/api/anexarprodutoinventario", async function (req, res) {
   /*
-                                                                              {
-                                                                                  "id_empresa":0, 
-                                                                                  "id_filial":0, 
-                                                                                  "id_inventario":0, 
-                                                                              }
-                                                                          */
+                                                                                {
+                                                                                    "id_empresa":0, 
+                                                                                    "id_filial":0, 
+                                                                                    "id_inventario":0, 
+                                                                                }
+                                                                            */
   try {
     const params = req.body;
     await imobilizadoinventarioSrv.anexarImobilizadoinventario(params);
@@ -298,26 +298,26 @@ router.post("/api/imobilizadosinventariosexcel", async function (req, res) {
   console.log("rota imobilizadosinventariosexcel");
   try {
     /*
-                                                                                                {
-                                                                                                "id_empresa":   1,
-                                                                                                "id_filial":   14,
-                                                                                                "id_inventario":   10,
-                                                                                                "id_imobilizado": 308,
-                                                                                                "id_cc":   "",
-                                                                                                "id_grupo":   0,
-                                                                                                "descricao":   "",
-                                                                                                "status":   1,
-                                                                                                "new_cc":   "",
-                                                                                                "new_codigo":   0,
-                                                                                                "id_usuario":   0,
-                                                                                                "origem":   "",
-                                                                                                "pagina":   1,
-                                                                                                "tamPagina":  20,
-                                                                                                "contador":   "N",
-                                                                                                "orderby":   "",
-                                                                                                "sharp":   false
-                                                                                                }
-                                                                                                */
+                                                                                                    {
+                                                                                                    "id_empresa":   1,
+                                                                                                    "id_filial":   14,
+                                                                                                    "id_inventario":   10,
+                                                                                                    "id_imobilizado": 308,
+                                                                                                    "id_cc":   "",
+                                                                                                    "id_grupo":   0,
+                                                                                                    "descricao":   "",
+                                                                                                    "status":   1,
+                                                                                                    "new_cc":   "",
+                                                                                                    "new_codigo":   0,
+                                                                                                    "id_usuario":   0,
+                                                                                                    "origem":   "",
+                                                                                                    "pagina":   1,
+                                                                                                    "tamPagina":  20,
+                                                                                                    "contador":   "N",
+                                                                                                    "orderby":   "",
+                                                                                                    "sharp":   false
+                                                                                                    }
+                                                                                                    */
     const params = req.body;
     console.log("parametros imobilizadosinventariosexcel", params);
 
@@ -365,26 +365,26 @@ router.post("/api/imobilizadosinventariosexcelv2", async function (req, res) {
   console.log("rota imobilizadosinventariosexcelv2");
   try {
     /*
-                                                                                                {
-                                                                                                "id_empresa":   1,
-                                                                                                "id_filial":   14,
-                                                                                                "id_inventario":   10,
-                                                                                                "id_imobilizado": 308,
-                                                                                                "id_cc":   "",
-                                                                                                "id_grupo":   0,
-                                                                                                "descricao":   "",
-                                                                                                "status":   1,
-                                                                                                "new_cc":   "",
-                                                                                                "new_codigo":   0,
-                                                                                                "id_usuario":   0,
-                                                                                                "origem":   "",
-                                                                                                "pagina":   1,
-                                                                                                "tamPagina":  20,
-                                                                                                "contador":   "N",
-                                                                                                "orderby":   "",
-                                                                                                "sharp":   false
-                                                                                                }
-                                                                                                */
+                                                                                                    {
+                                                                                                    "id_empresa":   1,
+                                                                                                    "id_filial":   14,
+                                                                                                    "id_inventario":   10,
+                                                                                                    "id_imobilizado": 308,
+                                                                                                    "id_cc":   "",
+                                                                                                    "id_grupo":   0,
+                                                                                                    "descricao":   "",
+                                                                                                    "status":   1,
+                                                                                                    "new_cc":   "",
+                                                                                                    "new_codigo":   0,
+                                                                                                    "id_usuario":   0,
+                                                                                                    "origem":   "",
+                                                                                                    "pagina":   1,
+                                                                                                    "tamPagina":  20,
+                                                                                                    "contador":   "N",
+                                                                                                    "orderby":   "",
+                                                                                                    "sharp":   false
+                                                                                                    }
+                                                                                                    */
     const params = req.body;
     console.log("parametros imobilizadosinventariosexcel", params);
     const inventario = await inventarioSrv.getInventario(
@@ -438,15 +438,15 @@ router.post("/api/alter_obs", async function (req, res) {
   console.log("rota alter_obs");
   try {
     /*
-                                    {
-                                    "id_empresa":   1,
-                                    "id_filial":   14,
-                                    "id_inventario":   10,
-                                    "id_imobilizado": 308,
-                                    "id_usuario":   16,
-                                    "obs": "Nova Observação"
-                                    }
-                                      */
+                                        {
+                                        "id_empresa":   1,
+                                        "id_filial":   14,
+                                        "id_inventario":   10,
+                                        "id_imobilizado": 308,
+                                        "id_usuario":   16,
+                                        "obs": "Nova Observação"
+                                        }
+                                          */
     const params = req.body;
     console.log("parametros alter_obs", params);
 
@@ -486,7 +486,7 @@ router.post("/api/alter_obs", async function (req, res) {
 
       lanca.obs = params.obs;
       lanca.user_update = params.id_usuario;
-      await lancamentoSrv.updateLancamento(lanca);
+      await lancamentoSrv.updateLancamentoObs(lanca);
 
       res.status(200).json({
         message: `Sucesso!`,
@@ -495,13 +495,13 @@ router.post("/api/alter_obs", async function (req, res) {
         origem: `${ativo.origem}`,
       });
       /*  const lsRegistros =
-                                                               await imobilizadoinventarioSrv.getImobilizadosinventarios(params);
-                                                             if (lsRegistros == null || lsRegistros.length == 0) {
-                                                               res.status(409).json({ message: "Nenhum Registro Encontrado!" });
-                                                             } else {
-                                                               await generateExcel.generateExcel(lsRegistros, inventario, complemento);
-                                                               res.status(200).json({ message: "Excel gerado com sucesso!" });
-                                                             } */
+                                                                     await imobilizadoinventarioSrv.getImobilizadosinventarios(params);
+                                                                   if (lsRegistros == null || lsRegistros.length == 0) {
+                                                                     res.status(409).json({ message: "Nenhum Registro Encontrado!" });
+                                                                   } else {
+                                                                     await generateExcel.generateExcel(lsRegistros, inventario, complemento);
+                                                                     res.status(200).json({ message: "Excel gerado com sucesso!" });
+                                                                   } */
     }
   } catch (err) {
     if (err.name === "MyExceptionDB") {

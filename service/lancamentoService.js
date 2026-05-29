@@ -43,6 +43,16 @@ exports.updateLancamento = async function (lancamento) {
     throw new erroDB.UserException(err.erro, err);
   }
 };
+
+exports.updateLancamentoObs = async function (lancamento) {
+  try {
+    validacao.Validacao(TABELA, lancamento, parametros.lancamentos());
+    return lancamentoData.updateLancamentoObs(lancamento);
+  } catch (err) {
+    throw new erroDB.UserException(err.erro, err);
+  }
+};
+
 //* CRUD - DELETE - SERVICE */
 exports.deleteLancamento = async function (
   id_empresa,
