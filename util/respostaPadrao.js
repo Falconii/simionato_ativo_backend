@@ -36,6 +36,11 @@ function validationError(res, missingFields) {
   return error(res, "Parâmetros obrigatórios ausentes", 400, missingFields);
 }
 
+function validationErrorMessage(res, message, missingFields) {
+  return error(res, message, 400, missingFields);
+}
+
+
 function notFound(res, entity, details = {}) {
   return error(res, `${entity} não encontrado`, 404, details);
 }
@@ -52,6 +57,7 @@ module.exports = {
   success,
   error,
   validationError,
+  validationErrorMessage,
   notFound,
   conflit,
   backenderror

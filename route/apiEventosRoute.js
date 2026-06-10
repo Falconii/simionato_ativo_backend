@@ -699,4 +699,101 @@ router.post("/novoativo", async function (req, res) {
   }
 });
 
+
+
+router.put("/alteracaodescricaoativo", async function (req, res) {
+  /*
+    {
+      "id_filial"  :14,   "Valores válidos 14 = COPPERSTEEL, 15 = INTELLI, 16 = TRES LAGOAS".
+      "codigo_ativo": 1,  
+      "descricao" : "Nova descrição",   
+    }    
+
+  */
+  console.log("Iniciando Processamento de Evento Alteração de Descrição do Ativo");
+  try {
+    
+    const id_empresa = req.id_empresa;
+    const id_usuario = req.id_usuario;
+    const id_filial = req.body.id_filial;
+    const codigo_ativo = req.body.codigo_ativo;
+    const descricao = req.body.descricao.toUpperCase();
+
+    // Validação
+    const camposObrigatorios = [
+      "id_filial",
+      "codigo_ativo",
+      "descricao",
+    ];
+    const camposAusentes = camposObrigatorios.filter(
+      (campo) => !req.body[campo]
+    );
+
+    if (!req.id_empresa) {
+      camposAusentes.push("id_empresa");
+    }
+
+    if (!req.id_usuario) {
+      camposAusentes.push("id_usuario");
+    }
+
+    if (camposAusentes.length > 0) {
+      return response.validationError(res, camposAusentes);
+    }
+
+    if (id_filial != 999) {
+      return response.error(res, "API Somente Para Local HOMOLOGAÇÃO - Filial 999");
+    }
+
+    if (descricao.trim() === "") {
+      return response.validationErrorMessage(res, "Descrição está vazio", ["descricao"]);
+    }
+
+    if (descricao.trim().length > 255) {
+      return response.validationErrorMessage(res, "Descrição Excede o Limite de 255 Caracteres", ["descricao"]);
+    }
+
+
+    // Empresa
+    const empresa = await empresaSrv.getEmpresa(id_empresa);
+    if (!empresa) {
+      return response.notFound(res, "Empresa", { id_empresa });
+    }
+    const local = await localSrv.getLocal(id_empresa, id_filial);
+    if (local == null) {
+      return response.notFound(res, "Local", { id_filial });
+    }
+    const imobilizado = await imobilizadoSrv.getImobilizado(
+      id_empresa,
+      id_filial,
+      codigo_ativo
+    );
+    if (imobilizado == null) {
+      return response.notFound(res, "Ativo", { codigo_ativo });
+    }
+
+    imobilizado.descricao = descricao;
+    imobilizado.user_update = id_usuario;
+
+    const alterado = await imobilizadoSrv.updateImobilizado(imobilizado);
+
+    if (alterado) {
+      return response.success(res, "Descrição do Ativo Alterada Com Sucesso", {
+        imobilizado: imobilizado,
+      });
+    } else {
+      return response.error(res, "Erro Ao Alterar Descrição do Ativo", {
+        imobilizado: imobilizado,
+      });
+    }
+  } catch (err) {
+    console.log("Erro no processamento do evento", err);
+    if (err.name == "MyExceptionDB") {
+      return response.error(res, message);
+    } else {
+      return response.backenderror(res, "err.message");
+    }
+  }
+});
+
 module.exports = router;
