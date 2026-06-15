@@ -234,6 +234,21 @@ exports.updateLancamento = function (lancamento) {
   return db.oneOrNone(strSql);
 };
 
+exports.changeImobilizado = function (lancamento,old_id_imobilizado) {
+  strSql = `update   lancamentos set  
+		     id_usuario     = ${lancamento.id_usuario} 
+ 		 ,   id_imobilizado = ${lancamento.id_imobilizado} 
+ 		 ,   user_update    = ${lancamento.user_update} 
+ 		 where id_empresa   = ${lancamento.id_empresa} and  id_filial = ${
+       lancamento.id_filial
+     } and  id_inventario   = ${lancamento.id_inventario} and  id_imobilizado = ${
+       old_id_imobilizado
+     }  returning * `;
+  console.log("updateLancamento", strSql);
+  return db.oneOrNone(strSql);
+};
+
+
 exports.updateLancamentoObs = function (lancamento) {
   strSql = `update   lancamentos set   
  		     obs = '${lancamento.obs}' 

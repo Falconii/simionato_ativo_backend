@@ -16,9 +16,6 @@ const valorSrv = require("../service/valorService");
 const erroDB = require("../util/userfunctiondb");
 const response = require("../util/respostaPadrao");
 const shared = require("../util/shared.js");
-const { autenticarToken } = require("../middleware/autenticartoken");
-
-router.use(autenticarToken);
 
 async function BaixaAtivo(imobilizado, imobilizadoinventario, lancamento) {
   if (lancamento != null) {

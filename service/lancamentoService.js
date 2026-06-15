@@ -44,6 +44,17 @@ exports.updateLancamento = async function (lancamento) {
   }
 };
 
+
+exports.updateChangeImobilizado = async function (lancamento,para) {
+  try {
+    return lancamentoData.changeImobilizado(lancamento,para);
+  } catch (err) {
+    throw new erroDB.UserException(err.erro, err);
+  }
+};
+
+
+
 exports.updateLancamentoObs = async function (lancamento) {
   try {
     validacao.Validacao(TABELA, lancamento, parametros.lancamentos());

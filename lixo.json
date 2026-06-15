@@ -1,20 +1,21 @@
-[
-  {
-    "id_empresa": 1,
-    "id_filial": 15,
-    "id_inventario": 11,
-    "id_imobilizado": 10,
-    "id_usuario": 42,
-    "id_lanca": 17875,
-    "obs": "MICROSCÓPIO OLYMPUS DIGITAL MOD: CBC N/S: 252055 (INTERNO N° MC-01) COM FONTE OLYMPUS VOLT:100/115(MATRIZ CQ LABORATÓRIO)",
-    "dtlanca": "2025-12-10",
-    "estado": 4,
-    "new_codigo": 5019,
-    "new_cc": "11-8",
-    "condicao": 1,
-    "book": "N",
-    "user_insert": 1,
-    "user_update": 200,
-    "obs_old": "MICROSCÓPIO OLYMPUS DIGITAL MOD: CBC N/S: 252055 (INTERNO N° MC-01) COM FONTE OLYMPUS VOLT:100/115(MATRIZ CQ LABORATÓRIO)"
-  }
-]
+{
+"select * from auditorias where id_imobilizado = 909286 and escopo = 'imobilizados' and acao = 'delete'": [
+	{
+		"id_empresa" : 1,
+		"id_filial" : 15,
+		"id_inventario" : 0,
+		"id_imobilizado" : 909286,
+		"id" : 82841,
+		"dtacao" : "2026-05-29T11:05:37.455Z",
+		"acao" : "delete",
+		"escopo" : "imobilizados",
+		"id_usuario" : 29,
+		"histo_antes" : "[{\"id_empresa\":1,\"id_filial\":15,\"codigo\":909286,\"descricao\":\"DISPOSITIVO FATIADOR DE ISOLAÇÃO E COBERTURA DOS CABOS ISOLADOS COM PAINEL (NOVA UNIDADE MULTIPLEX I SALA DE ENSAIOS ELÉTRICOS)\",\"cod_grupo\":6,\"cod_cc\":\"14-20\",\"nfe\":\"\",\"serie\":\"\",\"item\":\"\",\"origem\":\"M\",\"condicao\":1,\"apelido\":\"PROVA DE CORPO\",\"user_insert\":0,\"user_update\":29,\"principal\":0}]",
+		"histo_atual" : "",
+		"user_insert" : 0,
+		"user_update" : 29
+	}
+]}
+
+
+{\"id_empresa\":1,\"id_filial\":15,\"codigo\":909286,\"descricao\":\"DISPOSITIVO FATIADOR DE ISOLAÇÃO E COBERTURA DOS CABOS ISOLADOS COM PAINEL (NOVA UNIDADE MULTIPLEX I SALA DE ENSAIOS ELÉTRICOS)\",\"cod_grupo\":6,\"cod_cc\":\"14-20\",\"nfe\":\"\",\"serie\":\"\",\"item\":\"\",\"origem\":\"M\",\"condicao\":1,\"apelido\":\"PROVA DE CORPO\",\"user_insert\":0,\"user_update\":29,\"principal\":0}

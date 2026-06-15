@@ -489,6 +489,100 @@ async function funcaoAjusta421(){
 }
 
 
+async function processaUploadFotoWebPasta(req) {
+  console.log("📥 [processaUploadFotoWebPasta] Iniciando processamento...");
+
+  // Extrai dados
+
+   const foto = req.body.foto ? JSON.parse(req.body.foto) : {};
+  const {
+    id_usuario 
+  } = req.body;
+
+  
+  
+  fotoSaved = null;
+
+  // Autenticação Google
+  const params = await funcoes.loadCredencials(foto.id_empresa);
+  const oauth2Client = funcoes.getoauth2Client(params);
+  const driveService = google.drive({ version: "v3", auth: oauth2Client });
+
+  // Inventário
+  const inventario = await inventarioSrv.getInventario(foto.id_empresa, foto.id_local, foto.id_inventario);
+
+  const folder_id = inventario.folder_id;
+
+  const file_name = foto.file_name.replace(".png", ".jpg");
+
+  const file_name_foto_upload = req.file.originalname;
+
+  // Monta Objeto Foto
+ let nova_foto = {
+      "id_empresa" 			 	 : foto.id_empresa, 
+      "id_local" 			 		 : foto.id_local,
+      "id_inventario" 		 : foto.id_inventario,
+      "id_imobilizado" 		 : foto.id_imobilizado,
+      "id_pasta" 			 		 : folder_id, 
+      "id_file" 			 		 : foto.id_file,
+      "file_name" 			 	 : foto.file_name.replace(".png", ".jpg"),
+      "file_name_original" : foto.file_name_originalS,
+      "id_usuario" 			 	 : foto.id_usuario,
+      "data" 				 		   : foto.data,
+      "destaque" 			 		 : foto.destaque,
+      "obs" 				 		   : foto.obs,
+      "localizacao"		     : foto.localizacao,
+      "user_insert" 		 	 : id_usuario, 
+      "user_update"		 		 : 0
+  }
+
+  //Verifica se foto já existe na pasta nova do Drive para evitar duplicidade
+  let foto_pasta_nova = await fotoSrv.getFoto(nova_foto.id_empresa, nova_foto.id_local, nova_foto.id_inventario, nova_foto.id_imobilizado, nova_foto.id_pasta, nova_foto.id_file, nova_foto.file_name);
+
+  if (foto_pasta_nova !== null){  
+     return {"erro" : "Foto Nova já existe no banco de dados, operação de upload ignorada", "message": "Foto Nova já existe no banco de dados, operação de upload ignorada"};
+  }
+
+
+  // Verifica e exclui arquivo anterior do Drive
+  /* let existeDrive = false;
+  if (id_file && id_file.trim() !== "") {
+    try {
+      const checkFile = await funcoes.existFile(driveService, id_file);
+      existeDrive = checkFile.result;
+    } catch (err) {
+      existeDrive = false;
+    }
+
+    if (existeDrive) {
+      await funcoes.deleteFile(driveService, id_file);
+      console.log("🗑️ Arquivo antigo do Drive excluído");
+    }
+  } */
+
+
+  // Upload do novo arquivo
+  const saved = await funcoes.saveFile(driveService,file_name_foto_upload, file_name, folder_id);
+  nova_foto.id_file = saved.fileId;
+  nova_foto.file_name = file_name;
+  nova_foto.id_pasta = folder_id;
+  nova_foto.localizacao = 'N';
+  
+
+  console.log("-->",nova_foto)
+
+  fotoSaved = await fotoSrv.insertFoto(nova_foto);
+
+   try {
+    fs.unlinkSync(`./fotos/${file_name_foto_upload}`);
+  } catch (err) {
+    console.error("⚠️ Erro ao deletar arquivo local:", err);
+  }
+  
+  return  {"erro" : "", "message": "Foto processada com sucesso", "foto": fotoSaved};
+}
+
+
 module.exports = {
-  processaUploadFotoDisp,processaUploadFotoWeb,sincronizarFileName,copiarArquivo,getAtivos421,funcaoAjusta421
+  processaUploadFotoDisp,processaUploadFotoWeb,sincronizarFileName,copiarArquivo,getAtivos421,funcaoAjusta421,processaUploadFotoWebPasta
 };

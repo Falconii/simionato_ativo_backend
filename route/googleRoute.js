@@ -636,6 +636,8 @@ router.get(
         
        const newFoto = await fotodriveSrv.insertFotoDrive(foto);
 
+       console.log("Foto ID",newFoto.id_file);
+
       }); 
 
       res.status(200).json(response);
@@ -831,6 +833,87 @@ router.post(
       }
     }
   }
+);
+
+router.post(
+  "/api/uploadpastafalconi",uploadFotosV2.single("file"),async (req, res) => {
+    
+    try {
+
+        console.log("Entrei Na Rota uploadpastafalconi!");
+
+        const foto = req.body.foto ? JSON.parse(req.body.foto) : {};
+
+        if (!foto) {
+          return response.validationError(res, ["foto"]);
+        }
+
+        const id_usuario     =  req.body.id_usuario;
+        
+
+        // 2. Arquivo enviado no campo "file"
+        const arquivo = req.file;
+
+        console.log("JSON recebido:", foto);
+
+        console.log("Arquivo recebido:", arquivo);
+
+        // 3. Validação
+        const camposObrigatorios = [
+            "id_usuario",
+            "foto"
+        ];
+
+        const camposAusentes = camposObrigatorios.filter(campo => !req.body[campo]);
+
+        if (camposAusentes.length > 0) {
+            return response.validationError(res, camposAusentes);
+        }
+
+     
+    // Empresa
+    const empresa = await empresaSrv.getEmpresa(foto.id_empresa);
+    if (!empresa) {
+      return response.notFound(res, "Empresa", foto.id_empresa );
+    }
+
+    const local = await localSrv.getLocal(foto.id_empresa, foto.id_local);
+    if (local == null) {
+      return response.notFound(res, "Local",  foto.id_local );
+      }
+
+    const inventario = await inventarioSrv.getInventario(foto.id_empresa, foto.id_local, foto.id_inventario);
+    if (inventario == null) {
+      return response.notFound(res, "Inventário",  foto.id_inventario );
+    }
+
+    const fotodb = await fotoSrv.getFoto(foto.id_empresa, foto.id_local, foto.id_inventario, foto.id_imobilizado, foto.id_pasta,foto.id_file, foto.file_name);
+
+    if (fotodb == null) {
+      return response.notFound(res, "Foto", { id_file: foto.id_file, file_name: foto.file_name });
+    }
+    
+    const resultado = await fotoController.processaUploadFotoWebPasta(req);
+
+      res.status(200).json({
+        code: "200",
+        message: resultado.message,
+      }); 
+
+    } catch (err) 
+    {
+      if (err.name === "MyExceptionDB") {
+        res.status(409).json(err);
+      } else {
+        res.status(500).json({
+          erro: "BACK-END",
+          tabela: "fotos",
+          message: err.message
+        });
+      }
+    }
+  }
+    
 );
 
 
