@@ -916,7 +916,71 @@ router.post(
     
 );
 
+/*
 
+   Sincronização dos nome de fotos do DB com Google Drive
+   Considerando arquivo: fotos_drive. Este deverá estar atualizado para a pasta que estiver sendo sincronizada.
+
+*/
+
+router.post(
+  "/api/sincronizarpasta",async (req, res) => {
+    
+    try {
+
+       
+        //Validação
+        const camposObrigatorios = [
+            "id_empresa",
+            "id_local",
+            "id_inventario",
+            "pasta",
+            "id_usuario",
+        ];
+
+        const camposAusentes = camposObrigatorios.filter(campo => !req.body[campo]);
+
+        if (camposAusentes.length > 0) {
+            return response.validationError(res, camposAusentes);
+        }
+
+     
+        // Empresa
+        const empresa = await empresaSrv.getEmpresa(foto.id_empresa);
+        if (!empresa) {
+          return response.notFound(res, "Empresa", foto.id_empresa );
+        }
+
+        const local = await localSrv.getLocal(foto.id_empresa, foto.id_local);
+        if (local == null) {
+          return response.notFound(res, "Local",  foto.id_local );
+          }
+
+        const inventario = await inventarioSrv.getInventario(foto.id_empresa, foto.id_local, foto.id_inventario);
+        if (inventario == null) {
+          return response.notFound(res, "Inventário",  foto.id_inventario );
+        }
+
+        res.status(200).json({
+          code: "200",
+          message: resultado.message,
+        }); 
+
+    } catch (err) 
+    {
+      if (err.name === "MyExceptionDB") {
+        res.status(409).json(err);
+      } else {
+        res.status(500).json({
+          erro: "BACK-END",
+          tabela: "fotos",
+          message: err.message
+        });
+      }
+    }
+  }
+    
+);
 
 
 module.exports = router;
