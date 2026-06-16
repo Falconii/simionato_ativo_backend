@@ -7,7 +7,7 @@ function success(res, message, data = {}, code = 200) {
   });
 }
 
-function error(res, message, code = 400, details = null) {
+function error(res, message,  details = null, code = 400) {
   const response = {
     status: "error",
     code,

@@ -16,6 +16,8 @@ const valorSrv = require("../service/valorService");
 const erroDB = require("../util/userfunctiondb");
 const response = require("../util/respostaPadrao");
 const shared = require("../util/shared.js");
+const { autenticarToken} = require('../middleware/autenticartoken');
+router.use(autenticarToken); 
 
 async function BaixaAtivo(imobilizado, imobilizadoinventario, lancamento) {
   if (lancamento != null) {
@@ -152,6 +154,7 @@ router.post("/trocarsituacaocc", async function (req, res) {
       codigo_ativo
     );
 
+
     let lancamento = await lancamentoSrv.getLancamento(
       id_empresa,
       id_filial,
@@ -178,9 +181,7 @@ router.post("/trocarsituacaocc", async function (req, res) {
         }
       } else {
         console.log("Ativo Não Esta Associado Ao Inventário");
-        return response.error(res, "Ativo Não Esta Associado Ao Inventário", {
-          imobilizado,
-        });
+        return response.error(res, "Ativo Não Esta Associado Ao Inventário", {codigo_ativo});
       }
     }
 
