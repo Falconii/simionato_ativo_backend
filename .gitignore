@@ -1,7 +1,7 @@
 /node_modules
 /keys/*.json
 /keys_simionato/*.json
-/rel_excel/*.*
+/rel_excel/*.xlsx
 conexoes.json
 conexoes_local.json
 conexoes_nuvem.json
