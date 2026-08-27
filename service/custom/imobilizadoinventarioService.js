@@ -9,13 +9,28 @@ const TABELA = "IMOBILIZADOSINVENTARIOS";
 exports.getExisteImoInventarioComMovimento = async function (
   id_empresa,
   id_filial,
-  id_imobilizado,
-  id_inventario,
+  id_imobilizado
 ) {
   return imobilizadoinventarioData.getExisteImoInventarioComMovimento(
     id_empresa,
     id_filial,
-    id_imobilizado,
-    id_inventario,
+    id_imobilizado
   );
 };
+
+exports.deleteImobilizadoinventarioall = async function (
+  id_empresa,
+  id_filial,
+  id_imobilizado
+) {
+  try {
+    return imobilizadoinventarioData.deleteImobilizadoinventarioall(
+      id_empresa,
+      id_filial,
+      id_imobilizado
+    );
+  } catch (err) {
+    throw new erroDB.UserException(err.erro, err);
+  }
+};
+

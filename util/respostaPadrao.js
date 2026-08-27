@@ -7,7 +7,7 @@ function success(res, message, data = {}, code = 200) {
   });
 }
 
-function error(res, message,  details = null, code = 400) {
+function error(res, message,   details = null, code = 400) {
   const response = {
     status: "error",
     code,
@@ -33,24 +33,24 @@ function backenderror(res, message, code = 500, details = null) {
 
 
 function validationError(res, missingFields) {
-  return error(res, "Parâmetros obrigatórios ausentes", 400, missingFields);
+  return error(res, "Parâmetros obrigatórios ausentes",missingFields,400);
 }
 
 function validationErrorMessage(res, message, missingFields) {
-  return error(res, message, 400, missingFields);
+  return error(res, message, missingFields,400);
 }
 
 
 function notFound(res, entity, details = {}) {
-  return error(res, `${entity} não encontrado`, 404, details);
+  return error(res, `${entity} não encontrado`,details, 404);
 }
 
 function conflit(res, entity, details = {}) {
-  return error(res, `${entity} Já Existe No Cadastro`, 409, details);
+  return error(res, `${entity} Já Existe No Cadastro`,  details,409);
 }
 
 function backenderror(res, entity, details = {}) {
-  return error(res, `${entity} Erro No Sistema!`, 500, details);
+  return error(res, `${entity} Erro No Sistema!`, details,500);
 }
 
 module.exports = {

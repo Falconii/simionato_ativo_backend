@@ -1,5 +1,6 @@
 const imobilizadoSrv = require("../service/imobilizadoService");
 const imobilizadoinventarioService = require("../service/custom/imobilizadoinventarioService");
+const deparaSrv = require("../service/custom/deparaService");
 const erroDB = require("../util/userfunctiondb");
 const shared = require("../util/shared");
 /* REGRA DE NEGOCIO imobilizados */
@@ -19,12 +20,50 @@ exports.imobilizado_Inclusao = async function (imobilizado) {
         },
       ]);
     }
+    const deparas = await deparaSrv.existeDeparaLocal(
+        imobilizado.id_empresa,
+        imobilizado.id_filial,
+        imobilizado.codigo,
+      );
+  
+      if (deparas.length > 0) {
+        throw new erroDB.UserException("Regra de negócio", [
+          {
+            tabela: "IMOBILIZADO",
+            message: `"INCLUSÃO" Ativo Pertence A Lista "DE PARA"!`,
+          },
+        ]);
+      }
   } catch (err) {
     throw err;
   }
 
   return;
 };
+
+exports.imobilizado_Inclusao_Cancela_DePara = async function (imobilizado) {
+  try {
+    const obj = await imobilizadoSrv.getImobilizado(
+      imobilizado.id_empresa,
+      imobilizado.id_filial,
+      imobilizado.codigo,
+    );
+    if (obj != null) {
+      throw new erroDB.UserException("Regra de negócio", [
+        {
+          tabela: "IMOBILIZADO",
+          message: `"INCLUSÃO" Registro Já Existe Na Base De Dados.!`,
+        },
+      ]);
+    }
+    
+  } catch (err) {
+    throw err;
+  }
+
+  return;
+};
+
 
 exports.imobilizado_Alteracao = async function (imobilizado) {
   try {
@@ -41,6 +80,20 @@ exports.imobilizado_Alteracao = async function (imobilizado) {
         },
       ]);
     }
+    const deparas = await deparaSrv.existeDeparaLocal(
+        imobilizado.id_empresa,
+        imobilizado.id_filial,
+        imobilizado.codigo,
+      );
+  
+      if (deparas.length > 0) {
+        throw new erroDB.UserException("Regra de negócio", [
+          {
+            tabela: "IMOBILIZADO",
+            message: `"ALTERAÇÃO" Ativo Pertence A Lista "DE PARA"!`,
+          },
+        ]);
+      }
   } catch (err) {
     throw err;
   }
@@ -51,15 +104,13 @@ exports.imobilizado_Alteracao = async function (imobilizado) {
 exports.imobilizado_Exclusao = async function (
   id_empresa,
   id_filial,
-  codigo,
-  id_inventario,
+  codigo
 ) {
   try {
     const obj = await imobilizadoSrv.getImobilizado(
       id_empresa,
       id_filial,
-      codigo,
-      id_inventario,
+      codigo
     );
     if (obj == null) {
       throw new erroDB.UserException("Regra de negócio", [
@@ -69,20 +120,32 @@ exports.imobilizado_Exclusao = async function (
         },
       ]);
     }
-
+    const deparas = await deparaSrv.existeDeparaLocal(
+        id_empresa,
+        id_filial,
+        codigo
+      );
+  
+      if (deparas.length > 0) {
+        throw new erroDB.UserException("Regra de negócio", [
+          {
+            tabela: "IMOBILIZADO",
+            message: `"EXCLUSÃO" Ativo Pertence A Lista "DE PARA"!`,
+          },
+        ]);
+      }
     const invs =
       await imobilizadoinventarioService.getExisteImoInventarioComMovimento(
         id_empresa,
         id_filial,
-        codigo,
-        id_inventario,
+        codigo
       );
 
-    if (invs.total > 0) {
+    if (invs.length > 0) {
       throw new erroDB.UserException("Regra de negócio", [
         {
           tabela: "IMOBILIZADO",
-          message: `"EXCLUSÃO" Existem De  Associados Ou Fotos Associados A Este Ativo!`,
+          message: `"EXCLUSÃO" Existem Ativos Lançamentos Ou Fotos Associados A Este Ativo!`,
         },
       ]);
     }

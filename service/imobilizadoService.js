@@ -26,6 +26,17 @@ exports.insertImobilizado = async function (imobilizado) {
     throw new erroDB.UserException(err.erro, err);
   }
 };
+
+exports.insertImobilizadoCancela_DePara = async function (imobilizado) {
+  try {
+    await regras.imobilizado_Inclusao_Cancela_DePara(imobilizado);
+    validacao.Validacao(TABELA, imobilizado, parametros.imobilizados());
+    return imobilizadoData.insertImobilizado(imobilizado);
+  } catch (err) {
+    throw new erroDB.UserException(err.erro, err);
+  }
+};
+
 //* CRUD - UPDATE - SERVICE */
 exports.updateImobilizado = async function (imobilizado) {
   try {
@@ -40,15 +51,13 @@ exports.updateImobilizado = async function (imobilizado) {
 exports.deleteImobilizado = async function (
   id_empresa,
   id_filial,
-  codigo,
-  id_inventario,
+  codigo
 ) {
   try {
     await regras.imobilizado_Exclusao(
       id_empresa,
       id_filial,
-      codigo,
-      id_inventario,
+      codigo
     );
     return imobilizadoData.deleteImobilizado(id_empresa, id_filial, codigo);
   } catch (err) {

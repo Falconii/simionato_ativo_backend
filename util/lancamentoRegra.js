@@ -20,6 +20,23 @@ exports.lancamento_Inclusao = async function (lancamento) {
         },
       ]);
     }
+
+     const deparas = await deparaSrv.existeDepara(
+      lancamento.id_empresa,
+      lancamento.id_filial,
+      lancamento.id_inventario,
+      lancamento.id_imobilizado,
+    );
+
+    if (deparas.length > 0) {
+      throw new erroDB.UserException("Regra de negócio", [
+        {
+          tabela: "LANCAMENTO",
+          message: `"INCLUSÃO" Ativo Pertence A Lista "DE PARA"!`,
+        },
+      ]);
+    }
+
     if (lancamento.new_codigo != 0) {
       const duplicidade = await lancamentoSrv.checkDuplicidadeNewCodigo({
         acao: "INSERT",

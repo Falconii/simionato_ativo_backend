@@ -237,14 +237,14 @@ exports.updateLancamento = function (lancamento) {
 exports.changeImobilizado = function (lancamento,old_id_imobilizado) {
   strSql = `update   lancamentos set  
 		     id_usuario     = ${lancamento.id_usuario} 
- 		 ,   id_imobilizado = ${lancamento.id_imobilizado} 
+ 		 ,   id_imobilizado = ${old_id_imobilizado} 
  		 ,   user_update    = ${lancamento.user_update} 
  		 where id_empresa   = ${lancamento.id_empresa} and  id_filial = ${
        lancamento.id_filial
      } and  id_inventario   = ${lancamento.id_inventario} and  id_imobilizado = ${
-       old_id_imobilizado
+       lancamento.id_imobilizado
      }  returning * `;
-  console.log("updateLancamento", strSql);
+  console.log("lancamento", strSql);
   return db.oneOrNone(strSql);
 };
 

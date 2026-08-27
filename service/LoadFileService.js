@@ -40,14 +40,20 @@ exports.create = async (req, res, _id_empresa, _id_local, _id_usuario) => {
     if (nro_linha > 1) {
       const campos = parse.ParseCVS("", linha, ";");
 
-      if (campos.length != 36) {
-        result = {
-          message: `Quantidade De Colunas Deferente Do Padrão (36)! ${campos.length}}`,
-        };
-        console.log(
-          `Quantidade De Colunas Deferente Do Padrão (36)! ${nro_linha} ${campos.length}}`
-        );
-        continue;
+      //console.log("linha",linha);
+
+      id_campo= 0;
+
+       if (campos.length != 36) {
+            console.log(`Quantidade De Colunas Deferente Do Padrão (36)! ${campos.length}}`)
+            for (const campo of campos) {
+                console.log(`${id_campo}-${campo}`);
+                id_campo++;
+            }
+            result = {
+              message: `Quantidade De Colunas Deferente Do Padrão (36)! ${campos.length}} Arquivo Importado Está Incompleto`,
+            };
+            continue;
       }
 
       if (nro_linha % 100 === 0) {
@@ -411,7 +417,7 @@ function _imobilizado(campos, principalModel) {
       condicao: campos[12],
       apelido: campos[13],
       origem: "P",
-      principal: principalModel == null ? 0 : linhaPrincipal.codigo,
+      principal: principalModel == null ? 0 : principalModel .codigo,
       user_insert: id_usuario,
       user_update: 0,
     };

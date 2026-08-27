@@ -126,7 +126,7 @@ exports.getInventarios = function(params) {
 			FROM inventarios inv   
 				 inner join locais local on local.id_empresa = inv.id_empresa and local.id = inv.id_filial
 				 inner join usuarios resp on resp.id_empresa = inv.id_empresa and resp.id = inv.id_responsavel   
-			${where} 			${orderby} ${paginacao} `;
+			${where} ${orderby} ${paginacao} `;
             return db.manyOrNone(strSql);
         }
     } else {
@@ -177,7 +177,6 @@ exports.insertInventario = function(inventario) {
 		 ,   ${inventario.user_update} 
 		 ) 
  returning * `;
-    console.log("InsertInventario", strSql);
     return db.oneOrNone(strSql);
 };
 /* CRUD - UPDATE */

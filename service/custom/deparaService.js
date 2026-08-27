@@ -19,3 +19,12 @@ exports.existeDepara = async function(
 ) {
     return deparaData.existeDepara(id_empresa, id_local, id_inventario, ativo);
 };
+
+
+exports.existeDeparaLocal = async function(
+    id_empresa,
+    id_local,
+    ativo,
+) {
+    return deparaData.existeDeparaLocal(id_empresa, id_local,ativo);
+};

@@ -395,6 +395,7 @@ router.post("/novoativo", async function (req, res) {
       );
     }
 
+    
     if (!(principal == null) && !(principal.codigo == null)) {
       imobilizado.principal = principal.codigo;
     } else {
@@ -412,6 +413,7 @@ router.post("/novoativo", async function (req, res) {
     centrocusto.id_filial = id_filial;
     centrocusto.user_insert = id_usuario;
     centrocusto.user_update = 0;
+
 
     /* console.log("user", req.user);
                                                                                                                                                             console.log("produto", produto);
@@ -433,6 +435,8 @@ router.post("/novoativo", async function (req, res) {
       return response.notFound(res, "filial", { id_filial });
     }
 
+    
+
     /* Rejeita Processamento de Imobilizado Já Foi Cadastrado */
 
     const _imobilizado = await imobilizadoSrv.getImobilizado(
@@ -441,14 +445,18 @@ router.post("/novoativo", async function (req, res) {
       imobilizado.codigo
     );
 
+
+
     if (_imobilizado !== null) {
+      console.log("To Perto Do Erro!");
       return response.conflit(res, "Ativo Já Existe Na Base De Dados", {
         id_empresa: id_empresa,
         id_filial: id_filial,
         id_imobilizado: imobilizado.codigo,
       });
     }
-    console.log("Ponto A");
+
+    
     if (!(Object.entries(produto).length === 0)) {
       produto.id_empresa = id_empresa;
       produto.id_filial = id_filial;
@@ -477,7 +485,6 @@ router.post("/novoativo", async function (req, res) {
       }
     }
 
-    console.log("Ponto A1");
     if (!(Object.entries(principal).length === 0)) {
       console.log("Incluindo Principal", principal);
       principal.id_empresa = id_empresa;
@@ -500,7 +507,7 @@ router.post("/novoativo", async function (req, res) {
         }
       }
     }
-    console.log("_imobilizado", _imobilizado);
+
     if (_imobilizado == null) {
       try {
         if (!(Object.entries(nfe).length === 0) && nfe !== null) {
@@ -548,7 +555,6 @@ router.post("/novoativo", async function (req, res) {
       }
     }
 
-    console.log("Ponto A2");
     const _grupo = await gruposrv.getGrupo(
       grupo.id_empresa,
       grupo.id_filial,
@@ -582,7 +588,7 @@ router.post("/novoativo", async function (req, res) {
         });
       }
     }
-    console.log("Ponto A3");
+    
     if (!(Object.entries(nfe).length === 0)) {
       if (imobilizado !== null && nfe !== null) {
         nfe.id_empresa = id_empresa;
@@ -692,7 +698,7 @@ router.post("/novoativo", async function (req, res) {
         err: err,
       });
     } else {
-      return response.backenderror(res, err.message, err);
+      return response.backenderror(res, err.message, 500, err);
     }
   }
 });
@@ -789,7 +795,7 @@ router.put("/alteracaodescricaoativo", async function (req, res) {
     if (err.name == "MyExceptionDB") {
       return response.error(res, message);
     } else {
-      return response.backenderror(res, "err.message");
+      return response.backenderror(res, err.message, 500, err);
     }
   }
 });

@@ -234,6 +234,7 @@ exports.insertFoto = function (foto) {
  returning * `;
   return db.oneOrNone(strSql);
 };
+
 /* CRUD - UPDATE */
 exports.updateFoto = function (foto) {
   strSql = `update   fotos set  
@@ -334,4 +335,21 @@ exports.getFotosTempo = function () {
                 order by foto.id_empresa,foto.id_local,foto.id_inventario,foto.id_imobilizado `;
   console.log("strSql", strSql);
   return db.manyOrNone(strSql);
+};
+
+/* USADO NO CANCELAMENTO DO DEPARA */
+exports.updateFotoCancelamentoDePara = function (foto,id_imobilizado,file_name,id_usuario) {
+  strSql = `update   fotos set  
+         id_imobilizado = '${id_imobilizado}'
+		 ,   file_name      = '${file_name}'  
+ 		 ,   user_update = ${foto.user_update} 
+ 		 where id_empresa = ${foto.id_empresa} and  id_local = ${
+       foto.id_local
+     } and  id_inventario = ${foto.id_inventario} and  id_imobilizado = ${
+       foto.id_imobilizado
+     } and  id_pasta = '${foto.id_pasta}' and  id_file = '${
+       foto.id_file
+     }' and  file_name = '${foto.file_name}'  returning * `;
+
+  return db.oneOrNone(strSql);
 };

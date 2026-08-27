@@ -118,3 +118,11 @@ exports.deleteFoto = async function(
         throw new erroDB.UserException(err.erro, err);
     }
 };
+
+exports.updateFotoCancelamentoDePara = async function(foto,id_imobilizado,file_name,id_usuario) {
+    try {
+        return fotoData.updateFotoCancelamentoDePara(foto,id_imobilizado,file_name,id_usuario);
+    } catch (err) {
+        throw err;
+    }
+};

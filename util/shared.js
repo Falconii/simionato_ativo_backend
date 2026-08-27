@@ -59,9 +59,25 @@ exports.formatDateHour = function (date) {
 };
 
 exports.excluirCaracteres = function (value) {
-  const searchRegExp = /'/g;
-  let retorno = value.replace(searchRegExp, "''");
-  retorno = retorno.replace(/\r?\n|\r/g, " ");
+  if (!value) return "";
+
+  let retorno = value;
+
+  // Remove CRLF, tabs e múltiplas quebras de linha
+  retorno = retorno.replace(/\r?\n|\r|\t/g, " ");
+
+  // Remove múltiplos espaços
+  retorno = retorno.replace(/\s+/g, " ");
+
+  // Escapa aspas simples
+  retorno = retorno.replace(/'/g, "''");
+
+  // Remove caracteres especiais comuns
+  retorno = retorno.replace(/[^\w\s.,-]/g, "");
+
+  // Remove espaços no início e fim
+  retorno = retorno.trim();
+
   return retorno;
 };
 
@@ -84,6 +100,9 @@ exports.excluirVirgulasePontos = function (value) {
 };
 
 exports.trocavirgulaporponto = function (value) {
+  if (value.trim() == ''){
+    return '0';
+  }
   let retorno = value.replace(",", ".");
   return retorno;
 };

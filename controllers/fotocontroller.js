@@ -584,5 +584,6 @@ async function processaUploadFotoWebPasta(req) {
 
 
 module.exports = {
-  processaUploadFotoDisp,processaUploadFotoWeb,sincronizarFileName,copiarArquivo,getAtivos421,funcaoAjusta421,processaUploadFotoWebPasta
+  processaUploadFotoDisp,processaUploadFotoWeb,sincronizarFileName,copiarArquivo
+  ,getAtivos421,funcaoAjusta421,processaUploadFotoWebPasta,atualizaFileNameDB_GD
 };

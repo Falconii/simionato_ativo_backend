@@ -5,7 +5,7 @@ const router = express.Router();
 const imobilizadoSrv = require("../service/imobilizadoService");
 const imobilizadoinventarioSrv = require("../service/imobilizadoinventarioService");
 const imobilizadoinventarioCustomSrv = require("../service/custom/imobilizadoinventarioService");
-
+const erroDB = require("../util/userfunctiondb");
 /* ROTA GETONE imobilizado */
 router.get(
   "/api/imobilizado/:id_empresa/:id_filial/:codigo",
@@ -80,14 +80,10 @@ router.post("/api/imobilizado_inv", async function (req, res) {
   try {
     const inventario = req.query.inventario;
     const imobilizado = req.body;
-    console.log(req);
-    console.log(inventario);
-    console.log("------------------------------------------------");
     const registro = await imobilizadoSrv.insertImobilizado(imobilizado);
     if (registro == null) {
-      res.status(409).json({ message: "Imobilizado Não Cadastrado!" });
+        res.status(409).json({ message: "Imobilizado Não Cadastrado!" });
     }
-    console.log("registro", registro);
     const imo_inv = {
       id_empresa: registro.id_empresa,
       id_filial: registro.id_filial,
@@ -154,43 +150,45 @@ router.put("/api/imobilizado", async function (req, res) {
     }
   }
 });
+
 /* ROTA DELETE imobilizado */
 router.delete(
-  "/api/imobilizado/:id_empresa/:id_filial/:codigo/:id_inventario",
+  "/api/imobilizado/:id_empresa/:id_filial/:codigo",
   async function (req, res) {
     try {
-      console.log("delete", req.params);
-      const inventarios =
+      
+      const invs =
         await imobilizadoinventarioCustomSrv.getExisteImoInventarioComMovimento(
           req.params.id_empresa,
           req.params.id_filial,
-          req.params.codigo,
-          req.params.id_inventario,
+          req.params.codigo
         );
 
-      if (inventarios.length > 0) {
-        return res.status(200).json({
-          message: "Existem Inventarios Ativos!",
-          inventarios: inventarios,
-        });
+
+      if (invs.length > 0) {
+          throw new erroDB.UserException("Regra de negócio", [
+                  {
+                    tabela: "ATIVOS ANEXOS",
+                    message: `"EXCLUSÃO" Existem Ativos Lançamentos Ou Fotos Associados A Este Ativo!`,
+                  },
+                ]);
       }
 
-      await imobilizadoinventarioSrv.deleteImobilizadoinventario(
-        req.params.id_empresa,
-        req.params.id_filial,
-        req.params.id_inventario,
-        req.params.codigo,
+     await imobilizadoinventarioCustomSrv.deleteImobilizadoinventarioall(  
+          req.params.id_empresa,
+          req.params.id_filial,
+          req.params.codigo
       );
 
       await imobilizadoSrv.deleteImobilizado(
         req.params.id_empresa,
         req.params.id_filial,
-        req.params.codigo,
-        req.params.id_inventario,
+        req.params.codigo
       );
-      console.log("delete", "Imobilizado Excluído Com Sucesso!");
-
+     
+ 
       res.status(200).json({ message: "Imobilizado Excluído Com Sucesso!" });
+
     } catch (err) {
       if (err.name == "MyExceptionDB") {
         res.status(409).json(err);

@@ -25,3 +25,11 @@ exports.existeDepara = function(id_empresa, id_local, id_inventario, ativo) {
     console.log("existeDepara", strSql);
     return db.manyOrNone(strSql);
 };
+
+exports.existeDeparaLocal = function(id_empresa, id_local, ativo) {
+    strSql = `select * from de_para 
+		 where id_empresa = ${id_empresa} and  id_local = ${id_local} and  ( de = ${ativo} or  para = ${ativo} )  `;
+
+    console.log("existeDepara", strSql);
+    return db.manyOrNone(strSql);
+};
