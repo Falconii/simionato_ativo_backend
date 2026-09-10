@@ -442,6 +442,7 @@ router.post("/novoativo", async function (req, res) {
     const _imobilizado = await imobilizadoSrv.getImobilizado(
       id_empresa,
       id_filial,
+      
       imobilizado.codigo
     );
 
@@ -745,10 +746,9 @@ router.put("/alteracaodescricaoativo", async function (req, res) {
       return response.validationError(res, camposAusentes);
     }
 
-    if (id_filial != 999) {
-      return response.error(res, "API Somente Para Local HOMOLOGAÇÃO - Filial 999");
+    if (id_filial != 15) {
+      return response.error(res, "API Somente Para Local INTELLI - Filial 15");
     }
-
     if (descricao.trim() === "") {
       return response.validationErrorMessage(res, "Descrição está vazio", ["descricao"]);
     }
