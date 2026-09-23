@@ -1,5 +1,7 @@
 -- DROP FUNCTION public.function_lancamento();
 
+-- Não esqueça as funções  do arquivo funcao definição da situação do lancamento
+
 CREATE OR REPLACE FUNCTION public.function_lancamento()
  RETURNS trigger
  LANGUAGE plpgsql
@@ -8,9 +10,24 @@ DECLARE
  histo_old text;
  histo_atual text;
  hoje    TIMESTAMP;
+ cc text ;
 BEGIN
     IF    (TG_OP = 'INSERT') THEN
        hoje = NOW();
+       
+       SELECT coalesce(cod_cc, '') 
+        INTO cc
+        FROM imobilizados
+        WHERE id_empresa = new.id_empresa
+        AND id_filial = new.id_filial
+        AND codigo = new.id_imobilizado;
+
+        IF NOT FOUND THEN
+            cc := '';  
+        END IF;
+
+       NEW.estado  := define_sit_lancamento(new.estado,new.id_imobilizado, new.new_codigo,cc,new.new_cc);
+       
        update public.imobilizadosinventarios set id_lanca  = NEW.id_lanca, new_codigo = new.new_codigo, new_cc = new.new_cc , status = NEW.estado, condicao = NEW.condicao, book = NEW.book
        where id_empresa = new.id_empresa and id_filial = new.id_filial and id_inventario = new.id_inventario and id_imobilizado = new.id_imobilizado;
 
@@ -22,6 +39,22 @@ BEGIN
        RETURN NEW;
    ELSEIF (TG_OP = 'UPDATE') THEN
        hoje = NOW();
+
+
+        SELECT coalesce(cod_cc, '') 
+        INTO cc
+        FROM imobilizados
+        WHERE id_empresa = new.id_empresa
+        AND id_filial = new.id_filial
+        AND codigo = new.id_imobilizado;
+
+        IF NOT FOUND THEN
+            cc := '';  
+        END IF;
+
+       NEW.estado  := define_sit_lancamento(new.estado,new.id_imobilizado, new.new_codigo,cc,new.new_cc);
+
+
        update public.imobilizadosinventarios set id_lanca  = 0, new_codigo = 0, new_cc = '', status = 0, condicao = 9, book = 'N'
        where id_empresa = old.id_empresa and id_filial = old.id_filial and id_inventario = old.id_inventario and id_imobilizado = old.id_imobilizado;
 

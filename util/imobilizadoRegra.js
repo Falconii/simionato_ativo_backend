@@ -101,6 +101,30 @@ exports.imobilizado_Alteracao = async function (imobilizado) {
   return;
 };
 
+exports.imobilizado_AlteracaoApi = async function (imobilizado) {
+  try {
+    const obj = await imobilizadoSrv.getImobilizado(
+      imobilizado.id_empresa,
+      imobilizado.id_filial,
+      imobilizado.codigo,
+    );
+    if (obj == null) {
+      throw new erroDB.UserException("Regra de negócio", [
+        {
+          tabela: "IMOBILIZADO",
+          message: `"ALTERAÇÃO" Registro Não Existe Na Base De Dados.!`,
+        },
+      ]);
+    }
+    
+  } catch (err) {
+    throw err;
+  }
+
+  return;
+};
+
+
 exports.imobilizado_Exclusao = async function (
   id_empresa,
   id_filial,

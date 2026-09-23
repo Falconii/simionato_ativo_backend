@@ -47,6 +47,19 @@ exports.updateImobilizado = async function (imobilizado) {
     throw new erroDB.UserException(err.erro, err);
   }
 };
+
+exports.updateImobilizadoApi = async function (imobilizado) {
+  try {
+    await regras.imobilizado_AlteracaoApi(imobilizado);
+    validacao.Validacao(TABELA, imobilizado, parametros.imobilizados());
+    return imobilizadoData.updateImobilizado(imobilizado);
+  } catch (err) {
+    throw new erroDB.UserException(err.erro, err);
+  }
+};
+
+
+
 //* CRUD - DELETE - SERVICE */
 exports.deleteImobilizado = async function (
   id_empresa,

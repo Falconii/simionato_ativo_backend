@@ -17,6 +17,7 @@ const erroDB = require("../util/userfunctiondb");
 const response = require("../util/respostaPadrao");
 const shared = require("../util/shared.js");
 const { autenticarToken} = require('../middleware/autenticartoken');
+
 router.use(autenticarToken); 
 
 async function BaixaAtivo(imobilizado, imobilizadoinventario, lancamento) {
@@ -705,7 +706,6 @@ router.post("/novoativo", async function (req, res) {
 });
 
 
-
 router.put("/alteracaodescricaoativo", async function (req, res) {
   /*
     {
@@ -779,7 +779,7 @@ router.put("/alteracaodescricaoativo", async function (req, res) {
     imobilizado.descricao = descricao;
     imobilizado.user_update = id_usuario;
 
-    const alterado = await imobilizadoSrv.updateImobilizado(imobilizado);
+    const alterado = await imobilizadoSrv.updateImobilizadoApi(imobilizado);
 
     if (alterado) {
       return response.success(res, "Descrição do Ativo Alterada Com Sucesso", {
@@ -793,7 +793,7 @@ router.put("/alteracaodescricaoativo", async function (req, res) {
   } catch (err) {
     console.log("Erro no processamento do evento", err);
     if (err.name == "MyExceptionDB") {
-      return response.error(res, message);
+      return response.error(res, err.message);
     } else {
       return response.backenderror(res, err.message, 500, err);
     }

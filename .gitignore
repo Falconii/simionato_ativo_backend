@@ -7,4 +7,5 @@ conexoes_local.json
 conexoes_nuvem.json
 frase_access.txt
 frase_refresh.txt
+gemini_key.txt
 *.zip

@@ -10,6 +10,7 @@
     "author": "Marcos Renato Falconi",
     "license": "MIT",
     "dependencies": {
+        "@google/generative-ai": "^0.30.0",
         "axios": "^1.13.3",
         "bcryptjs": "^2.4.3",
         "compressorjs": "^1.2.1",

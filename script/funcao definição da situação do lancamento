@@ -1,0 +1,78 @@
+CREATE OR REPLACE FUNCTION valida_codigo(codigo_ativo INTEGER, codigo_novo INTEGER)
+RETURNS BOOLEAN AS $$
+BEGIN
+    -- Regra 1: novo igual ao ativo → inválido
+    IF codigo_novo = codigo_ativo THEN
+        RETURN FALSE;
+    END IF;
+
+    -- Regra 2: novo igual a zero → inválido
+    IF codigo_novo = 0 THEN
+        RETURN FALSE;
+    END IF;
+
+    -- Regra 3: novo diferente do ativo → válido
+    RETURN TRUE;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION valida_cc(cc_ativo TEXT, cc_novo TEXT)
+RETURNS BOOLEAN AS $$
+BEGIN
+    -- Regra 1: novo igual ao ativo → inválido
+    IF cc_novo = cc_ativo THEN
+        RETURN FALSE;
+    END IF;
+
+    -- Regra 2: novo igual a '0' → inválido
+    IF cc_novo = '0' THEN
+        RETURN FALSE;
+    END IF;
+
+    -- Regra 3: novo diferente do ativo → válido
+    RETURN TRUE;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION define_sit_lancamento(
+    situacao INTEGER,
+    codigo_ativo INTEGER,
+    codigo_novo INTEGER,
+    cc_ativo TEXT,
+    cc_novo TEXT
+)
+RETURNS INTEGER AS $$
+DECLARE 
+   trocou_codigo BOOLEAN;
+   trocou_cc     BOOLEAN;
+BEGIN
+    
+    IF situacao >= 5 THEN
+        RETURN situacao;
+    END IF;
+
+    trocou_codigo := valida_codigo(codigo_ativo, codigo_novo);
+    trocou_cc     := valida_cc(cc_ativo, cc_novo);
+
+    -- Não houve troca
+    IF (NOT trocou_codigo) AND (NOT trocou_cc) THEN
+        RETURN 1;
+    END IF;
+
+    -- Ambos foram trocados
+    IF trocou_codigo AND trocou_cc THEN
+        RETURN 4;
+    END IF;
+
+    -- Apenas código foi trocado
+    IF trocou_codigo THEN
+        RETURN 2;
+    END IF;
+
+    -- Apenas CC foi trocado
+    RETURN 3;
+
+END;
+$$ LANGUAGE plpgsql;
