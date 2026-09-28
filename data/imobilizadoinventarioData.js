@@ -61,6 +61,7 @@ exports.getImobilizadoinventario = function (
       ,  coalesce(de.status,0)         as  para_status
       ,  coalesce(para.de,0)           as  de_ativo
       ,  coalesce(para.status,0)       as  de_status
+      ,  coalesce(to_char(val.dtaquisicao,'DD/MM/YYYY'),'')  as  val_data_aquisicao
  			FROM imobilizadosinventarios imo_inv 	  
 				 inner join imobilizados  imo on imo.id_empresa = imo_inv.id_empresa and imo.id_filial = imo_inv.id_filial and imo.codigo = imo_inv.id_imobilizado
 				 inner join centroscustos cc  on cc.id_empresa = imo_inv.id_empresa and cc.id_filial = imo_inv.id_filial and cc.codigo = imo.cod_cc
@@ -71,6 +72,7 @@ exports.getImobilizadoinventario = function (
          left join usuarios       usu   on usu.id_empresa = imo_inv.id_empresa and usu.id = lanca.id_usuario
          left join centroscustos new_cc on new_cc.id_empresa = imo_inv.id_empresa and new_cc.id_filial = imo_inv.id_filial and new_cc.codigo = imo_inv.new_cc
          left join principais princ  on imo.id_empresa = princ.id_empresa and imo.id_filial = princ.id_filial and imo.principal = princ.codigo
+         left join valores    val    on val.id_empresa = imo_inv.id_empresa and val.id_filial = imo_inv.id_filial and val.id_imobilizado = imo_inv.id_imobilizado
 			 where imo_inv.id_empresa = ${id_empresa} and  imo_inv.id_filial = ${id_filial} and  imo_inv.id_inventario = ${id_inventario} and  imo_inv.id_imobilizado = ${id_imobilizado}  `;
   console.log("getimobilizado", strSql);
   return db.oneOrNone(strSql);
@@ -387,6 +389,7 @@ exports.getImobilizadosinventarios = function (params) {
       ,  coalesce(de.status,0)         as  para_status
       ,  coalesce(para.de,0)           as  de_ativo
       ,  coalesce(para.status,0)       as  de_status
+      ,  coalesce(to_char(val.dtaquisicao,'DD/MM/YYYY'),'')  as  val_data_aquisicao
 			FROM imobilizadosinventarios imo_inv   
 				 inner join imobilizados imo on imo.id_empresa = imo_inv.id_empresa and imo.id_filial = imo_inv.id_filial and imo.codigo = imo_inv.id_imobilizado
 				 inner join centroscustos cc on cc.id_empresa = imo_inv.id_empresa and cc.id_filial = imo_inv.id_filial and cc.codigo = imo.cod_cc
@@ -397,6 +400,7 @@ exports.getImobilizadosinventarios = function (params) {
 				 left join usuarios      usu on usu.id_empresa = imo_inv.id_empresa and usu.id = lanca.id_usuario
          left join centroscustos new_cc on new_cc.id_empresa = imo_inv.id_empresa and new_cc.id_filial = imo_inv.id_filial and new_cc.codigo = imo_inv.new_cc
          left join principais princ  on imo.id_empresa = princ.id_empresa and imo.id_filial = princ.id_filial and imo.principal = princ.codigo
+         left join valores    val    on val.id_empresa = imo_inv.id_empresa and val.id_filial = imo_inv.id_filial and val.id_imobilizado = imo_inv.id_imobilizado
 			${where} 			${orderby} ${paginacao} `;
       console.log("==>", strSql);
       return db.manyOrNone(strSql);

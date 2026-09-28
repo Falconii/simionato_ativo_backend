@@ -409,6 +409,7 @@ router.post("/api/imobilizadosinventariosexcelv2", async function (req, res) {
       };
       const lsRegistros =
         await imobilizadoinventarioSrv.getImobilizadosinventarios(params);
+        
       if (lsRegistros == null || lsRegistros.length == 0) {
         res.status(409).json({ message: "Nenhum Registro Encontrado!" });
       } else {
