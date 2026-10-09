@@ -62,6 +62,10 @@ exports.getImobilizadoinventario = function (
       ,  coalesce(para.de,0)           as  de_ativo
       ,  coalesce(para.status,0)       as  de_status
       ,  coalesce(to_char(val.dtaquisicao,'DD/MM/YYYY'),'')  as  val_data_aquisicao
+      ,  coalesce(nfes.qtd,0)  as  nfes_nfes_qtd
+      ,  coalesce(nfes.punit,0)  as  nfes_nfes_punit
+      ,  coalesce(nfes.totalitem,0)  as  nfes_nfes_totalitem
+      ,  coalesce(nfes.vlrcontabil,0)  as  nfes_nfes_vlrcontabil
  			FROM imobilizadosinventarios imo_inv 	  
 				 inner join imobilizados  imo on imo.id_empresa = imo_inv.id_empresa and imo.id_filial = imo_inv.id_filial and imo.codigo = imo_inv.id_imobilizado
 				 inner join centroscustos cc  on cc.id_empresa = imo_inv.id_empresa and cc.id_filial = imo_inv.id_filial and cc.codigo = imo.cod_cc
@@ -73,6 +77,13 @@ exports.getImobilizadoinventario = function (
          left join centroscustos new_cc on new_cc.id_empresa = imo_inv.id_empresa and new_cc.id_filial = imo_inv.id_filial and new_cc.codigo = imo_inv.new_cc
          left join principais princ  on imo.id_empresa = princ.id_empresa and imo.id_filial = princ.id_filial and imo.principal = princ.codigo
          left join valores    val    on val.id_empresa = imo_inv.id_empresa and val.id_filial = imo_inv.id_filial and val.id_imobilizado = imo_inv.id_imobilizado
+         left join nfes       nfes   on nfes.id_empresa                 =  imo_inv.id_empresa              and 
+                                    nfes.id_filial          =  imo.id_filial           and 
+                                    nfes.id_imobilizado     =  imo_inv.id_imobilizado      and 
+                                    nfes.nfe                =  imo.nfe                 and 
+                                    nfes.serie              =  imo.serie               and 
+                                    nfes.item               =  imo.item            
+
 			 where imo_inv.id_empresa = ${id_empresa} and  imo_inv.id_filial = ${id_filial} and  imo_inv.id_inventario = ${id_inventario} and  imo_inv.id_imobilizado = ${id_imobilizado}  `;
   console.log("getimobilizado", strSql);
   return db.oneOrNone(strSql);
@@ -167,18 +178,54 @@ exports.getImobilizadosinventarios = function (params) {
       if (where != "") where += " and ";
       where += ` imo_inv.id_imobilizado = ${params.id_imobilizado} `;
     }
-    if (params.id_cc.trim() !== "") {
-      const codigos = params.id_cc.split(";");
-      const queryString = `( imo.cod_cc IN ('${codigos.join(
-        "','",
-      )}') or imo_inv.new_cc IN ('${codigos.join("','")}') )`;
-      if (where != "") where += " and ";
-      if (codigos.length == 1) {
-        where += `( imo.cod_cc = '${params.id_cc}' OR imo_inv.new_cc = '${params.id_cc}' )`;
-      } else {
-        where += queryString;
+
+    if (params.id_cc && params.id_cc.trim() !== "") {
+      const codigos = params.id_cc.split(";").map(c => c.trim());
+
+      const condicoes = [];
+
+      for (const codigo of codigos) {
+          const partes = codigo.split("-");
+
+          // Caso seja sintético (termina com -00)
+          if (partes.length === 2 && partes[1] === "00") {
+              const prefixo = partes[0];
+              condicoes.push(`LEFT(imo.cod_cc, ${prefixo.length}) = '${prefixo}'`);
+          } else {
+              // Analítico ou código normal
+              condicoes.push(`imo.cod_cc = '${codigo}'`);
+          }
       }
+
+      // Monta o bloco final
+      const bloco = `(${condicoes.join(" OR ")})`;
+
+      if (where !== "") where += " AND ";
+      where += bloco;
+  }
+
+    if (params.new_cc && params.new_cc.trim() !== "") {
+        const codigosNew = params.new_cc.split(";").map(c => c.trim());
+
+        const condicoesNew = [];
+
+        for (const codigo of codigosNew) {
+            const partes = codigo.split("-");
+
+            if (partes.length === 2 && partes[1] === "00") {
+                const prefixo = partes[0];
+                condicoesNew.push(`LEFT(imo_inv.new_cc, ${prefixo.length}) = '${prefixo}'`);
+            } else {
+                condicoesNew.push(`imo_inv.new_cc = '${codigo}'`);
+            }
+        }
+
+        const blocoNew = `(${condicoesNew.join(" OR ")})`;
+
+        if (where !== "") where += " AND ";
+        where += blocoNew;
     }
+
 
     if (params.dtinicial !== "") {
       if (where != "") where += " and ";
@@ -294,10 +341,6 @@ exports.getImobilizadosinventarios = function (params) {
         where += `imo_inv.status = ${params.status} `;
       }
     }
-    if (params.new_cc.trim() !== "") {
-      if (where != "") where += " and ";
-      where += `imo_inv.new_cc = '${params.new_cc}' `;
-    }
     if (params.new_codigo !== 0) {
       if (where != "") where += " and ";
       where += `imo_inv.new_codigo = ${params.new_codigo} `;
@@ -390,6 +433,10 @@ exports.getImobilizadosinventarios = function (params) {
       ,  coalesce(para.de,0)           as  de_ativo
       ,  coalesce(para.status,0)       as  de_status
       ,  coalesce(to_char(val.dtaquisicao,'DD/MM/YYYY'),'')  as  val_data_aquisicao
+      ,  coalesce(nfes.qtd,0)  as  nfes_nfes_qtd
+      ,  coalesce(nfes.punit,0)  as  nfes_nfes_punit
+      ,  coalesce(nfes.totalitem,0)  as  nfes_nfes_totalitem
+      ,  coalesce(nfes.vlrcontabil,0)  as  nfes_nfes_vlrcontabil
 			FROM imobilizadosinventarios imo_inv   
 				 inner join imobilizados imo on imo.id_empresa = imo_inv.id_empresa and imo.id_filial = imo_inv.id_filial and imo.codigo = imo_inv.id_imobilizado
 				 inner join centroscustos cc on cc.id_empresa = imo_inv.id_empresa and cc.id_filial = imo_inv.id_filial and cc.codigo = imo.cod_cc
@@ -401,6 +448,12 @@ exports.getImobilizadosinventarios = function (params) {
          left join centroscustos new_cc on new_cc.id_empresa = imo_inv.id_empresa and new_cc.id_filial = imo_inv.id_filial and new_cc.codigo = imo_inv.new_cc
          left join principais princ  on imo.id_empresa = princ.id_empresa and imo.id_filial = princ.id_filial and imo.principal = princ.codigo
          left join valores    val    on val.id_empresa = imo_inv.id_empresa and val.id_filial = imo_inv.id_filial and val.id_imobilizado = imo_inv.id_imobilizado
+         left join nfes       nfes   on nfes.id_empresa                 =  imo_inv.id_empresa              and 
+                                    nfes.id_filial          =  imo.id_filial           and 
+                                    nfes.id_imobilizado     =  imo_inv.id_imobilizado      and 
+                                    nfes.nfe                =  imo.nfe                 and 
+                                    nfes.serie              =  imo.serie               and 
+                                    nfes.item               =  imo.item            
 			${where} 			${orderby} ${paginacao} `;
       console.log("==>", strSql);
       return db.manyOrNone(strSql);
