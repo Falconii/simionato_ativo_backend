@@ -83,6 +83,7 @@ app.use("/", require("./route/custom/fotoRoute.js"));
 app.use("/api/eventos", require("./route/apiEventosRoute.js"));
 app.use("/api/intercompany", require("./route/intercompanyRoute.js"));
 //app.use("/api/dellapi", require("./route/dellApiRoute.js"));
+app.use("/api/book", require("./route/bookRoute.js"));
 
 app.listen(PORT, () => {
   console.log(`Servidor No Ar. Porta Legal ${PORT}`);

@@ -9,3 +9,4 @@ frase_access.txt
 frase_refresh.txt
 gemini_key.txt
 *.zip
+/rel_book/*.pdf

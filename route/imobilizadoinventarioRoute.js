@@ -365,26 +365,35 @@ router.post("/api/imobilizadosinventariosexcelv2", async function (req, res) {
   console.log("rota imobilizadosinventariosexcelv2");
   try {
     /*
-                                                                                                    {
-                                                                                                    "id_empresa":   1,
-                                                                                                    "id_filial":   14,
-                                                                                                    "id_inventario":   10,
-                                                                                                    "id_imobilizado": 308,
-                                                                                                    "id_cc":   "",
-                                                                                                    "id_grupo":   0,
-                                                                                                    "descricao":   "",
-                                                                                                    "status":   1,
-                                                                                                    "new_cc":   "",
-                                                                                                    "new_codigo":   0,
-                                                                                                    "id_usuario":   0,
-                                                                                                    "origem":   "",
-                                                                                                    "pagina":   1,
-                                                                                                    "tamPagina":  20,
-                                                                                                    "contador":   "N",
-                                                                                                    "orderby":   "",
-                                                                                                    "sharp":   false
-                                                                                                    }
-                                                                                                    */
+    {
+    "id_empresa":   1,
+    "id_filial":   14,
+    "id_inventario":   10,
+    "id_imobilizado": 308,
+    "id_cc":   "",
+    "id_grupo":   0,
+    "descricao":   "",
+    "observacao":   "",
+    "status":   1,
+    "new_cc":   "",
+    "new_codigo":   0,
+    "id_usuario":   0,
+    "origem":   "",
+    "condicao":   0,
+    "book":   "",
+    "dtinicial":   "",
+    "dtfinal":   "",
+    "id_principal":   0,
+    "apelido":   "",
+    "nfe":   "",
+    "filtra_depara":   "",
+    "pagina":   1,
+    "tamPagina":  20,
+    "contador":   "N",
+    "orderby":   "",
+    "sharp":   false
+    }
+    */
     const params = req.body;
     console.log("parametros imobilizadosinventariosexcel", params);
     const inventario = await inventarioSrv.getInventario(
