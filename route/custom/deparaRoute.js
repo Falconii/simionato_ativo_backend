@@ -182,9 +182,15 @@ router.post("/api/canceladepara", async function(req, res) {
 
         const texto = auditoria[0].histo_antes;
 
-        const limpo = texto.replace(/\\"/g, '"');
-
-        const json = JSON.parse(limpo);
+        // O texto normalmente já é um JSON válido (aspas dentro de valores vêm como \", ex: CD-6\").
+        // Só se ele estiver "escapado por inteiro" ([{\"id\":1}]) é que se tenta remover o escape.
+        let json;
+        try {
+            json = JSON.parse(texto);
+            if (typeof json === "string") json = JSON.parse(json); // duplamente serializado
+        } catch (e) {
+            json = JSON.parse(texto.replace(/\\"/g, '"'));
+        }
 
         imobilizado = json[0];
 
