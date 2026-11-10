@@ -690,20 +690,24 @@ exports.generateExcelv2 = async function(lsRegistros, inventario, complemento,fi
       }
     }
 
+    // logo: Intelli para o Grupo Intelli; para as demais empresas, o da Simionato
+    const ehIntelli = /intelli/i.test(complemento.emp_razao || "");
     const logoImage = workbook.addImage({
-      filename: "logo/logo_intelli_book.png",
+      filename: ehIntelli ? "logo/logo_intelli_book.png" : "logo/logo_simionato_book.png",
       extension: "png",
     });
     sheet.addImage(logoImage, {
       tl: { col: 0.1, row: 0.08 },
-      ext: { width: 98, height: 73 }, // proporção 400 x 297 do PNG
+      ext: ehIntelli
+        ? { width: 98, height: 73 } // proporção 400 x 297 do PNG
+        : { width: 73, height: 73 }, // logo quadrado
     });
 
     const agora = new Date().toLocaleString("pt-BR", {
       timeZone: "America/Sao_Paulo",
       day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit",
     }).replace(", ", " ");
-    sheet.mergeCells(1, 3, 2, 4); // C1:D2 (dentro das colunas congeladas)
+    sheet.mergeCells(1, 3, 2, 4); // C1:D2
     const titulo = sheet.getCell(1, 3);
     titulo.value = `${inventario.descricao || ""}`.trim();
     titulo.font = { bold: true, size: 14, color: { argb: "FFFFFFFF" } };
@@ -715,9 +719,9 @@ exports.generateExcelv2 = async function(lsRegistros, inventario, complemento,fi
     subtitulo.font = { size: 9, color: { argb: "FFCCCCCC" } };
     subtitulo.alignment = { horizontal: "left", vertical: "middle" };
 
-    // congela as 4 primeiras colunas (rolagem a partir da coluna 5) e as linhas até o cabeçalho (linha 5)
+    // fixa as linhas até o cabeçalho (linha 5); as colunas rolam normalmente
     sheet.views = [
-      { state: "frozen", xSplit: 4, ySplit: 5, topLeftCell: "E6", showGridLines: false },
+      { state: "frozen", xSplit: 0, ySplit: 5, topLeftCell: "A6", showGridLines: false },
     ];
 
     // filtro nos títulos das colunas (linha 5)
