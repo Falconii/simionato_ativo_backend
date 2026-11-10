@@ -11,8 +11,8 @@ const fotoSrv = require('../service/fotoService');
 const PORT = process.env.PORT || 3000;
 const PASTA_GOOGLE_FALCONI = '1Oc4S6bEQy_TPPPSsxzl1gYkOs8wvwuWq';
 const MAX_FOTOS = 4;
-const MAX_LARGURA = 900; // px; o quadro no PDF tem ~255 x 150 pt
-const MAX_ALTURA = 600;
+const MAX_LARGURA = 600; // px; o quadro no PDF tem ~255 x 150 pt (~170 dpi)
+const MAX_ALTURA = 400;
 
 /** Cria o provedor de drives (credenciais carregadas uma única vez por geração). */
 async function criarProvedor() {
@@ -46,7 +46,7 @@ async function baixarFoto(drive, id_file) {
     return sharp(Buffer.from(resp.data))
         .rotate() // aplica a orientação EXIF
         .resize(MAX_LARGURA, MAX_ALTURA, { fit: 'inside', withoutEnlargement: true })
-        .jpeg({ quality: 80 })
+        .jpeg({ quality: 72, mozjpeg: true })
         .toBuffer();
 }
 

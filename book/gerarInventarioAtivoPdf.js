@@ -59,6 +59,7 @@ const COR = {
     cinzaFundo: '#f3f5f8',
     barra: '#4a4d52',
     preto: '#16161a',
+    intelli: '#861414',
 };
 const FONTE = 'Helvetica';
 const FONTE_B = 'Helvetica-Bold';
@@ -70,12 +71,15 @@ const MARGEM = 30;
 const LARG_UTIL = LARGURA - 2 * MARGEM;
 
 function cabecalho(doc, d) {
-    // faixa escura superior (sem logo)
+    // faixa escura e vermelho da Intelli, de ponta a ponta no topo
     doc.save();
     doc.moveTo(0, 0).lineTo(380, 0).bezierCurveTo(345, 20, 200, 34, 0, 37).closePath().fill(COR.preto);
     doc.moveTo(0, 34).bezierCurveTo(170, 32, 310, 20, 355, 3).lineTo(363, 3)
-        .bezierCurveTo(315, 27, 170, 42, 0, 42).closePath().fill(COR.vermelho);
+        .bezierCurveTo(315, 27, 170, 42, 0, 42).closePath().fill(COR.intelli);
     doc.restore();
+
+    // logo da Intelli sobre a faixa (PNG já reduzido; o pdfkit o embute uma única vez)
+    doc.image(LOGO_BOOK, MARGEM, 3, { height: 40 });
 
     doc.font(FONTE).fontSize(9).fillColor(COR.texto)
         .text(d.pagina, LARGURA - MARGEM - 150, 20, { width: 150, align: 'right', lineBreak: false });
@@ -83,6 +87,8 @@ function cabecalho(doc, d) {
     doc.font(FONTE_B).fontSize(18).fillColor(COR.texto)
         .text(d.titulo, 0, 55, { width: LARGURA, align: 'center', lineBreak: false });
 }
+
+const LOGO_BOOK = path.join(__dirname, '..', 'logo', 'logo_intelli_book.png');
 
 const XVALOR = 140;
 
@@ -121,7 +127,7 @@ function dadosPrincipais(doc, d) {
     y = campo(doc, 'EMPRESA:', d.empresa, y);
     y = campo(doc, 'LOCAL:', d.local, y);
     y = campo(doc, 'INVENTÁRIO:', d.inventario, y);
-    y = campo(doc, 'ETIQUETA NOVA:', d.etiquetaNova, y);
+    y = campo(doc, 'ATIVO:', d.etiquetaNova, y);
     y = campo(doc, 'DESCRIÇÃO:', d.descricao, y, 3);
     y = campo(doc, 'CENTRO DE CUSTO:', d.centroCusto, y, 2);
 

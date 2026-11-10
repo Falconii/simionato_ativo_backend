@@ -437,6 +437,20 @@ exports.getImobilizadosinventarios = function (params) {
       ,  coalesce(nfes.punit,0)  as  nfes_nfes_punit
       ,  coalesce(nfes.totalitem,0)  as  nfes_nfes_totalitem
       ,  coalesce(nfes.vlrcontabil,0)  as  nfes_nfes_vlrcontabil
+      ,  nfes.cnpj_fornecedor                                   as  nfes_nfes_cnpj_fornecedor
+      ,  nfes.razao_fornecedor                                  as  nfes_nfes_razao_fornecedor
+      ,  nfes.chavee                                            as  nfes_nfes_chavee
+      ,  coalesce(to_char(nfes.dtemissao,'DD/MM/YYYY'),'')      as  nfes_nfes_dtemissao
+      ,  coalesce(to_char(nfes.dtlancamento,'DD/MM/YYYY'),'')   as  nfes_nfes_dtlancamento
+      ,  nfes.baseicms                                          as  nfes_nfes_baseicms
+      ,  nfes.percicms                                          as  nfes_nfes_percicms
+      ,  nfes.vlrcicms                                          as  nfes_nfes_vlrcicms
+      ,  val.vlraquisicao                                       as  val_vlraquisicao
+      ,  val.totaldepreciado                                    as  val_totaldepreciado
+      ,  val.vlrresidual                                        as  val_vlrresidual
+      ,  val.reavalicao                                         as  val_reavaliacao
+      ,  val.deemed                                             as  val_deemed
+      ,  val.vlrconsolidado                                     as  val_vlrconsolidado
 			FROM imobilizadosinventarios imo_inv   
 				 inner join imobilizados imo on imo.id_empresa = imo_inv.id_empresa and imo.id_filial = imo_inv.id_filial and imo.codigo = imo_inv.id_imobilizado
 				 inner join centroscustos cc on cc.id_empresa = imo_inv.id_empresa and cc.id_filial = imo_inv.id_filial and cc.codigo = imo.cod_cc

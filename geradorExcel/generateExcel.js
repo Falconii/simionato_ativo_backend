@@ -1,5 +1,10 @@
 const ExcelJs = require("exceljs");
 
+// valor numérico (inclusive zero); vazio quando não há registro ligado (join nulo)
+function numeroOuVazio(valor) {
+  return valor === null || valor === undefined || valor === "" ? "" : Number(valor);
+}
+
 function getSituacao(idx) {
   let retorno = "";
   switch (idx) {
@@ -460,6 +465,20 @@ exports.generateExcelv2 = async function(lsRegistros, inventario, complemento,fi
       "Book",
       "Data Lançamento",
       "Nome do Usuário",
+      "CNPJ Fornecedor",
+      "Razão Fornecedor",
+      "Chave NFE",
+      "Data Emissão NFE",
+      "Data Lançamento NFE",
+      "Base ICMS",
+      "% ICMS",
+      "Vlr ICMS",
+      "Vlr Aquisição",
+      "Total Depreciado",
+      "Vlr Residual",
+      "Reavaliação",
+      "Deemed",
+      "Vlr Consolidado",
       //  "Valor Aquisição",
       //  "Total Depreciado",
       //  "Foto 1",
@@ -571,6 +590,20 @@ exports.generateExcelv2 = async function(lsRegistros, inventario, complemento,fi
           registro.book == "S" ? "SIM" : "NÃO",
           registro.lanc_dt_lanca || "",
           registro.usu_razao || "",
+          (registro.nfes_nfes_cnpj_fornecedor || "").trim(),
+          (registro.nfes_nfes_razao_fornecedor || "").trim(),
+          (registro.nfes_nfes_chavee || "").trim(),
+          registro.nfes_nfes_dtemissao || "",
+          registro.nfes_nfes_dtlancamento || "",
+          numeroOuVazio(registro.nfes_nfes_baseicms),
+          numeroOuVazio(registro.nfes_nfes_percicms),
+          numeroOuVazio(registro.nfes_nfes_vlrcicms),
+          numeroOuVazio(registro.val_vlraquisicao),
+          numeroOuVazio(registro.val_totaldepreciado),
+          numeroOuVazio(registro.val_vlrresidual),
+          numeroOuVazio(registro.val_reavaliacao),
+          numeroOuVazio(registro.val_deemed),
+          numeroOuVazio(registro.val_vlrconsolidado),
           //registro.vlraquisicao,
           //registro.totaldepreciado,
           //...fotoCells,
@@ -629,6 +662,10 @@ exports.generateExcelv2 = async function(lsRegistros, inventario, complemento,fi
         });
       }
     });
+
+    // formato numérico das colunas de valores acrescentadas (34 = Base ICMS ... 42 = Vlr Consolidado)
+    [34, 36, 37, 38, 39, 40, 41, 42].forEach((c) => { sheet.getColumn(c).numFmt = "#,##0.00"; });
+    sheet.getColumn(35).numFmt = "0.00";
 
     // largura das colunas automaticamente com base no conteúdo das células
     sheet.columns.forEach((column, columnIndex) => {
