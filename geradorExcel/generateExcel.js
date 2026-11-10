@@ -361,24 +361,6 @@ exports.generateExcelv2 = async function(lsRegistros, inventario, complemento,fi
 
   try {
     console.log("inventario==>", inventario);
-    const logoPath = "logo/images.png";
-    const logoImage = workbook.addImage({
-      filename: logoPath,
-      extension: "png",
-    });
-
-    sheet.addImage(logoImage, {
-      tl: { col: 0, row: 0 },
-      br: { col: 1, row: 3 },
-      ext: { width: 25, height: 25 },
-    });
-
-    sheet.mergeCells("F3"); // mescla células
-    const titleCell = sheet.getCell("F3");
-    titleCell.value = `${inventario.descricao}`; // célula 'F3' com o título do inventário
-    titleCell.font = { bold: true, size: 18 }; // fonte em negrito e tamanho
-    titleCell.alignment = { horizontal: "center", vertical: "bottom" }; // alinhamento horizontal e vertical
-    titleCell.height = 30; // altura
 
     console.log("Função generateExcel foi chamada.");
 
@@ -497,7 +479,7 @@ exports.generateExcelv2 = async function(lsRegistros, inventario, complemento,fi
       //  "Destaque 4",
       //  "Destaque 5",
     ];
-    sheet.addRow(titles);
+    sheet.getRow(5).values = titles; // linhas 1 a 4: faixa do cabeçalho (montada no fim)
 
     // itera sobre os valores do objeto uniqueIds, que contém registros únicos com base no ID do imobilizado.
     Object.values(uniqueIds).forEach(
@@ -682,6 +664,7 @@ exports.generateExcelv2 = async function(lsRegistros, inventario, complemento,fi
     sheet.columns.forEach((column, columnIndex) => {
       let maxLength = 0;
       column.eachCell({ includeEmpty: true }, (cell) => {
+        if (cell.row < 5) return; // título/subtítulo da faixa não definem a largura
         const length = cell.value ? String(cell.value).length : 0;
         if (length > maxLength) {
           maxLength = length;
@@ -691,6 +674,57 @@ exports.generateExcelv2 = async function(lsRegistros, inventario, complemento,fi
       sheet.getColumn(columnIndex + 1).width =
         maxLength < 10 ? 10 : maxLength + 2; // add uma folga de 2 caracteres
     });
+
+    // ---- cabeçalho: faixa preta (linhas 1 a 3) + filete vermelho (linha 4), logo da Intelli e título ----
+    const PRETO = "FF16161A";
+    const VERMELHO = "FF861414";
+    const totalColunas = sheet.columnCount;
+    [22, 22, 22, 5].forEach((h, i) => (sheet.getRow(i + 1).height = h));
+    for (let r = 1; r <= 4; r++) {
+      for (let c = 1; c <= totalColunas; c++) {
+        sheet.getCell(r, c).fill = {
+          type: "pattern",
+          pattern: "solid",
+          fgColor: { argb: r === 4 ? VERMELHO : PRETO },
+        };
+      }
+    }
+
+    const logoImage = workbook.addImage({
+      filename: "logo/logo_intelli_book.png",
+      extension: "png",
+    });
+    sheet.addImage(logoImage, {
+      tl: { col: 0.1, row: 0.08 },
+      ext: { width: 98, height: 73 }, // proporção 400 x 297 do PNG
+    });
+
+    const agora = new Date().toLocaleString("pt-BR", {
+      timeZone: "America/Sao_Paulo",
+      day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit",
+    }).replace(", ", " ");
+    sheet.mergeCells(1, 3, 2, 4); // C1:D2 (dentro das colunas congeladas)
+    const titulo = sheet.getCell(1, 3);
+    titulo.value = `${inventario.descricao || ""}`.trim();
+    titulo.font = { bold: true, size: 14, color: { argb: "FFFFFFFF" } };
+    titulo.alignment = { horizontal: "left", vertical: "middle" };
+
+    sheet.mergeCells(3, 3, 3, 4); // C3:D3
+    const subtitulo = sheet.getCell(3, 3);
+    subtitulo.value = `${(complemento.emp_razao || "").trim()}  •  ${(complemento.loc_razao || "").trim()}  •  Gerado em ${agora}  •  ${Object.keys(uniqueIds).length} ativos`;
+    subtitulo.font = { size: 9, color: { argb: "FFCCCCCC" } };
+    subtitulo.alignment = { horizontal: "left", vertical: "middle" };
+
+    // congela as 4 primeiras colunas (rolagem a partir da coluna 5) e as linhas até o cabeçalho (linha 5)
+    sheet.views = [
+      { state: "frozen", xSplit: 4, ySplit: 5, topLeftCell: "E6", showGridLines: false },
+    ];
+
+    // filtro nos títulos das colunas (linha 5)
+    sheet.autoFilter = {
+      from: { row: 5, column: 1 },
+      to: { row: 5, column: sheet.columnCount },
+    };
 
     await workbook.xlsx.writeFile("rel_excel/".concat(fileName));
     console.log("Arquivo gerado com sucesso!");
