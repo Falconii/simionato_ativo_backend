@@ -609,13 +609,24 @@ exports.generateExcelv2 = async function(lsRegistros, inventario, complemento,fi
           //...fotoCells,
           //...obsCells,
           //...highlightCells,
-        ]);
+        ].map((v) => (typeof v === "string" ? v.trim() : v)));
       }
     );
 
     // formatação de alinhamento vertical e horizontal das células da planilha
     sheet.eachRow({ includeEmpty: false }, function (row) {
       row.alignment = { vertical: "middle", horizontal: "center" };
+    });
+
+    // dados (a partir da linha 6): números à direita, textos à esquerda
+    sheet.eachRow({ includeEmpty: false }, function (row, rowNumber) {
+      if (rowNumber <= 5) return;
+      row.eachCell({ includeEmpty: true }, (cell) => {
+        cell.alignment = {
+          vertical: "middle",
+          horizontal: typeof cell.value === "number" ? "right" : "left",
+        };
+      });
     });
 
     // altura das células individualmente para 15
